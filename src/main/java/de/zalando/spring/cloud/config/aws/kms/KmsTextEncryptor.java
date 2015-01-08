@@ -40,7 +40,9 @@ public class KmsTextEncryptor implements TextEncryptor {
     private static final String EMPTY_STRING = "";
 
     private final String kmsKeyId;
-    private final AWSKMSClient kms;
+    private final Regions region;
+
+    private AWSKMSClient kms;
 
     /**
      * @param  kmsKeyId  The ARN of the KMS key, e.g.
@@ -51,22 +53,28 @@ public class KmsTextEncryptor implements TextEncryptor {
         Assert.notNull(region, "region must not be null");
         Assert.hasText(kmsKeyId, "kmsKeyId must not be blank");
         this.kmsKeyId = kmsKeyId;
+        this.region = region;
+    }
 
-        this.kms = new AWSKMSClient();
-        this.kms.setRegion(region);
+    protected AWSKMSClient getKms() {
+        if (kms == null) {
+            kms = new AWSKMSClient();
+            kms.setRegion(region);
+        }
 
+        return kms;
     }
 
     @Override
     public String encrypt(final String text) {
         return extractString(Base64.getEncoder().encode(
-                    kms.encrypt(new EncryptRequest().withKeyId(kmsKeyId).withPlaintext(
+                    getKms().encrypt(new EncryptRequest().withKeyId(kmsKeyId).withPlaintext(
                             ByteBuffer.wrap(text.getBytes()))).getCiphertextBlob()));
     }
 
     @Override
     public String decrypt(final String encryptedText) {
-        return extractString(kms.decrypt(new DecryptRequest().withCiphertextBlob(
+        return extractString(getKms().decrypt(new DecryptRequest().withCiphertextBlob(
                         Base64.getDecoder().decode(ByteBuffer.wrap(encryptedText.getBytes())))).getPlaintext());
     }
 
