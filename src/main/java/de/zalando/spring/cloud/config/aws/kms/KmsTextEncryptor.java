@@ -30,6 +30,11 @@ import com.amazonaws.services.kms.AWSKMSClient;
 import com.amazonaws.services.kms.model.DecryptRequest;
 import com.amazonaws.services.kms.model.EncryptRequest;
 
+/**
+ * This {@link TextEncryptor} uses AWS KMS (Key Management Service) to encrypt / decrypt strings. Encoded cipher strings
+ * are represented in Base64 format, to have a nicer string representation (only alpha-numeric chars), that can be
+ * easily used as values in property files.
+ */
 public class KmsTextEncryptor implements TextEncryptor {
 
     private static final String EMPTY_STRING = "";
@@ -37,6 +42,11 @@ public class KmsTextEncryptor implements TextEncryptor {
     private final String kmsKeyId;
     private final AWSKMSClient kms;
 
+    /**
+     * @param  kmsKeyId  The ARN of the KMS key, e.g.
+     *                   arn:aws:kms:eu-west-1:089972051332:key/9d9fca31-54c5-4de5-ba4f-128dfb9a5031. Must not be null
+     * @param  region    The region of your KMS key, e.g. eu-west-1. Must not be null
+     */
     public KmsTextEncryptor(final String kmsKeyId, final Regions region) {
         Assert.notNull(region, "region must not be null");
         Assert.hasText(kmsKeyId, "kmsKeyId must not be blank");

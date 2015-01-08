@@ -27,11 +27,22 @@ import org.springframework.security.crypto.encrypt.TextEncryptor;
 
 import com.amazonaws.regions.Regions;
 
+/**
+ * This config must be applied to the bootstrap context, which is done by META-INF/spring.factories.<br/>
+ * The properties here can be configured in bootstrap.[yml|xml|properties], but not in application.[yml]xml|properties]
+ */
 @Configuration
 class KmsEncryptionConfiguration {
 
+    /**
+     * The ARN of the KMS key, e.g. arn:aws:kms:eu-west-1:089972051332:key/9d9fca31-54c5-4de5-ba4f-128dfb9a5031
+     */
     @Value("${aws.kms.keyId}")
     private String kmsKeyId;
+
+    /**
+     * The region of your KMS key, e.g. eu-west-1
+     */
     @Value("${aws.region}")
     private String regionName;
 
