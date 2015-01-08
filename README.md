@@ -55,6 +55,4 @@ Hints
 The Spring Cloud Config Server library provides an endpoint to encrypt plain text strings.
 See [reference](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_encryption_and_decryption) for details.
 
-Or you can use the AWS CLI directly:
-
-    $ aws kms encrypt  --region eu-west-1 --key-id arn:aws:kms:eu-west-1:089972051332:key/9d9fca31-54c5-4df5-ba4f-127dfb9a5031 --plaintext "Hello World"
+Or you can use the our small [CLI tool](https://github.com/zalando/spring-cloud-config-aws-kms/tree/master/encryption-cli).
