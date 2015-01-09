@@ -62,3 +62,12 @@ With the AWS CLI. Make sure to encode your **plaintext with Base64**!
 
 Or you can use our small [CLI tool](https://github.com/zalando/spring-cloud-config-aws-kms/tree/master/encryption-cli).
 
+
+Contribution
+------------
+
+### Release to Maven Central
+
+    mvn clean release:prepare -Prelease,sonatype -Dresume=false
+    
+    mvn release:perform -Prelease,sonatype
