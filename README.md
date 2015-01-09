@@ -52,7 +52,13 @@ Hints
 
 ### How to get the cipher text?
 
-The Spring Cloud Config Server library provides an endpoint to encrypt plain text strings.
+The Spring Cloud Config Server library provides an endpoint to encrypt plain text strings. Make sure to secure this endpoint properly!
 See [reference](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_encryption_and_decryption) for details.
 
-Or you can use the our small [CLI tool](https://github.com/zalando/spring-cloud-config-aws-kms/tree/master/encryption-cli).
+With the AWS CLI. Make sure to encode your **plaintext with Base64**!
+
+    aws kms encrypt  --region eu-west-1 --key-id arn:aws:kms:eu-west-1:089972051332:key/79fd3162-473f-450e-9024-b731d3df1198 --plaintext SGFsbG8=
+    
+
+Or you can use our small [CLI tool](https://github.com/zalando/spring-cloud-config-aws-kms/tree/master/encryption-cli).
+

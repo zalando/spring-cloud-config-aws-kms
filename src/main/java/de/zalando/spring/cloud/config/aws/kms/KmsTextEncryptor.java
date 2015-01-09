@@ -67,15 +67,24 @@ public class KmsTextEncryptor implements TextEncryptor {
 
     @Override
     public String encrypt(final String text) {
-        return extractString(Base64.getEncoder().encode(
-                    getKms().encrypt(new EncryptRequest().withKeyId(kmsKeyId).withPlaintext(
-                            ByteBuffer.wrap(text.getBytes()))).getCiphertextBlob()));
+        final EncryptRequest encryptRequest =
+            new EncryptRequest().withKeyId(kmsKeyId) //
+                                .withPlaintext(ByteBuffer.wrap(text.getBytes()));
+
+        final ByteBuffer encryptedBytes = getKms().encrypt(encryptRequest).getCiphertextBlob();
+
+        return extractString(Base64.getEncoder().encode(encryptedBytes));
     }
 
     @Override
     public String decrypt(final String encryptedText) {
-        return extractString(getKms().decrypt(new DecryptRequest().withCiphertextBlob(
-                        Base64.getDecoder().decode(ByteBuffer.wrap(encryptedText.getBytes())))).getPlaintext());
+
+        // Assuming the encryptedText is encoded in Base64
+        final ByteBuffer encryptedBytes = Base64.getDecoder().decode(ByteBuffer.wrap(encryptedText.getBytes()));
+
+        final DecryptRequest decryptRequest = new DecryptRequest().withCiphertextBlob(encryptedBytes);
+
+        return extractString(getKms().decrypt(decryptRequest).getPlaintext());
     }
 
     private static String extractString(final ByteBuffer bb) {
