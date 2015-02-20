@@ -70,7 +70,7 @@ class KmsEncryptionConfiguration {
     @ConditionalOnMissingBean(AWSKMS.class)
     static class KmsConfiguration {
 
-        @Value("${aws.region}")
+        @Value("#{T(com.amazonaws.regions.Regions).fromName('${aws.region}')}")
         private Regions region;
 
         @Bean
