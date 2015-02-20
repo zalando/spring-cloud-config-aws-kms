@@ -28,18 +28,18 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-config-client</artifactId>
-            <version>1.0.0.RC1</version>
+            <version>1.0.0.RC3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>de.zalando</groupId>
             <artifactId>spring-cloud-config-aws-kms</artifactId>
-            <version>0.2</version>
+            <version>0.4</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <scope>test</scope>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>18.0</version>
         </dependency>
     </dependencies>
 

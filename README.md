@@ -18,7 +18,7 @@ Add dependencies to you pom. You will need a version of `org.springframework.clo
         <artifactId>spring-cloud-config-client</artifactId>
         <version>${spring-cloud.version}</version>
     </dependency>
-    
+
     <dependency>
         <groupId>de.zalando</groupId>
         <artifactId>spring-cloud-config-aws-kms</artifactId>
@@ -28,7 +28,7 @@ Add dependencies to you pom. You will need a version of `org.springframework.clo
 
 ### Step 2
 Configure bootstrap properties. See [Spring Cloud Config Reference](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_the_bootstrap_application_context)
-for details. 
+for details.
 
 E.g. `bootstrap.yml`:
 
@@ -55,12 +55,8 @@ Hints
 The Spring Cloud Config Server library provides an endpoint to encrypt plain text strings. Make sure to secure this endpoint properly!
 See [reference](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_encryption_and_decryption) for details.
 
-With the AWS CLI. Make sure to encode your **plaintext with Base64**!
-
-    aws kms encrypt  --region eu-west-1 --key-id arn:aws:kms:eu-west-1:089972051332:key/79fd3162-473f-450e-9024-b731d3df1198 --plaintext SGFsbG8=
-    
-
-Or you can use our small [CLI tool](https://github.com/zalando/spring-cloud-config-aws-kms/tree/master/encryption-cli).
+You can also use [AWS CLI](http://docs.aws.amazon.com/cli/latest/reference/kms/encrypt.html#examples) or our small
+[CLI tool](https://github.com/zalando/spring-cloud-config-aws-kms/tree/master/encryption-cli) to encrypt and decrypt values.
 
 
 Contribution
@@ -69,5 +65,5 @@ Contribution
 ### Release to Maven Central
 
     mvn clean release:prepare -Prelease,sonatype -Dresume=false
-    
+
     mvn release:perform -Prelease,sonatype

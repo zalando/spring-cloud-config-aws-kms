@@ -24,9 +24,7 @@ import org.springframework.security.crypto.encrypt.TextEncryptor;
 
 import org.springframework.util.Assert;
 
-import com.amazonaws.regions.Regions;
-
-import com.amazonaws.services.kms.AWSKMSClient;
+import com.amazonaws.services.kms.AWSKMS;
 import com.amazonaws.services.kms.model.DecryptRequest;
 import com.amazonaws.services.kms.model.EncryptRequest;
 
@@ -39,39 +37,30 @@ public class KmsTextEncryptor implements TextEncryptor {
 
     private static final String EMPTY_STRING = "";
 
+    private final AWSKMS kms;
     private final String kmsKeyId;
-    private final Regions region;
-
-    private AWSKMSClient kms;
 
     /**
+     * @param  kms       The AWS KMS client
      * @param  kmsKeyId  The ARN of the KMS key, e.g.
-     *                   arn:aws:kms:eu-west-1:089972051332:key/9d9fca31-54c5-4de5-ba4f-128dfb9a5031. Must not be null
-     * @param  region    The region of your KMS key, e.g. eu-west-1. Must not be null
+     *                   arn:aws:kms:eu-west-1:089972051332:key/9d9fca31-54c5-4de5-ba4f-128dfb9a5031. Must not be blank,
+     *                   if you you want to encrypt text.
      */
-    public KmsTextEncryptor(final String kmsKeyId, final Regions region) {
-        Assert.notNull(region, "region must not be null");
-        Assert.hasText(kmsKeyId, "kmsKeyId must not be blank");
+    public KmsTextEncryptor(final AWSKMS kms, final String kmsKeyId) {
+        Assert.notNull(kms, "KMS client must not be null");
+        this.kms = kms;
         this.kmsKeyId = kmsKeyId;
-        this.region = region;
-    }
-
-    protected AWSKMSClient getKms() {
-        if (kms == null) {
-            kms = new AWSKMSClient();
-            kms.setRegion(region);
-        }
-
-        return kms;
     }
 
     @Override
     public String encrypt(final String text) {
+        Assert.hasText(kmsKeyId, "kmsKeyId must not be blank");
+
         final EncryptRequest encryptRequest =
             new EncryptRequest().withKeyId(kmsKeyId) //
                                 .withPlaintext(ByteBuffer.wrap(text.getBytes()));
 
-        final ByteBuffer encryptedBytes = getKms().encrypt(encryptRequest).getCiphertextBlob();
+        final ByteBuffer encryptedBytes = kms.encrypt(encryptRequest).getCiphertextBlob();
 
         return extractString(Base64.getEncoder().encode(encryptedBytes));
     }
@@ -84,7 +73,7 @@ public class KmsTextEncryptor implements TextEncryptor {
 
         final DecryptRequest decryptRequest = new DecryptRequest().withCiphertextBlob(encryptedBytes);
 
-        return extractString(getKms().decrypt(decryptRequest).getPlaintext());
+        return extractString(kms.decrypt(decryptRequest).getPlaintext());
     }
 
     private static String extractString(final ByteBuffer bb) {

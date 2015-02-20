@@ -16,13 +16,15 @@
 
 package de.zalando.spring.cloud.config.aws.kms.test;
 
+import static com.amazonaws.regions.Regions.fromName;
+
+import static com.google.common.base.Preconditions.checkArgument;
+
 import org.springframework.boot.CommandLineRunner;
 
 import org.springframework.stereotype.Component;
 
-import org.springframework.util.Assert;
-
-import com.amazonaws.regions.Regions;
+import com.amazonaws.services.kms.AWSKMSClient;
 
 import de.zalando.spring.cloud.config.aws.kms.KmsTextEncryptor;
 
@@ -31,25 +33,32 @@ public class EncryptionCLI implements CommandLineRunner {
 
     @Override
     public void run(final String... args) {
-        Assert.state(args.length >= 3, "Too few arguments");
+        try {
+            checkArgument(args.length >= 3, "Too few arguments.");
 
-        final String text = args[1];
-        final String keyId = args[2];
+            final String text = args[1];
+            final AWSKMSClient kms = new AWSKMSClient();
+            kms.setRegion(fromName(args[2]));
 
-        switch (args[0]) {
+            switch (args[0]) {
 
-            case "encrypt" :
+                case "encrypt" :
+                    checkArgument(args.length == 4, "Too few arguments.");
+                    System.out.println(new KmsTextEncryptor(kms, args[3]).encrypt(text));
+                    break;
 
-                System.out.println(new KmsTextEncryptor(keyId, Regions.EU_WEST_1).encrypt(text));
-                break;
+                case "decrypt" :
+                    System.out.println(new KmsTextEncryptor(kms, null).decrypt(text));
+                    break;
 
-            case "decrypt" :
-                System.out.println(new KmsTextEncryptor(keyId, Regions.EU_WEST_1).decrypt(text));
-                break;
+                default :
 
-            default :
-
-                break;
+                    break;
+            }
+        } catch (final IllegalArgumentException e) {
+            System.out.println(e.getMessage() + " Usage:\n"                  //
+                    + "./run.sh encrypt 'plaintext' eu-west-1 ${kmsKeyId}\n" //
+                    + "./run.sh decrypt 'base64cipherText' eu-west-1");
         }
     }
 }

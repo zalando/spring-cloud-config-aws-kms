@@ -16,10 +16,15 @@
 
 package de.zalando.spring.cloud.config.aws.kms.test;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
-@SpringBootApplication
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@EnableAutoConfiguration
+@ComponentScan
 public class TestApplication {
 
     public static void main(final String[] args) {
