@@ -55,25 +55,32 @@ public class KmsTextEncryptor implements TextEncryptor {
     @Override
     public String encrypt(final String text) {
         Assert.hasText(kmsKeyId, "kmsKeyId must not be blank");
+        if (text == null || text.isEmpty()) {
+            return EMPTY_STRING;
+        } else {
+            final EncryptRequest encryptRequest =
+                new EncryptRequest().withKeyId(kmsKeyId) //
+                                    .withPlaintext(ByteBuffer.wrap(text.getBytes()));
 
-        final EncryptRequest encryptRequest =
-            new EncryptRequest().withKeyId(kmsKeyId) //
-                                .withPlaintext(ByteBuffer.wrap(text.getBytes()));
+            final ByteBuffer encryptedBytes = kms.encrypt(encryptRequest).getCiphertextBlob();
 
-        final ByteBuffer encryptedBytes = kms.encrypt(encryptRequest).getCiphertextBlob();
-
-        return extractString(Base64.getEncoder().encode(encryptedBytes));
+            return extractString(Base64.getEncoder().encode(encryptedBytes));
+        }
     }
 
     @Override
     public String decrypt(final String encryptedText) {
+        if (encryptedText == null || encryptedText.isEmpty()) {
+            return EMPTY_STRING;
+        } else {
 
-        // Assuming the encryptedText is encoded in Base64
-        final ByteBuffer encryptedBytes = Base64.getDecoder().decode(ByteBuffer.wrap(encryptedText.getBytes()));
+            // Assuming the encryptedText is encoded in Base64
+            final ByteBuffer encryptedBytes = Base64.getDecoder().decode(ByteBuffer.wrap(encryptedText.getBytes()));
 
-        final DecryptRequest decryptRequest = new DecryptRequest().withCiphertextBlob(encryptedBytes);
+            final DecryptRequest decryptRequest = new DecryptRequest().withCiphertextBlob(encryptedBytes);
 
-        return extractString(kms.decrypt(decryptRequest).getPlaintext());
+            return extractString(kms.decrypt(decryptRequest).getPlaintext());
+        }
     }
 
     private static String extractString(final ByteBuffer bb) {
