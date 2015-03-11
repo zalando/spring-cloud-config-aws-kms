@@ -10,15 +10,9 @@ Installation
 Given you have a [Spring Boot](http://projects.spring.io/spring-boot/) application.
 
 ### Step 1
-Add dependencies to you pom. You will need a version of `org.springframework.cloud:spring-cloud-config-client`
+Add dependency to you pom. This includes `org.springframework.cloud:spring-cloud-config-client`
 
     ...
-    <dependency>
-        <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-config-client</artifactId>
-        <version>${spring-cloud.version}</version>
-    </dependency>
-
     <dependency>
         <groupId>de.zalando</groupId>
         <artifactId>spring-cloud-config-aws-kms</artifactId>

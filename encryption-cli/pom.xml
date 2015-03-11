@@ -12,7 +12,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.2.1.RELEASE</version>
+        <version>1.2.2.RELEASE</version>
         <relativePath/>
     </parent>
 
@@ -26,15 +26,9 @@
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-config-client</artifactId>
-            <version>1.0.0.RC3</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>de.zalando</groupId>
             <artifactId>spring-cloud-config-aws-kms</artifactId>
-            <version>0.4</version>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -42,18 +36,6 @@
             <version>18.0</version>
         </dependency>
     </dependencies>
-
-    <!-- Remove this, as soon as spring-cloud-config has been released -->
-    <repositories>
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>http://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 
     <build>
         <plugins>
