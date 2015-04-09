@@ -18,8 +18,7 @@ package de.zalando.spring.cloud.config.aws.kms;
 
 import java.nio.ByteBuffer;
 
-import java.util.Base64;
-
+import org.springframework.security.crypto.codec.Base64;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
 
 import org.springframework.util.Assert;
@@ -64,7 +63,7 @@ public class KmsTextEncryptor implements TextEncryptor {
 
             final ByteBuffer encryptedBytes = kms.encrypt(encryptRequest).getCiphertextBlob();
 
-            return extractString(Base64.getEncoder().encode(encryptedBytes));
+            return extractString(ByteBuffer.wrap(Base64.encode(encryptedBytes.array())));
         }
     }
 
@@ -75,7 +74,7 @@ public class KmsTextEncryptor implements TextEncryptor {
         } else {
 
             // Assuming the encryptedText is encoded in Base64
-            final ByteBuffer encryptedBytes = Base64.getDecoder().decode(ByteBuffer.wrap(encryptedText.getBytes()));
+            final ByteBuffer encryptedBytes = ByteBuffer.wrap(Base64.decode(encryptedText.getBytes()));
 
             final DecryptRequest decryptRequest = new DecryptRequest().withCiphertextBlob(encryptedBytes);
 

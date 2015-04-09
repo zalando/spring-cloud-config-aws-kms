@@ -30,11 +30,11 @@ import static org.mockito.Mockito.when;
 
 import java.nio.ByteBuffer;
 
-import java.util.Base64;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import org.springframework.security.crypto.codec.Base64;
 
 import com.amazonaws.services.kms.AWSKMS;
 import com.amazonaws.services.kms.model.DecryptRequest;
@@ -47,7 +47,7 @@ public class KmsTextEncryptorTest {
     private static final String KMS_KEY_ID = "testKeyId";
     private static final String PLAINTEXT = "plaintext";
     private static final String CIPHER_TEXT = "C1PHERT3XT";
-    private static final String BASE64_CIPHER_TEXT = Base64.getEncoder().encodeToString(CIPHER_TEXT.getBytes());
+    private static final String BASE64_CIPHER_TEXT = new String(Base64.encode(CIPHER_TEXT.getBytes()));
 
     private AWSKMS mockKms;
     private KmsTextEncryptor textEncryptor;

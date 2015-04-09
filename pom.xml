@@ -47,7 +47,7 @@
         <tagNameFormat>@{project.version}</tagNameFormat>
 
         <aws-java-sdk.version>1.9.23</aws-java-sdk.version>
-        <spring-boot.version>1.2.2.RELEASE</spring-boot.version>
+        <spring-boot.version>1.2.3.RELEASE</spring-boot.version>
         <spring-cloud-config.version>1.0.0.RELEASE</spring-cloud-config.version>
 
         <maven-source-plugin.version>2.4</maven-source-plugin.version>
@@ -128,6 +128,15 @@
             </plugins>
         </pluginManagement>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.2</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
             <plugin>
                 <artifactId>maven-release-plugin</artifactId>
                 <version>${maven-release-plugin.version}</version>
