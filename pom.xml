@@ -26,7 +26,7 @@
     </parent>
     <groupId>de.zalando</groupId>
     <artifactId>spring-cloud-config-aws-kms</artifactId>
-    <version>1.3-SNAPSHOT</version>
+    <version>1.2-SNAPSHOT</version>
 
     <packaging>jar</packaging>
 
