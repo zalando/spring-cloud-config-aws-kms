@@ -64,7 +64,7 @@
 
         <tagNameFormat>@{project.version}</tagNameFormat>
 
-        <aws-java-sdk.version>1.9.23</aws-java-sdk.version>
+        <aws-java-sdk.version>1.9.35</aws-java-sdk.version>
         <spring-boot.version>1.2.3.RELEASE</spring-boot.version>
         <spring-cloud-config.version>1.0.0.RELEASE</spring-cloud-config.version>
 
