@@ -26,6 +26,7 @@ import org.springframework.cloud.bootstrap.encrypt.EnvironmentDecryptApplication
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 
 import com.amazonaws.services.kms.AWSKMS;
@@ -75,7 +76,7 @@ class KmsEncryptionConfiguration {
         @Bean
         AWSKMS kms() {
             final AWSKMSClient awskmsClient = new AWSKMSClient();
-            awskmsClient.setRegion(region);
+            awskmsClient.setRegion(Region.getRegion(region));
             return awskmsClient;
         }
 
