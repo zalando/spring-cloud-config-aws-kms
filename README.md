@@ -17,7 +17,7 @@ Add dependency to you pom. This includes `org.springframework.cloud:spring-cloud
 
     ...
     <dependency>
-        <groupId>de.zalando</groupId>
+        <groupId>org.zalando</groupId>
         <artifactId>spring-cloud-config-aws-kms</artifactId>
         <version>${spring-cloud-aws-kms.version}</version>
     </dependency>
