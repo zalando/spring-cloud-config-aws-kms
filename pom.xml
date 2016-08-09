@@ -58,7 +58,7 @@
 
     <scm>
         <connection>scm:git:https://github.com/zalando/spring-cloud-config-aws-kms.git</connection>
-        <developerConnection>scm:git:https://github.com/zalando/spring-cloud-config-aws-kms.git</developerConnection>
+        <developerConnection>scm:git:git@github.com:zalando/spring-cloud-config-aws-kms.git</developerConnection>
         <url>https://github.com/zalando/spring-cloud-config-aws-kms</url>
         <tag>HEAD</tag>
     </scm>
