@@ -21,7 +21,7 @@
     <parent>
         <groupId>org.zalando.stups.build</groupId>
         <artifactId>stups-parent</artifactId>
-        <version>5</version>
+        <version>7</version>
         <relativePath />
     </parent>
     <groupId>org.zalando</groupId>
@@ -73,11 +73,9 @@
 
         <tagNameFormat>@{project.version}</tagNameFormat>
 
-        <aws-java-sdk.version>1.9.35</aws-java-sdk.version>
-        <spring-boot.version>1.2.3.RELEASE</spring-boot.version>
-        <spring-cloud-config.version>1.0.0.RELEASE</spring-cloud-config.version>
-
-        <assertj.version>2.0.0</assertj.version>
+        <aws-java-sdk.version>1.10.30</aws-java-sdk.version>
+        <spring-boot.version>1.4.0.RELEASE</spring-boot.version>
+        <spring-cloud.version>Brixton.SR4</spring-cloud.version>
     </properties>
 
     <dependencyManagement>
@@ -86,6 +84,13 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -100,7 +105,6 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-config-client</artifactId>
-            <version>${spring-cloud-config.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
@@ -119,24 +123,18 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>${assertj.version}</version>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
