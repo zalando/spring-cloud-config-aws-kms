@@ -15,22 +15,21 @@
  */
 package de.zalando.spring.cloud.config.aws.kms;
 
-import static org.mockito.Matchers.any;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.nio.ByteBuffer;
-
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
 import com.amazonaws.services.kms.AWSKMS;
 import com.amazonaws.services.kms.model.DecryptRequest;
 import com.amazonaws.services.kms.model.DecryptResult;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.nio.ByteBuffer;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @Configuration
 @ConditionalOnProperty(prefix = "aws.kms", name = "useMock", havingValue = "true")
@@ -40,9 +39,12 @@ class MockAwsKmsConfig {
     @Bean
     AWSKMS kms() {
         final AWSKMS mock = mock(AWSKMS.class);
-        final DecryptResult result = new DecryptResult();
-        result.setPlaintext(ByteBuffer.wrap(KmsEncryptionIntegrationConfigurationTest.PLAINTEXT.getBytes()));
-        when(mock.decrypt(any(DecryptRequest.class))).thenReturn(result);
+        when(mock.decrypt(any(DecryptRequest.class))).thenAnswer(new Answer<DecryptResult>() {
+            @Override
+            public DecryptResult answer(InvocationOnMock invocation) throws Throwable {
+                return new DecryptResult().withPlaintext(ByteBuffer.wrap(KmsEncryptionIntegrationConfigurationTest.PLAINTEXT.getBytes()));
+            }
+        });
         return mock;
     }
 
