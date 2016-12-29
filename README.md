@@ -34,6 +34,12 @@ E.g. `bootstrap.yml`:
         kms:
             keyId: arn:aws:kms:eu-west-1:089972051332:key/9d9fca31-54c5-4df5-ba4f-127dfb9a5031
 
+The *aws.kms.keyId* property is required only if you intend to encrypt values in your application. The following contains the properties used by this library.
+
+- aws.region (required)
+- aws.kms.keyId
+- aws.kms.enabled (defaults to true)
+
 Usage
 -----
 
