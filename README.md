@@ -2,6 +2,9 @@ Spring Cloud Config - AWS KMS Add-on
 ====================================
 
 [![Build Status](https://travis-ci.org/zalando/spring-cloud-config-aws-kms.svg?branch=master)](https://travis-ci.org/zalando/spring-cloud-config-aws-kms)
+[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/org.zalando/spring-cloud-config-aws-kms/badge.svg)](http://www.javadoc.io/doc/org.zalando/spring-cloud-config-aws-kms)
+[![Maven Central](https://img.shields.io/maven-central/v/org.zalando/spring-cloud-config-aws-kms.svg)](https://maven-badges.herokuapp.com/maven-central/org.zalando/spring-cloud-config-aws-kms)
+[![License](https://img.shields.io/badge/license-Apache_2.0-blue.svg)](https://raw.githubusercontent.com/zalando-incubator/aws-support-spring-boot-starter/master/LICENSE)
 
 This is a Spring Cloud Config add-on that provides encryption via AWS (Amazon Web Services) KMS (Key management service).
 
