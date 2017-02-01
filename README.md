@@ -8,6 +8,7 @@ Spring Cloud Config - AWS KMS Add-on
 
 This is a Spring Cloud Config add-on that provides encryption via AWS (Amazon Web Services) KMS (Key management service).
 
+Please see our related [aws-support-spring-boot-starter](https://github.com/zalando-incubator/aws-support-spring-boot-starter), a minimal Spring-Boot-Starter that detects whether an application is running on AWS (or not) and exposes some properties. 
 
 Installation
 ------------
