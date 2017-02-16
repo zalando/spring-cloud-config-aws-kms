@@ -16,10 +16,12 @@
 package de.zalando.spring.cloud.config.aws.kms;
 
 import java.nio.ByteBuffer;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.security.crypto.codec.Base64;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
-
 import org.springframework.util.Assert;
 
 import com.amazonaws.services.kms.AWSKMS;
@@ -72,13 +74,73 @@ public class KmsTextEncryptor implements TextEncryptor {
             return EMPTY_STRING;
         } else {
 
-            // Assuming the encryptedText is encoded in Base64
-            final ByteBuffer encryptedBytes = ByteBuffer.wrap(Base64.decode(encryptedText.getBytes()));
+            // Extract the encryption context and the remaining part
+            final Map<String, String> encryptionContext = extractEncryptionContext(encryptedText);
+            final String encryptedValue = extractEncryptedValue(encryptedText);
 
-            final DecryptRequest decryptRequest = new DecryptRequest().withCiphertextBlob(encryptedBytes);
+            // Assuming the encryptedText is encoded in Base64
+            final ByteBuffer encryptedBytes =
+                    ByteBuffer.wrap(Base64.decode(encryptedValue.getBytes()));
+
+            final DecryptRequest decryptRequest = new DecryptRequest()
+                    .withCiphertextBlob(encryptedBytes)
+                    .withEncryptionContext(encryptionContext);
 
             return extractString(kms.decrypt(decryptRequest).getPlaintext());
         }
+    }
+
+    /**
+     * Extract the encryption context. For a string such as "(param1=WdfaA,param2=AZrr,param3)thisIsEncrypted",
+     * the value returned would be a map with pairs of key and values, such as:
+     *
+     * <ul>
+     * <li>key=param1,value=WdfaA</li>
+     * <li>key=param2,value=AZrr</li>
+     * <li>key=param3,value=</li>
+     * </ul>
+     *
+     * <p>Keys with no value are assigned an empty string for convenience. The remaining values are Base64 encoded.</p>
+     *
+     * @param encryptedText the encrypted text passed by spring security
+     * @return the encryption context map, without the encryption text
+     */
+    /* default for testing */ static Map<String, String> extractEncryptionContext(final String encryptedText) {
+        final int lower = encryptedText.indexOf('(');
+        final int upper= encryptedText.indexOf(')');
+        if (lower != 0 || upper < 0) {
+            return Collections.emptyMap();
+        } else {
+            final Map<String, String> encryptionContext = new HashMap<>();
+            final String encryptionContextText = encryptedText.substring(lower+1, upper);
+            final String[] pairs = encryptionContextText.split(",");
+            for (String pair : pairs) {
+                // we must not use simply split("="), as = is a pad symbol in base64, and would be cut out...
+                String[] keyValue = pair.split("=", 1);
+                if (keyValue.length == 1) {
+                    encryptionContext.put(keyValue[0], "");
+                } else if (keyValue.length == 2) {
+                    encryptionContext.put(keyValue[0], new String(Base64.decode(keyValue[1].getBytes())));
+                }
+            }
+            return encryptionContext;
+        }
+    }
+
+    /**
+     * Extract the encrypted value. For a string such as "(param1=WdfaA,param2=AZrr,param3)thisIsEncrypted",
+     * the value returned would be just what comes after the last ')'. So the result for this example
+     * would be "thisIsEncrypted". The initial part (encryption context) would be discarded.
+     *
+     * @param encryptedText the encrypted text passed by spring security
+     * @return the encrypted value, minus any encryption context provided
+     */
+    /* default for testing */ static String extractEncryptedValue(final String encryptedText) {
+        final int index = encryptedText.lastIndexOf(')');
+        if (index > 0) {
+            return encryptedText.substring(index + 1);
+        }
+        return encryptedText;
     }
 
     private static String extractString(final ByteBuffer bb) {
