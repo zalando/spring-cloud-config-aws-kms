@@ -28,21 +28,27 @@ import org.junit.Test;
 public class KmsEncryptionContextTest {
 
     private static final String ENCRYPTION_TEXT = "(param=TOKAmWhvbW1lIGPigJllc3Qgcmllbg==,"
-            + "test=bOKAmW9ldXZyZSBj4oCZZXN0IHRvdXQ=,valueless)remaining";
+            + "test=bOKAmW9ldXZyZSBj4oCZZXN0IHRvdXQ= ,valueless)remaining";
+    private static final int NUMBER_OF_ENTRIES = 3;
 
     @Test
     public void testExtractEncryptionContext() {
         Map<String, String> encryptionContext = KmsTextEncryptor.extractEncryptionContext(ENCRYPTION_TEXT);
-        assertEquals(3, encryptionContext.size());
+        assertEquals(NUMBER_OF_ENTRIES, encryptionContext.size());
+        int found = 0;
         for (Entry<String, String> entry : encryptionContext.entrySet()) {
             if ("param".equals(entry.getKey())) {
                 assertEquals("L’homme c’est rien", entry.getValue());
+                found++;
             } else if ("test".equals(entry.getKey())) {
                 assertEquals("l’oeuvre c’est tout", entry.getValue());
+                found++;
             } else if ("valueless".equals(entry.getKey())) {
-                assertEquals("", entry.getValue());
+                assertEquals("An empty value must still be added!", "", entry.getValue());
+                found++;
             }
         }
+        assertEquals("Test did not find right number of key and value pairs", NUMBER_OF_ENTRIES, found);
     }
 
     @Test
@@ -50,5 +56,4 @@ public class KmsEncryptionContextTest {
         String encryptionValue = KmsTextEncryptor.extractEncryptedValue(ENCRYPTION_TEXT);
         assertEquals("remaining", encryptionValue);
     }
-
 }

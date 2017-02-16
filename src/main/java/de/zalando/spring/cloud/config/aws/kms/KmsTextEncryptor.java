@@ -116,11 +116,11 @@ public class KmsTextEncryptor implements TextEncryptor {
             final String[] pairs = encryptionContextText.split(",");
             for (String pair : pairs) {
                 // we must not use simply split("="), as = is a pad symbol in base64, and would be cut out...
-                String[] keyValue = pair.split("=", 1);
+                String[] keyValue = pair.split("=", 2);
                 if (keyValue.length == 1) {
                     encryptionContext.put(keyValue[0], "");
                 } else if (keyValue.length == 2) {
-                    encryptionContext.put(keyValue[0], new String(Base64.decode(keyValue[1].getBytes())));
+                    encryptionContext.put(keyValue[0], new String(Base64.decode(keyValue[1].trim().getBytes())));
                 }
             }
             return encryptionContext;
