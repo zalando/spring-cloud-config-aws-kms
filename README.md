@@ -54,6 +54,26 @@ E.g. `application.yml`
 
     secretPassword: '{cipher}CiA47hYvQqWFFGq3TLtzQO5FwZMam2AnaeQt4PGEZHhDLxFTAQEBAgB4OO4WL0KlhRRqt0y7c0DuRcGTGptgJ8nkLeDxhGR4Qy8AAABqMGgGCSqGSIb3DQEHBqBbMFkCAQAwVAYJKoZIhvcNAQcBMB4GCWCGSAFlAwQBLjARBAx61LJpXQwgTcnGeSQCARCAJ4xhpGC5HT2xT+Vhy2iAuT+P/PLliZK5u6CiGhgudteZsCr7VJ/1aw=='
 
+### Use an encryption context
+
+An [encryption context](http://docs.aws.amazon.com/kms/latest/developerguide/encryption-context.html)
+is a set of key-value pairs used for encrypt and decrypt values, which might be useful as security
+enhancement.
+
+To use an encryption context with this library, you will have to use a custom syntax, that is not part
+of Spring Security (as the {cipher} prefix).
+
+E.g. `application.yml`
+
+    secretPassword: '{cipher}(Country=UG9ydHVnYWw=,Code=MzUx)CiA47hYvQqWFFGq3TLtzQO5FwZMam2AnaeQt4PGEZHhDLxFTAQEBAgB4OO4WL0KlhRRqt0y7c0DuRcGTGptgJ8nkLeDxhGR4Qy8AAABqMGgGCSqGSIb3DQEHBqBbMFkCAQAwVAYJKoZIhvcNAQcBMB4GCWCGSAFlAwQBLjARBAx61LJpXQwgTcnGeSQCARCAJ4xhpGC5HT2xT+Vhy2iAuT+P/PLliZK5u6CiGhgudteZsCr7VJ/1aw=='
+
+The `(Country=UG9ydHVnYWw=,Code=MzUx)` part is the encryption context, where we used two keys for
+this example: Country and Code. And the values are Base64 encoded.
+
+Key-value pairs must be comma separated, and it is fine to use spaces to separate values. The order of the
+values in the context is not important. And one last note, is that the values used in the encryption
+context are logged in CloudTrail, so they must not be sensitive.
+
 Hints
 -----
 
