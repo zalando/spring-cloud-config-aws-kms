@@ -73,9 +73,8 @@
 
         <tagNameFormat>@{project.version}</tagNameFormat>
 
-        <aws-java-sdk.version>1.10.30</aws-java-sdk.version>
-        <spring-boot.version>1.4.0.RELEASE</spring-boot.version>
-        <spring-cloud.version>Brixton.SR4</spring-cloud.version>
+        <spring-boot.version>1.5.1.RELEASE</spring-boot.version>
+        <spring-cloud.version>Camden.SR5</spring-cloud.version>
     </properties>
 
     <dependencyManagement>
@@ -114,7 +113,6 @@
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-kms</artifactId>
-            <version>${aws-java-sdk.version}</version>
         </dependency>
 
         <dependency>

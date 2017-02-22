@@ -17,9 +17,10 @@ package de.zalando.spring.cloud.config.aws.kms.test;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+
+import static org.springframework.boot.Banner.Mode.OFF;
 
 @Configuration
 @EnableAutoConfiguration
@@ -28,7 +29,7 @@ public class TestApplication {
 
     public static void main(final String[] args) {
         final SpringApplicationBuilder app = new SpringApplicationBuilder(TestApplication.class);
-        app.showBanner(false);
+        app.bannerMode(OFF);
         app.properties("spring.cloud.bootstrap.enabled=false", "logging.level.ROOT=WARN");
         app.run(args);
     }
