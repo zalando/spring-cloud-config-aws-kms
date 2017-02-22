@@ -45,7 +45,7 @@
         <dependency>
             <groupId>org.zalando</groupId>
             <artifactId>spring-cloud-config-aws-kms</artifactId>
-            <version>1.6-SNAPSHOT</version>
+            <version>1.6</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
