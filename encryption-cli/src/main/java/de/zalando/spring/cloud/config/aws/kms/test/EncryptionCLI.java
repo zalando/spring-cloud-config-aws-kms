@@ -15,17 +15,14 @@
  */
 package de.zalando.spring.cloud.config.aws.kms.test;
 
-import static com.amazonaws.regions.Regions.fromName;
-
-import static com.google.common.base.Preconditions.checkArgument;
-
+import com.amazonaws.services.kms.AWSKMSClient;
+import de.zalando.spring.cloud.config.aws.kms.KmsTextEncryptor;
 import org.springframework.boot.CommandLineRunner;
-
 import org.springframework.stereotype.Component;
 
-import com.amazonaws.services.kms.AWSKMSClient;
-
-import de.zalando.spring.cloud.config.aws.kms.KmsTextEncryptor;
+import static com.amazonaws.regions.Region.getRegion;
+import static com.amazonaws.regions.Regions.fromName;
+import static com.google.common.base.Preconditions.checkArgument;
 
 @Component
 public class EncryptionCLI implements CommandLineRunner {
@@ -37,7 +34,7 @@ public class EncryptionCLI implements CommandLineRunner {
 
             final String text = args[1];
             final AWSKMSClient kms = new AWSKMSClient();
-            kms.setRegion(fromName(args[2]));
+            kms.setRegion(getRegion(fromName(args[2])));
 
             switch (args[0]) {
 
