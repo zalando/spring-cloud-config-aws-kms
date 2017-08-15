@@ -15,13 +15,12 @@
  */
 package de.zalando.spring.cloud.config.aws.kms.test;
 
-import com.amazonaws.services.kms.AWSKMSClient;
+import com.amazonaws.services.kms.AWSKMS;
+import com.amazonaws.services.kms.AWSKMSClientBuilder;
 import de.zalando.spring.cloud.config.aws.kms.KmsTextEncryptor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import static com.amazonaws.regions.Region.getRegion;
-import static com.amazonaws.regions.Regions.fromName;
 import static com.google.common.base.Preconditions.checkArgument;
 
 @Component
@@ -33,8 +32,7 @@ public class EncryptionCLI implements CommandLineRunner {
             checkArgument(args.length >= 3, "Too few arguments.");
 
             final String text = args[1];
-            final AWSKMSClient kms = new AWSKMSClient();
-            kms.setRegion(getRegion(fromName(args[2])));
+            final AWSKMS kms = AWSKMSClientBuilder.standard().withRegion(args[2]).build();
 
             switch (args[0]) {
 
