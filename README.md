@@ -86,8 +86,8 @@ You can also use [AWS CLI](http://docs.aws.amazon.com/cli/latest/reference/kms/e
 [CLI tool](https://github.com/zalando/spring-cloud-config-aws-kms/tree/master/encryption-cli) to encrypt and decrypt values.
 
 
-Contribution
-------------
+Releases
+--------
 
 ### Release to Maven Central
 
@@ -95,6 +95,10 @@ Contribution
 
     mvn release:perform -Prelease,sonatype
 
+Contributing
+------------
+
+Contributions are highly welcome. For details please refer to the [guidelines](https://github.com/zalando/spring-cloud-config-aws-kms/tree/master/CONTRIBUTING.md).
 
 License
 -------
