@@ -6,11 +6,11 @@
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-parent</artifactId>
         <version>Dalston.SR4</version>
-        <relativePath/>
+        <relativePath />
     </parent>
     <groupId>org.zalando</groupId>
     <artifactId>spring-cloud-config-aws-kms</artifactId>
-    <version>1.8-SNAPSHOT</version>
+    <version>2.0-beta1</version>
 
     <packaging>jar</packaging>
 
@@ -44,7 +44,7 @@
         <connection>scm:git:https://github.com/zalando/spring-cloud-config-aws-kms.git</connection>
         <developerConnection>scm:git:git@github.com:zalando/spring-cloud-config-aws-kms.git</developerConnection>
         <url>https://github.com/zalando/spring-cloud-config-aws-kms</url>
-        <tag>HEAD</tag>
+        <tag>2.0-beta1</tag>
     </scm>
 
     <properties>
