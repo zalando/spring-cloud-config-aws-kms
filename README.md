@@ -97,9 +97,9 @@ Releases
 
 ### Release to Maven Central
 
-    mvn clean release:prepare -Prelease,sonatype -Dresume=false
+    mvn clean release:prepare -Dresume=false
 
-    mvn release:perform -Prelease,sonatype
+    mvn release:perform
 
 Contributing
 ------------

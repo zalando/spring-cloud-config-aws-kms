@@ -8,8 +8,8 @@ Usage
 
 ### Encrypt
 
-    $ ./run.sh encrypt 'Hello World!' eu-west-1 arn:aws:kms:eu-west-1:089972051332:key/9d9fca31-54c5-4df5-ba4f-127dfb9a5031
+    $ ./run.sh encrypt 'Hello World!' 9d9fca31-54c5-4df5-ba4f-127dfb9a5031
 
 ### Decrypt
 
-    $ ./run.sh decrypt CiA47hYvQqWFFGq3TLtzQO5ArcwDkjq69Q== eu-west-1
+    $ ./run.sh decrypt CiA47hYvQqWFFGq3TLtzQO5ArcwDkjq69Q==
