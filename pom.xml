@@ -49,7 +49,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <tagNameFormat>@{project.version}</tagNameFormat>
+        <maven.site.skip>true</maven.site.skip>
         <spring-cloud.version>Dalston.SR4</spring-cloud.version>
 
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
