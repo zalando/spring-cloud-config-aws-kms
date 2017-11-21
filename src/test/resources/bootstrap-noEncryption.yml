@@ -2,4 +2,3 @@ aws:
   kms:
     useMock: false
     keyId: 'sample-key'
-  region: eu-west-1
