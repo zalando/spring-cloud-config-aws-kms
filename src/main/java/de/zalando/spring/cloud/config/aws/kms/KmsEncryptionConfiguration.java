@@ -1,22 +1,15 @@
 package de.zalando.spring.cloud.config.aws.kms;
 
-import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.services.kms.AWSKMS;
 import com.amazonaws.services.kms.AWSKMSClient;
+import com.amazonaws.services.kms.AWSKMSClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-
-import org.springframework.cloud.aws.core.config.AmazonWebserviceClientFactoryBean;
-import org.springframework.cloud.aws.core.region.RegionProvider;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.bootstrap.encrypt.EnvironmentDecryptApplicationInitializer;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-
-import com.amazonaws.services.kms.AWSKMS;
 
 import java.util.Optional;
 
@@ -26,6 +19,7 @@ import java.util.Optional;
  */
 @Configuration
 @ConditionalOnProperty(prefix = "aws.kms", name = "enabled", havingValue = "true", matchIfMissing = true)
+@EnableConfigurationProperties(KmsProperties.class)
 class KmsEncryptionConfiguration {
 
     private final KmsTextEncryptor kmsTextEncryptor;
@@ -43,22 +37,19 @@ class KmsEncryptionConfiguration {
     @Configuration
     static class KmsTextEncryptorConfiguration {
 
-        /**
-         * The ARN of the KMS key, e.g. arn:aws:kms:eu-west-1:089972051332:key/9d9fca31-54c5-4de5-ba4f-128dfb9a5031
-         */
-        @Value("${aws.kms.keyId:}")
-        private String kmsKeyId;
+        private final KmsProperties properties;
 
         private final AWSKMS kms;
 
         @Autowired
-        public KmsTextEncryptorConfiguration(AWSKMS kms) {
+        public KmsTextEncryptorConfiguration(KmsProperties properties, AWSKMS kms) {
+            this.properties = properties;
             this.kms = kms;
         }
 
         @Bean
         KmsTextEncryptor kmsTextEncryptor() {
-            return new KmsTextEncryptor(kms, kmsKeyId);
+            return new KmsTextEncryptor(kms, properties.getKeyId());
         }
     }
 
@@ -66,15 +57,18 @@ class KmsEncryptionConfiguration {
     @ConditionalOnMissingBean(AWSKMS.class)
     static class KmsConfiguration {
 
+        private final KmsProperties properties;
+
+        @Autowired
+        public KmsConfiguration(KmsProperties properties) {
+            this.properties = properties;
+        }
+
         @Bean
-        @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-        public AmazonWebserviceClientFactoryBean<AWSKMSClient> kmsFactoryBean(
-                final Optional<AWSCredentialsProvider> awsCredentialsProvider,
-                final Optional<RegionProvider> regionProvider) {
-            return new AmazonWebserviceClientFactoryBean<>(
-                    AWSKMSClient.class,
-                    awsCredentialsProvider.orElse(null),
-                    regionProvider.orElse(null));
+        public AWSKMS kms(){
+            final AWSKMSClientBuilder builder = AWSKMSClient.builder();
+            Optional.ofNullable(properties.getRegion()).ifPresent(builder::setRegion);
+            return builder.build();
         }
 
     }

@@ -27,7 +27,7 @@ public class KmsTextEncryptor implements TextEncryptor {
 
     /**
      * @param  kms       The AWS KMS client
-     * @param  kmsKeyId  The ARN of the KMS key, e.g.
+     * @param  kmsKeyId  The ID or full ARN of the KMS key, e.g.
      *                   arn:aws:kms:eu-west-1:089972051332:key/9d9fca31-54c5-4de5-ba4f-128dfb9a5031. Must not be blank,
      *                   if you you want to encrypt text.
      */

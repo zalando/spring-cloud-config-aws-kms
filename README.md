@@ -2,7 +2,7 @@ Spring Cloud Config - AWS KMS Add-on
 ====================================
 
 [![Build Status](https://travis-ci.org/zalando/spring-cloud-config-aws-kms.svg?branch=master)](https://travis-ci.org/zalando/spring-cloud-config-aws-kms)
-[![Javadoc](https://javadoc-emblem.rhcloud.com/doc/org.zalando/spring-cloud-config-aws-kms/badge.svg)](http://www.javadoc.io/doc/org.zalando/spring-cloud-config-aws-kms)
+[![Javadocs](http://javadoc.io/badge/org.zalando/spring-cloud-config-aws-kms.svg?color=blue)](http://javadoc.io/doc/org.zalando/spring-cloud-config-aws-kms)
 [![Maven Central](https://img.shields.io/maven-central/v/org.zalando/spring-cloud-config-aws-kms.svg)](https://maven-badges.herokuapp.com/maven-central/org.zalando/spring-cloud-config-aws-kms)
 [![License](https://img.shields.io/badge/license-Apache_2.0-blue.svg)](https://raw.githubusercontent.com/zalando-incubator/aws-support-spring-boot-starter/master/LICENSE)
 
@@ -17,7 +17,7 @@ Installation
 Given you have a [Spring Boot](http://projects.spring.io/spring-boot/) application.
 
 ### Step 1
-Add dependency to you pom. This includes `org.springframework.cloud:spring-cloud-config-client`
+Add our dependency to your pom.xml (or Gradle build file).
 
     ...
     <dependency>
@@ -27,15 +27,21 @@ Add dependency to you pom. This includes `org.springframework.cloud:spring-cloud
     </dependency>
     ...
 
-### Step 2
-Configure bootstrap properties. See [Spring Cloud Config Reference](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_the_bootstrap_application_context)
-for details.
+### Optional: Step 2
+Apply configuration to the application's [Bootstrap Context](http://cloud.spring.io/spring-cloud-static/Edgware.RELEASE/single/spring-cloud.html#_the_bootstrap_application_context)
 
 E.g. `bootstrap.yml`:
 
     aws:
         kms:
+            # Optional: only used for decryption
             keyId: 9d9fca31-54c5-4df5-ba4f-127dfb9a5031
+            
+            # Optional: if not set, the AWS Default Region Provider Chain is used
+            region: eu-central-1
+            
+            # Optional: Turn of the KMS feature completely (e.g. for local development) 
+            enabled: false
 
 The *aws.kms.keyId* property is required only if you intend to encrypt values in your application. The following contains the properties used by this library.
 
@@ -46,9 +52,7 @@ The *aws.kms.keyId* property is required only if you intend to encrypt values in
 **AWS region** and **credentials** are taken from the environment through the
 [Default Credential Provider Chain](http://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html#credentials-default)
 and the [Default Region Provider Chain](http://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/java-dg-region-selection.html#automatically-determine-the-aws-region-from-the-environment).
-However, both values can be overwritten by 
-[Spring Boot auto-configuration](http://cloud.spring.io/spring-cloud-aws/spring-cloud-aws.html#_spring_boot_auto_configuration),
-if present. 
+However, the region can be overwritten by property `aws.kms.region` if necessary.
 
 Usage
 -----
