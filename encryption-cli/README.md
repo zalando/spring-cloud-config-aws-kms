@@ -14,7 +14,7 @@ Usage
 
 ### Encrypt
 
-    $ ./run.sh --encrypt-plaintext='Hello World!' --aws.kms.keyId='9d9fca31-54c5-4df5-ba4f-127dfb9a5031'
+    $ ./run.sh --encrypt.plaintext='Hello World!' --aws.kms.keyId='9d9fca31-54c5-4df5-ba4f-127dfb9a5031'
 
 ### Decrypt
 

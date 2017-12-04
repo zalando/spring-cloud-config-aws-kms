@@ -27,7 +27,7 @@ public class EncryptionCLI implements CommandLineRunner {
                 + "or via environment variables, e.g. `export AWS_REGION=eu-central-1`\n" //
                 + "\n" //
                 + "then do\n" //
-                + "./run.sh --encrypt-plaintext='Hello World!' --aws.kms.keyId='9d9fca31-54c5-4df5-ba4f-127dfb9a5031'\n" //
+                + "./run.sh --encrypt.plaintext='Hello World!' --aws.kms.keyId='9d9fca31-54c5-4df5-ba4f-127dfb9a5031'\n" //
                 + "./run.sh --decrypt.cipherText='CiA47hYvQqWFFGq3TLtzQO5ArcwDkjq69Q=='");
     }
 
