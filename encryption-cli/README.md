@@ -18,4 +18,4 @@ Usage
 
 ### Decrypt
 
-    $ ./run.sh --decrypt.cipherText='CiA47hYvQqWFFGq3TLtzQO5ArcwDkjq69Q=='
+    $ ./run.sh --decrypt.ciphertext='CiA47hYvQqWFFGq3TLtzQO5ArcwDkjq69Q=='

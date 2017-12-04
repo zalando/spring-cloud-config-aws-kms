@@ -28,18 +28,18 @@ public class EncryptionCLI implements CommandLineRunner {
                 + "\n" //
                 + "then do\n" //
                 + "./run.sh --encrypt.plaintext='Hello World!' --aws.kms.keyId='9d9fca31-54c5-4df5-ba4f-127dfb9a5031'\n" //
-                + "./run.sh --decrypt.cipherText='CiA47hYvQqWFFGq3TLtzQO5ArcwDkjq69Q=='");
+                + "./run.sh --decrypt.ciphertext='CiA47hYvQqWFFGq3TLtzQO5ArcwDkjq69Q=='");
     }
 
     @Override
     public void run(final String... args) {
         final String plaintext = encrypt.getPlaintext();
-        final String cipherText = decrypt.getCipherText();
+        final String ciphertext = decrypt.getCiphertext();
         try {
             if (hasText(plaintext)) {
                 System.out.println(kmsTextEncryptor.encrypt(plaintext));
-            } else if (hasText(cipherText)) {
-                System.out.println(kmsTextEncryptor.decrypt(cipherText));
+            } else if (hasText(ciphertext)) {
+                System.out.println(kmsTextEncryptor.decrypt(ciphertext));
             } else {
                 printUsage();
             }

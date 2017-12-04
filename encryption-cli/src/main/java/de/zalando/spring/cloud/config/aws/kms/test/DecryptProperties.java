@@ -5,13 +5,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("decrypt")
 public class DecryptProperties {
 
-    private String cipherText;
+    private String ciphertext;
 
-    public String getCipherText() {
-        return cipherText;
+    public String getCiphertext() {
+        return ciphertext;
     }
 
-    public void setCipherText(String cipherText) {
-        this.cipherText = cipherText;
+    public void setCiphertext(String ciphertext) {
+        this.ciphertext = ciphertext;
     }
 }
