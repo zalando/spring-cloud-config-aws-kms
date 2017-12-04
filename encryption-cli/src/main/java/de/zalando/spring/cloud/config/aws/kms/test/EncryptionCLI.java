@@ -1,47 +1,51 @@
 package de.zalando.spring.cloud.config.aws.kms.test;
 
-import com.amazonaws.services.kms.AWSKMS;
-import com.amazonaws.services.kms.AWSKMSClientBuilder;
 import de.zalando.spring.cloud.config.aws.kms.KmsTextEncryptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import static com.google.common.base.Preconditions.checkArgument;
+import static org.springframework.util.StringUtils.hasText;
 
 @Component
 public class EncryptionCLI implements CommandLineRunner {
 
+    private final KmsTextEncryptor kmsTextEncryptor;
+    private final EncryptProperties encrypt;
+    private final DecryptProperties decrypt;
+
+    @Autowired
+    public EncryptionCLI(KmsTextEncryptor kmsTextEncryptor, EncryptProperties encrypt, DecryptProperties decrypt) {
+        this.kmsTextEncryptor = kmsTextEncryptor;
+        this.encrypt = encrypt;
+        this.decrypt = decrypt;
+    }
+
+    private void printUsage() {
+        System.out.println("Usage:\n"        //
+                + "Make sure that AWS credentials and region are set, either in ~/.aws/config, ~/.aws/credentials\n" //
+                + "or via environment variables, e.g. `export AWS_REGION=eu-central-1`\n" //
+                + "\n" //
+                + "then do\n" //
+                + "./run.sh --encrypt.plaintext='Hello World!' --aws.kms.keyId='9d9fca31-54c5-4df5-ba4f-127dfb9a5031'\n" //
+                + "./run.sh --decrypt.ciphertext='CiA47hYvQqWFFGq3TLtzQO5ArcwDkjq69Q=='");
+    }
+
     @Override
     public void run(final String... args) {
+        final String plaintext = encrypt.getPlaintext();
+        final String ciphertext = decrypt.getCiphertext();
         try {
-            checkArgument(args.length >= 2, "Too few arguments.");
-
-            final String text = args[1];
-            final AWSKMS kms = AWSKMSClientBuilder.defaultClient();
-
-            switch (args[0]) {
-
-                case "encrypt" :
-                    checkArgument(args.length == 3, "Too few arguments.");
-                    System.out.println(new KmsTextEncryptor(kms, args[2]).encrypt(text));
-                    break;
-
-                case "decrypt" :
-                    System.out.println(new KmsTextEncryptor(kms, null).decrypt(text));
-                    break;
-
-                default :
-
-                    break;
+            if (hasText(plaintext)) {
+                System.out.println(kmsTextEncryptor.encrypt(plaintext));
+            } else if (hasText(ciphertext)) {
+                System.out.println(kmsTextEncryptor.decrypt(ciphertext));
+            } else {
+                printUsage();
             }
-        } catch (final IllegalArgumentException e) {
-            System.out.println(e.getMessage() + " Usage:\n"        //
-                    + "Make sure a region is set, either in ~/.aws/config " //
-                    + "or with `export AWS_REGION=eu-central-1`\n" //
-                    + "\n" //
-                    + "then do\n" //
-                    + "./run.sh encrypt 'plaintext' ${kmsKeyId}\n" //
-                    + "./run.sh decrypt 'base64cipherText'");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            printUsage();
         }
     }
 }
