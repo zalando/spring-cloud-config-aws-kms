@@ -34,13 +34,13 @@ E.g. `bootstrap.yml`:
 
     aws:
         kms:
-            # Optional: only used for decryption
+            # Optional: only used for encryption
             keyId: 9d9fca31-54c5-4df5-ba4f-127dfb9a5031
             
             # Optional: if not set, the AWS Default Region Provider Chain is used
             region: eu-central-1
             
-            # Optional: Turn of the KMS feature completely (e.g. for local development) 
+            # Optional: Turn off the KMS feature completely (e.g. for local development) 
             enabled: false
 
 The *aws.kms.keyId* property is required only if you intend to encrypt values in your application. The following contains the properties used by this library.
