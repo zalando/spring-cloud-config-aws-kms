@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-parent</artifactId>
-        <version>Dalston.SR4</version>
+        <version>Edgware.SR3</version>
         <relativePath />
     </parent>
     <groupId>org.zalando</groupId>
@@ -50,7 +50,6 @@
     <properties>
         <java.version>1.8</java.version>
         <maven.site.skip>true</maven.site.skip>
-        <spring-cloud.version>Edgware.SR3</spring-cloud.version>
 
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
