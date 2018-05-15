@@ -23,6 +23,46 @@ public class KmsProperties {
      */
     private String region;
 
+    /**
+     * <strong>Optional</strong> service endpoint and signing region of AWS KMS that you would like to route to.
+     * If provided, must supply either a custom created VPC Endpoint or one of the KMS Endpoints listed <a href="https://docs.aws.amazon.com/general/latest/gr/rande.html#kms_region">here</a>.
+     * In the event that both region and endpoint properties are both supplied, region will be ignored as region is derived from the service endpoint.
+     */
+    private Endpoint endpoint;
+    
+    @ConfigurationProperties("endpoint")
+    public static class Endpoint {
+
+        /**
+         * <strong>Required<strong> service endpoint, either with or without the protocol (e.g. https://sns.us-west-1.amazonaws.com or sns.us-west-1.amazonaws.com)
+         */
+    	private String serviceEndpoint;
+
+    	/**
+    	 * <strong>Optional</strong> signing region. The region to use for SigV4 signing of requests (e.g. us-west-1)
+    	 * In most cases, this can be omitted.  There are use cases where a signing region is also 
+    	 * needed and it may be different from the region where the service endpoint lives.
+    	 */
+    	private String signingRegion;
+		
+    	public String getServiceEndpoint() {
+			return serviceEndpoint;
+		}
+
+		public void setServiceEndpoint(String serviceEndpoint) {
+			this.serviceEndpoint = serviceEndpoint;
+		}
+
+		public String getSigningRegion() {
+			return signingRegion;
+		}
+		
+    	public void setSigningRegion(String signingRegion) {
+			this.signingRegion = signingRegion;
+		}
+    	
+    }
+    
     public String getKeyId() {
         return keyId;
     }
@@ -38,4 +78,13 @@ public class KmsProperties {
     public void setRegion(String region) {
         this.region = region;
     }
+
+	public Endpoint getEndpoint() {
+		return endpoint;
+	}
+
+	public void setEndpoint(Endpoint endpoint) {
+		this.endpoint = endpoint;
+	}
+    
 }

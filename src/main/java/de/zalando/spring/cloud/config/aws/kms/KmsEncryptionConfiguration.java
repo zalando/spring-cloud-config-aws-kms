@@ -1,8 +1,7 @@
 package de.zalando.spring.cloud.config.aws.kms;
 
-import com.amazonaws.services.kms.AWSKMS;
-import com.amazonaws.services.kms.AWSKMSClient;
-import com.amazonaws.services.kms.AWSKMSClientBuilder;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -11,7 +10,10 @@ import org.springframework.cloud.bootstrap.encrypt.EnvironmentDecryptApplication
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.Optional;
+import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
+import com.amazonaws.services.kms.AWSKMS;
+import com.amazonaws.services.kms.AWSKMSClient;
+import com.amazonaws.services.kms.AWSKMSClientBuilder;
 
 /**
  * This config must be applied to the bootstrap context, which is done by META-INF/spring.factories.<br/>
@@ -52,20 +54,42 @@ class KmsEncryptionConfiguration {
             return new KmsTextEncryptor(kms, properties.getKeyId());
         }
     }
-
+    
     @Configuration
+    @ConditionalOnProperty(name="aws.kms.endpoint.service-endpoint")
     @ConditionalOnMissingBean(AWSKMS.class)
-    static class KmsConfiguration {
+    static class KmsConfigurationEndpoint {
 
         private final KmsProperties properties;
 
         @Autowired
-        public KmsConfiguration(KmsProperties properties) {
+        public KmsConfigurationEndpoint(KmsProperties properties) {
             this.properties = properties;
         }
 
         @Bean
-        public AWSKMS kms(){
+        public AWSKMS kms() {
+            final AWSKMSClientBuilder builder = AWSKMSClient.builder();
+           	builder.withEndpointConfiguration(new EndpointConfiguration(properties.getEndpoint().getServiceEndpoint(), properties.getEndpoint().getSigningRegion()));
+            return builder.build();
+        }
+
+    }
+
+    @Configuration
+    @ConditionalOnProperty(name="aws.kms.region", matchIfMissing=true)
+    @ConditionalOnMissingBean(AWSKMS.class)
+    static class KmsConfigurationRegion {
+
+        private final KmsProperties properties;
+
+        @Autowired
+        public KmsConfigurationRegion(KmsProperties properties) {
+            this.properties = properties;
+        }
+
+        @Bean
+        public AWSKMS kms() {
             final AWSKMSClientBuilder builder = AWSKMSClient.builder();
             Optional.ofNullable(properties.getRegion()).ifPresent(builder::setRegion);
             return builder.build();
