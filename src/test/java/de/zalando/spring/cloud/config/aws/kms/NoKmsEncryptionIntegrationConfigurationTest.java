@@ -1,9 +1,12 @@
 package de.zalando.spring.cloud.config.aws.kms;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
+import java.lang.reflect.Field;
+import java.net.URI;
 
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -20,11 +23,6 @@ import org.springframework.util.ReflectionUtils;
 
 import com.amazonaws.services.kms.AWSKMS;
 import com.amazonaws.services.kms.AWSKMSClient;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.lang.reflect.Field;
-import java.net.URI;
 
 /**
  * During this integration test, a real AWSKMSClient is created, but there are no encrypted properties, so te client is
