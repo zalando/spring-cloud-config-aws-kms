@@ -30,11 +30,10 @@ public class KmsProperties {
      */
     private Endpoint endpoint;
     
-    @ConfigurationProperties("endpoint")
     public static class Endpoint {
 
         /**
-         * <strong>Required<strong> service endpoint, either with or without the protocol (e.g. https://sns.us-west-1.amazonaws.com or sns.us-west-1.amazonaws.com)
+         * <strong>Required<strong> service endpoint, either with or without the protocol (e.g. https://kms.us-west-2.amazonaws.com or kms.us-west-2.amazonaws.com)
          */
     	private String serviceEndpoint;
 

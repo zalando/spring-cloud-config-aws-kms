@@ -56,44 +56,29 @@ class KmsEncryptionConfiguration {
     }
     
     @Configuration
-    @ConditionalOnProperty(name="aws.kms.endpoint.service-endpoint")
     @ConditionalOnMissingBean(AWSKMS.class)
-    static class KmsConfigurationEndpoint {
+    static class KmsConfiguration {
 
         private final KmsProperties properties;
 
         @Autowired
-        public KmsConfigurationEndpoint(KmsProperties properties) {
+        public KmsConfiguration(KmsProperties properties) {
             this.properties = properties;
         }
 
         @Bean
         public AWSKMS kms() {
             final AWSKMSClientBuilder builder = AWSKMSClient.builder();
-           	builder.withEndpointConfiguration(new EndpointConfiguration(properties.getEndpoint().getServiceEndpoint(), properties.getEndpoint().getSigningRegion()));
+            
+            if (Optional.ofNullable(properties.getEndpoint()).isPresent()) {
+               	builder.withEndpointConfiguration(new EndpointConfiguration(properties.getEndpoint().getServiceEndpoint(), properties.getEndpoint().getSigningRegion()));
+            } else {
+                Optional.ofNullable(properties.getRegion()).ifPresent(builder::setRegion);
+            }
+            
             return builder.build();
         }
 
     }
 
-    @Configuration
-    @ConditionalOnProperty(name="aws.kms.region", matchIfMissing=true)
-    @ConditionalOnMissingBean(AWSKMS.class)
-    static class KmsConfigurationRegion {
-
-        private final KmsProperties properties;
-
-        @Autowired
-        public KmsConfigurationRegion(KmsProperties properties) {
-            this.properties = properties;
-        }
-
-        @Bean
-        public AWSKMS kms() {
-            final AWSKMSClientBuilder builder = AWSKMSClient.builder();
-            Optional.ofNullable(properties.getRegion()).ifPresent(builder::setRegion);
-            return builder.build();
-        }
-
-    }
 }
