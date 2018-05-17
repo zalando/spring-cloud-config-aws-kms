@@ -1,7 +1,9 @@
 package de.zalando.spring.cloud.config.aws.kms;
 
-import java.util.Optional;
-
+import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
+import com.amazonaws.services.kms.AWSKMS;
+import com.amazonaws.services.kms.AWSKMSClient;
+import com.amazonaws.services.kms.AWSKMSClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -10,10 +12,7 @@ import org.springframework.cloud.bootstrap.encrypt.EnvironmentDecryptApplication
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
-import com.amazonaws.services.kms.AWSKMS;
-import com.amazonaws.services.kms.AWSKMSClient;
-import com.amazonaws.services.kms.AWSKMSClientBuilder;
+import java.util.Optional;
 
 /**
  * This config must be applied to the bootstrap context, which is done by META-INF/spring.factories.<br/>
@@ -54,7 +53,7 @@ class KmsEncryptionConfiguration {
             return new KmsTextEncryptor(kms, properties.getKeyId());
         }
     }
-    
+
     @Configuration
     @ConditionalOnMissingBean(AWSKMS.class)
     static class KmsConfiguration {
@@ -69,13 +68,13 @@ class KmsEncryptionConfiguration {
         @Bean
         public AWSKMS kms() {
             final AWSKMSClientBuilder builder = AWSKMSClient.builder();
-            
+
             if (Optional.ofNullable(properties.getEndpoint()).isPresent()) {
-               	builder.withEndpointConfiguration(new EndpointConfiguration(properties.getEndpoint().getServiceEndpoint(), properties.getEndpoint().getSigningRegion()));
+                builder.withEndpointConfiguration(new EndpointConfiguration(properties.getEndpoint().getServiceEndpoint(), properties.getEndpoint().getSigningRegion()));
             } else {
                 Optional.ofNullable(properties.getRegion()).ifPresent(builder::setRegion);
             }
-            
+
             return builder.build();
         }
 

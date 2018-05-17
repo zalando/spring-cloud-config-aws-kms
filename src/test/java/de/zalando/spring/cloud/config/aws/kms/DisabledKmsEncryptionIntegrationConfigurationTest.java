@@ -37,5 +37,6 @@ public class DisabledKmsEncryptionIntegrationConfigurationTest {
 
     @Configuration
     @EnableAutoConfiguration
-    static class TestConfig { }
+    static class TestConfig {
+    }
 }

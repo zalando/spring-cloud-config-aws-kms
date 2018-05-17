@@ -28,5 +28,4 @@ class MockAwsKmsConfig {
         return mock;
     }
 
-
 }
