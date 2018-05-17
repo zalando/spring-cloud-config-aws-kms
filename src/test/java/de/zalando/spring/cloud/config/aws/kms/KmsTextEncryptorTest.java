@@ -1,31 +1,26 @@
 package de.zalando.spring.cloud.config.aws.kms;
 
-import static java.nio.ByteBuffer.allocate;
-import static java.nio.ByteBuffer.wrap;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-
-import java.nio.ByteBuffer;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import org.springframework.security.crypto.codec.Base64;
-
 import com.amazonaws.services.kms.AWSKMS;
 import com.amazonaws.services.kms.model.DecryptRequest;
 import com.amazonaws.services.kms.model.DecryptResult;
 import com.amazonaws.services.kms.model.EncryptRequest;
 import com.amazonaws.services.kms.model.EncryptResult;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.security.crypto.codec.Base64;
+
+import java.nio.ByteBuffer;
+
+import static java.nio.ByteBuffer.allocate;
+import static java.nio.ByteBuffer.wrap;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 public class KmsTextEncryptorTest {
 

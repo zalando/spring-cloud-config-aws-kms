@@ -29,39 +29,39 @@ public class KmsProperties {
      * In the event that both region and endpoint properties are both supplied, region will be ignored as region is derived from the service endpoint.
      */
     private Endpoint endpoint;
-    
+
     public static class Endpoint {
 
         /**
          * <strong>Required<strong> service endpoint, either with or without the protocol (e.g. https://kms.us-west-2.amazonaws.com or kms.us-west-2.amazonaws.com)
          */
-    	private String serviceEndpoint;
+        private String serviceEndpoint;
 
-    	/**
-    	 * <strong>Optional</strong> signing region. The region to use for SigV4 signing of requests (e.g. us-west-1)
-    	 * In most cases, this can be omitted.  There are use cases where a signing region is also 
-    	 * needed and it may be different from the region where the service endpoint lives.
-    	 */
-    	private String signingRegion;
-		
-    	public String getServiceEndpoint() {
-			return serviceEndpoint;
-		}
+        /**
+         * <strong>Optional</strong> signing region. The region to use for SigV4 signing of requests (e.g. us-west-1)
+         * In most cases, this can be omitted.  There are use cases where a signing region is also
+         * needed and it may be different from the region where the service endpoint lives.
+         */
+        private String signingRegion;
 
-		public void setServiceEndpoint(String serviceEndpoint) {
-			this.serviceEndpoint = serviceEndpoint;
-		}
+        public String getServiceEndpoint() {
+            return serviceEndpoint;
+        }
 
-		public String getSigningRegion() {
-			return signingRegion;
-		}
-		
-    	public void setSigningRegion(String signingRegion) {
-			this.signingRegion = signingRegion;
-		}
-    	
+        public void setServiceEndpoint(String serviceEndpoint) {
+            this.serviceEndpoint = serviceEndpoint;
+        }
+
+        public String getSigningRegion() {
+            return signingRegion;
+        }
+
+        public void setSigningRegion(String signingRegion) {
+            this.signingRegion = signingRegion;
+        }
+
     }
-    
+
     public String getKeyId() {
         return keyId;
     }
@@ -78,12 +78,12 @@ public class KmsProperties {
         this.region = region;
     }
 
-	public Endpoint getEndpoint() {
-		return endpoint;
-	}
+    public Endpoint getEndpoint() {
+        return endpoint;
+    }
 
-	public void setEndpoint(Endpoint endpoint) {
-		this.endpoint = endpoint;
-	}
-    
+    public void setEndpoint(Endpoint endpoint) {
+        this.endpoint = endpoint;
+    }
+
 }

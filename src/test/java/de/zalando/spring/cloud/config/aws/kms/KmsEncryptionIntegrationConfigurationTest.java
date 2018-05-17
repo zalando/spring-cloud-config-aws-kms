@@ -55,5 +55,6 @@ public class KmsEncryptionIntegrationConfigurationTest {
 
     @Configuration
     @EnableAutoConfiguration
-    static class TestConfig { }
+    static class TestConfig {
+    }
 }

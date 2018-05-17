@@ -1,17 +1,16 @@
 package de.zalando.spring.cloud.config.aws.kms;
 
-import java.nio.ByteBuffer;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.amazonaws.services.kms.AWSKMS;
+import com.amazonaws.services.kms.model.DecryptRequest;
+import com.amazonaws.services.kms.model.EncryptRequest;
 import org.springframework.security.crypto.codec.Base64;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.util.Assert;
 
-import com.amazonaws.services.kms.AWSKMS;
-import com.amazonaws.services.kms.model.DecryptRequest;
-import com.amazonaws.services.kms.model.EncryptRequest;
+import java.nio.ByteBuffer;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This {@link TextEncryptor} uses AWS KMS (Key Management Service) to encrypt / decrypt strings. Encoded cipher strings
@@ -26,10 +25,10 @@ public class KmsTextEncryptor implements TextEncryptor {
     private final String kmsKeyId;
 
     /**
-     * @param  kms       The AWS KMS client
-     * @param  kmsKeyId  The ID or full ARN of the KMS key, e.g.
-     *                   arn:aws:kms:eu-west-1:089972051332:key/9d9fca31-54c5-4de5-ba4f-128dfb9a5031. Must not be blank,
-     *                   if you you want to encrypt text.
+     * @param kms      The AWS KMS client
+     * @param kmsKeyId The ID or full ARN of the KMS key, e.g.
+     *                 arn:aws:kms:eu-west-1:089972051332:key/9d9fca31-54c5-4de5-ba4f-128dfb9a5031. Must not be blank,
+     *                 if you you want to encrypt text.
      */
     public KmsTextEncryptor(final AWSKMS kms, final String kmsKeyId) {
         Assert.notNull(kms, "KMS client must not be null");
@@ -44,8 +43,8 @@ public class KmsTextEncryptor implements TextEncryptor {
             return EMPTY_STRING;
         } else {
             final EncryptRequest encryptRequest =
-                new EncryptRequest().withKeyId(kmsKeyId) //
-                                    .withPlaintext(ByteBuffer.wrap(text.getBytes()));
+                    new EncryptRequest().withKeyId(kmsKeyId) //
+                            .withPlaintext(ByteBuffer.wrap(text.getBytes()));
 
             final ByteBuffer encryptedBytes = kms.encrypt(encryptRequest).getCiphertextBlob();
 
@@ -90,14 +89,15 @@ public class KmsTextEncryptor implements TextEncryptor {
      * @param encryptedText the encrypted text passed by spring security
      * @return the encryption context map, without the encryption text
      */
-    /* default for testing */ static Map<String, String> extractEncryptionContext(final String encryptedText) {
+    /* default for testing */
+    static Map<String, String> extractEncryptionContext(final String encryptedText) {
         final int lower = encryptedText.indexOf('(');
-        final int upper= encryptedText.indexOf(')');
+        final int upper = encryptedText.indexOf(')');
         if (lower != 0 || upper < 0) {
             return Collections.emptyMap();
         } else {
             final Map<String, String> encryptionContext = new HashMap<>();
-            final String encryptionContextText = encryptedText.substring(lower+1, upper);
+            final String encryptionContextText = encryptedText.substring(lower + 1, upper);
             final String[] pairs = encryptionContextText.split(",");
             for (String pair : pairs) {
                 // we must not use simply split("="), as = is a pad symbol in base64, and would be cut out...
@@ -120,7 +120,8 @@ public class KmsTextEncryptor implements TextEncryptor {
      * @param encryptedText the encrypted text passed by spring security
      * @return the encrypted value, minus any encryption context provided
      */
-    /* default for testing */ static String extractEncryptedValue(final String encryptedText) {
+    /* default for testing */
+    static String extractEncryptedValue(final String encryptedText) {
         final int index = encryptedText.lastIndexOf(')');
         if (index > 0) {
             return encryptedText.substring(index + 1);
