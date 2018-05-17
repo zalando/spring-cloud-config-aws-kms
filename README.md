@@ -42,12 +42,30 @@ E.g. `bootstrap.yml`:
             
             # Optional: Turn off the KMS feature completely (e.g. for local development) 
             enabled: false
+            
+            # Optional: Enable endpoint usage, if provided, aws.kms.region should be excluded as it will be ignored
+            endpoint:
+                # Required: service endpoint (vpc endpoint or standard regional endpoint); https://kms.eu-central-1.amazonaws.com is also valid
+                service-endpoint: kms.eu-central-1.amazonaws.com
+                
+                # Optional: signing region for SigV4 signing of requests - if used, should be different from the already regional service-endpoint
+                signing-region: us-east-1
+                
+                
 
 The *aws.kms.keyId* property is required only if you intend to encrypt values in your application. The following contains the properties used by this library.
 
 - aws.kms.keyId
     - either the keyId or the full ARN of the KMS key
 - aws.kms.enabled (defaults to true)
+- aws.kms.endpoint
+    - if used, this will cause aws.kms.region to be ignored
+- aws.kms.endpoint.service-endpoint
+    - endpoint address with or without https:// prefix
+- aws.kms.endpoint.signing-region 
+    - in most cases can be omitted
+    - if provided, it will usually differ from region that hosts the service-endpoint
+ 
 
 **AWS region** and **credentials** are taken from the environment through the
 [Default Credential Provider Chain](http://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html#credentials-default)
