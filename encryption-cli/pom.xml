@@ -11,7 +11,7 @@
     <parent>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-parent</artifactId>
-        <version>Finchley.RC1</version>
+        <version>Finchley.RC2</version>
         <relativePath/>
     </parent>
     <repositories>
@@ -42,7 +42,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>25.0-jre</version>
+            <version>25.1-jre</version>
         </dependency>
     </dependencies>
 
