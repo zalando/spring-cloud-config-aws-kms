@@ -16,6 +16,13 @@ Installation
 ### Prerequisites
 Given you have a [Spring Boot](http://projects.spring.io/spring-boot/) application.
 
+**Choose the correct library version!**
+
+Version | Use with
+------- | ---------------------------------------
+**2.x** | Spring Cloud Edgware + Spring Boot 1.5
+**3.x** | Spring Cloud Finchley + Spring Boot 2.0
+
 ### Step 1
 Add our dependency to your pom.xml (or Gradle build file).
 
