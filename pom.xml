@@ -5,19 +5,9 @@
     <parent>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-parent</artifactId>
-        <version>Finchley.RC2</version>
+        <version>Finchley.RELEASE</version>
         <relativePath />
     </parent>
-    <repositories>
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/libs-milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 
     <groupId>org.zalando</groupId>
     <artifactId>spring-cloud-config-aws-kms</artifactId>
