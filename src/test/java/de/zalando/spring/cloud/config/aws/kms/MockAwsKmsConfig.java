@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.nio.ByteBuffer;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

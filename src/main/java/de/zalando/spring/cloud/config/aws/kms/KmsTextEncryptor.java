@@ -3,11 +3,11 @@ package de.zalando.spring.cloud.config.aws.kms;
 import com.amazonaws.services.kms.AWSKMS;
 import com.amazonaws.services.kms.model.DecryptRequest;
 import com.amazonaws.services.kms.model.EncryptRequest;
-import org.springframework.security.crypto.codec.Base64;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.util.Assert;
 
 import java.nio.ByteBuffer;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +19,8 @@ import java.util.Map;
  */
 public class KmsTextEncryptor implements TextEncryptor {
 
+    private static final Base64.Decoder BASE64_DECODER = Base64.getDecoder();
+    private static final Base64.Encoder BASE64_ENCODER = Base64.getEncoder();
     private static final String EMPTY_STRING = "";
 
     private final AWSKMS kms;
@@ -48,7 +50,7 @@ public class KmsTextEncryptor implements TextEncryptor {
 
             final ByteBuffer encryptedBytes = kms.encrypt(encryptRequest).getCiphertextBlob();
 
-            return extractString(ByteBuffer.wrap(Base64.encode(encryptedBytes.array())));
+            return extractString(ByteBuffer.wrap(BASE64_ENCODER.encode(encryptedBytes.array())));
         }
     }
 
@@ -64,7 +66,7 @@ public class KmsTextEncryptor implements TextEncryptor {
 
             // Assuming the encryptedText is encoded in Base64
             final ByteBuffer encryptedBytes =
-                    ByteBuffer.wrap(Base64.decode(encryptedValue.getBytes()));
+                    ByteBuffer.wrap(BASE64_DECODER.decode(encryptedValue.getBytes()));
 
             final DecryptRequest decryptRequest = new DecryptRequest()
                     .withCiphertextBlob(encryptedBytes)
@@ -105,7 +107,7 @@ public class KmsTextEncryptor implements TextEncryptor {
                 if (keyValue.length == 1) {
                     encryptionContext.put(keyValue[0], "");
                 } else if (keyValue.length == 2) {
-                    encryptionContext.put(keyValue[0], new String(Base64.decode(keyValue[1].trim().getBytes())));
+                    encryptionContext.put(keyValue[0], new String(BASE64_DECODER.decode(keyValue[1].trim().getBytes())));
                 }
             }
             return encryptionContext;
