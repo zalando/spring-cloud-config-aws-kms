@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-parent</artifactId>
-        <version>Finchley.RELEASE</version>
+        <version>Finchley.SR1</version>
         <relativePath />
     </parent>
 
