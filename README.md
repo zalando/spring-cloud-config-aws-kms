@@ -8,7 +8,15 @@ Spring Cloud Config - AWS KMS Add-on
 
 This is a Spring Cloud Config add-on that provides encryption via AWS (Amazon Web Services) KMS (Key management service).
 
-Please see our related [aws-support-spring-boot-starter](https://github.com/zalando-incubator/aws-support-spring-boot-starter), a minimal Spring-Boot-Starter that detects whether an application is running on AWS (or not) and exposes some properties. 
+Features
+--------
+
+* Compatible with Spring Cloud Config
+* Spring Boot 2.0-ready
+* Supports [custom endpoints](#optional-step-2) for AWS KMS
+* Supports AWS KMS [encryption context](#use-an-encryption-context)
+* Supports different [output modes](#available-options) for decrypted values
+* Minimal dependencies 
 
 Installation
 ------------
@@ -101,6 +109,26 @@ this example: Country and Code. And the values are Base64 encoded.
 Key-value pairs must be comma separated, and it is fine to use spaces to separate values. The order of the
 values in the context is not important. And one last note, is that the values used in the encryption
 context are logged in CloudTrail, so they must not be sensitive.
+
+### Use extra options
+
+While decrypting config values, extra arguments can be supplied to control the output behavior.
+Extra args do also require a custom syntax, that is not part of Spring Security (as the {cipher} prefix).
+
+E.g. `application.yml`
+
+    secretKey: '{cipher}[output=base64]CiA47hYvQqWFFGq3TLtzQO5FwZMam2AnaeQt4PGEZHhDLxFTAQEBAgB4OO4WL0KlhRRqt0y7c0DuRcGTGptgJ8nkLeDxhGR4Qy8AAABqMGgGCSqGSIb3DQEHBqBbMFkCAQAwVAYJKoZIhvcNAQcBMB4GCWCGSAFlAwQBLjARBAx61LJpXQwgTcnGeSQCARCAJ4xhpGC5HT2xT+Vhy2iAuT+P/PLliZK5u6CiGhgudteZsCr7VJ/1aw=='
+
+The `[output=base64]` part defines the extra options.
+
+Encryption context and extra options can be combined in any order.
+`"{cipher}[output=base64](Code=MzUx)..."` is equivalent to `"{cipher}(Code=MzUx)[output=base64]..."`.
+
+#### Available Options
+| Option | Values | Default | Description |
+| ------ | ------ | ------- | ----------- |
+| output | `plain`, `base64` | `plain` | `plain` returns the decrypted secret as simple String. `base64` returns the decrypted secret in Base64 encoding. This is useful in cases where the plaintext secret contains non-printable characters (e.g. random AES keys) |
+
 
 Hints
 -----
