@@ -20,12 +20,14 @@ class EncryptedToken {
     private static final Pattern ENCRYPTED_STRING = Pattern.compile("^(?>\\((?<context>.*)\\)|\\[(?<options>.*)]){0,2}(?<cipher>.*)$");
     private static final Base64.Decoder BASE64_DECODER = Base64.getDecoder();
     private static final Function<String, String> BASE64_DECODE_VALUE = v -> new String(BASE64_DECODER.decode(v));
+    private static final Function<String[], String> FIRST = arr -> arr[0];
+    private static final Function<String[], String> SECOND = arr -> arr.length > 1 ? arr[1] : "";
+    private static final String PAIR_SEPARATOR = ",";
+    private static final String KEY_VALUE_SEPARATOR = "=";
 
     private final ByteBuffer cipherBytes;
     private final Map<String, String> encryptionContext;
     private final KmsTextEncryptorOptions options;
-    private static final Function<String[], String> FIRST = arr -> arr[0];
-    private static final Function<String[], String> SECOND = arr -> arr.length > 1 ? arr[1] : "";
 
     private EncryptedToken(ByteBuffer cipherBytes, Map<String, String> encryptionContext, KmsTextEncryptorOptions options) {
         this.cipherBytes = cipherBytes;
@@ -101,10 +103,10 @@ class EncryptedToken {
                 Optional.ofNullable(kvString)
                         .map(StringUtils::trimAllWhitespace)
                         .filter(StringUtils::hasText)
-                        .map(s -> s.split(","))
+                        .map(s -> s.split(PAIR_SEPARATOR))
                         .orElse(new String[0]))
                 .map(StringUtils::trimAllWhitespace)
-                .map(pair -> pair.split("=", 2))
+                .map(pair -> pair.split(KEY_VALUE_SEPARATOR, 2))
                 .collect(toMap(
                         FIRST.andThen(StringUtils::trimAllWhitespace),
                         SECOND.andThen(StringUtils::trimAllWhitespace).andThen(valueMapper)));
