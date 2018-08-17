@@ -1,7 +1,5 @@
 package de.zalando.spring.cloud.config.aws.kms;
 
-import org.springframework.lang.Nullable;
-
 import java.util.Objects;
 
 class KmsTextEncryptorOptions {
@@ -10,7 +8,7 @@ class KmsTextEncryptorOptions {
 
     private final OutputMode outputMode;
 
-    KmsTextEncryptorOptions(@Nullable OutputMode outputMode) {
+    KmsTextEncryptorOptions(OutputMode outputMode) {
         this.outputMode = outputMode == null ? DEFAULT_OUTPUT_MODE : outputMode;
     }
 
