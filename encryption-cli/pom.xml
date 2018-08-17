@@ -11,7 +11,7 @@
     <parent>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-parent</artifactId>
-        <version>Edgware.SR3</version>
+        <version>Edgware.SR4</version>
         <relativePath/>
     </parent>
 
