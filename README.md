@@ -109,6 +109,26 @@ Key-value pairs must be comma separated, and it is fine to use spaces to separat
 values in the context is not important. And one last note, is that the values used in the encryption
 context are logged in CloudTrail, so they must not be sensitive.
 
+### Use extra options
+
+While decrypting config values, extra arguments can be supplied to control the output behavior.
+Extra args do also require a custom syntax, that is not part of Spring Security (as the {cipher} prefix).
+
+E.g. `application.yml`
+
+    secretKey: '{cipher}[output=base64]CiA47hYvQqWFFGq3TLtzQO5FwZMam2AnaeQt4PGEZHhDLxFTAQEBAgB4OO4WL0KlhRRqt0y7c0DuRcGTGptgJ8nkLeDxhGR4Qy8AAABqMGgGCSqGSIb3DQEHBqBbMFkCAQAwVAYJKoZIhvcNAQcBMB4GCWCGSAFlAwQBLjARBAx61LJpXQwgTcnGeSQCARCAJ4xhpGC5HT2xT+Vhy2iAuT+P/PLliZK5u6CiGhgudteZsCr7VJ/1aw=='
+
+The `[output=base64]` part defines the extra options.
+
+Encryption context and extra options can be combined in any order.
+`"{cipher}[output=base64](Code=MzUx)..."` is equivalent to `"{cipher}(Code=MzUx)[output=base64]..."`.
+
+#### Available Options
+| Option | Values | Default | Description |
+| ------ | ------ | ------- | ----------- |
+| output | `plain`, `base64` | `plain` | `plain` returns the decrypted secret as simple String. `base64` returns the decrypted secret in Base64 encoding. This is useful in cases where the plaintext secret contains non-printable characters (e.g. random AES keys) |
+
+
 Hints
 -----
 
