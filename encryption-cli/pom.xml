@@ -11,7 +11,7 @@
     <parent>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-parent</artifactId>
-        <version>Finchley.SR1</version>
+        <version>Finchley.SR2</version>
         <relativePath/>
     </parent>
 
@@ -27,12 +27,12 @@
         <dependency>
             <groupId>org.zalando</groupId>
             <artifactId>spring-cloud-config-aws-kms</artifactId>
-            <version>3.1</version>
+            <version>3.2</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>25.1-jre</version>
+            <version>27.0-jre</version>
         </dependency>
     </dependencies>
 
