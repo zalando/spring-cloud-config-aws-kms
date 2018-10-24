@@ -10,7 +10,7 @@
     </parent>
     <groupId>org.zalando</groupId>
     <artifactId>spring-cloud-config-aws-kms</artifactId>
-    <version>2.2-SNAPSHOT</version>
+    <version>2.2</version>
 
     <packaging>jar</packaging>
 
@@ -44,7 +44,7 @@
         <connection>scm:git:https://github.com/zalando/spring-cloud-config-aws-kms.git</connection>
         <developerConnection>scm:git:git@github.com:zalando/spring-cloud-config-aws-kms.git</developerConnection>
         <url>https://github.com/zalando/spring-cloud-config-aws-kms</url>
-        <tag>2.0</tag>
+        <tag>2.2</tag>
     </scm>
 
     <properties>
