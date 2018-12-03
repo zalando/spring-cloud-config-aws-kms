@@ -11,9 +11,17 @@
     <parent>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-parent</artifactId>
-        <version>Finchley.SR2</version>
-        <relativePath/>
+        <version>Greenwich.M3</version>
+        <relativePath />
     </parent>
+
+    <repositories>
+        <repository>
+            <id>repository.spring.milestone</id>
+            <name>Spring Milestone Repository</name>
+            <url>http://repo.spring.io/milestone</url>
+        </repository>
+    </repositories>
 
     <properties>
         <java.version>1.8</java.version>
@@ -27,12 +35,12 @@
         <dependency>
             <groupId>org.zalando</groupId>
             <artifactId>spring-cloud-config-aws-kms</artifactId>
-            <version>3.2</version>
+            <version>4.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>27.0-jre</version>
+            <version>27.0.1-jre</version>
         </dependency>
     </dependencies>
 
