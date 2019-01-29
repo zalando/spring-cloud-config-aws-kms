@@ -8,15 +8,15 @@ import com.amazonaws.services.kms.model.EncryptResult;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.security.crypto.codec.Base64;
 
 import java.nio.ByteBuffer;
+import java.util.Base64;
 
 import static java.nio.ByteBuffer.allocate;
 import static java.nio.ByteBuffer.wrap;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -27,7 +27,7 @@ public class KmsTextEncryptorTest {
     private static final String KMS_KEY_ID = "testKeyId";
     private static final String PLAINTEXT = "plaintext";
     private static final String CIPHER_TEXT = "C1PHERT3XT";
-    private static final String BASE64_CIPHER_TEXT = new String(Base64.encode(CIPHER_TEXT.getBytes()));
+    private static final String BASE64_CIPHER_TEXT = new String(Base64.getEncoder().encode(CIPHER_TEXT.getBytes()));
 
     private AWSKMS mockKms;
     private KmsTextEncryptor textEncryptor;
@@ -37,7 +37,7 @@ public class KmsTextEncryptorTest {
     private DecryptResult decryptResult;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         mockKms = mock(AWSKMS.class);
         textEncryptor = new KmsTextEncryptor(mockKms, KMS_KEY_ID);
 
@@ -58,51 +58,51 @@ public class KmsTextEncryptorTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         verifyNoMoreInteractions(mockKms);
     }
 
     @Test
-    public void testEncrypt() throws Exception {
+    public void testEncrypt()  {
         assertThat(textEncryptor.encrypt(PLAINTEXT)).isEqualTo(BASE64_CIPHER_TEXT);
         verify(mockKms).encrypt(eq(expectedEncryptRequest));
     }
 
     @Test
-    public void testEncryptEmptyResponse() throws Exception {
+    public void testEncryptEmptyResponse()  {
         encryptResult.setCiphertextBlob(allocate(0));
         assertThat(textEncryptor.encrypt(PLAINTEXT)).isEqualTo("");
         verify(mockKms).encrypt(eq(expectedEncryptRequest));
     }
 
     @Test
-    public void testEncryptNull() throws Exception {
+    public void testEncryptNull()  {
         assertThat(textEncryptor.encrypt(null)).isEqualTo("");
     }
 
     @Test
-    public void testEncryptEmptyString() throws Exception {
+    public void testEncryptEmptyString()  {
         assertThat(textEncryptor.encrypt("")).isEqualTo("");
     }
 
     @Test
-    public void testDecryptNull() throws Exception {
+    public void testDecryptNull()  {
         assertThat(textEncryptor.decrypt(null)).isEqualTo("");
     }
 
     @Test
-    public void testDecryptEmptyString() throws Exception {
+    public void testDecryptEmptyString()  {
         assertThat(textEncryptor.decrypt("")).isEqualTo("");
     }
 
     @Test
-    public void testDecrypt() throws Exception {
+    public void testDecrypt()  {
         assertThat(textEncryptor.decrypt(BASE64_CIPHER_TEXT)).isEqualTo(PLAINTEXT);
         verify(mockKms).decrypt(eq(expectedDecryptRequest));
     }
 
     @Test
-    public void testDecryptEmptyResult() throws Exception {
+    public void testDecryptEmptyResult()  {
         decryptResult.setPlaintext(ByteBuffer.allocate(0));
         assertThat(textEncryptor.decrypt(BASE64_CIPHER_TEXT)).isEqualTo("");
         verify(mockKms).decrypt(eq(expectedDecryptRequest));
