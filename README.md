@@ -12,7 +12,7 @@ Features
 --------
 
 * Compatible with Spring Cloud Config
-* Spring Boot 2.0-ready
+* Spring Boot 2 - ready
 * Supports [custom endpoints](#optional-step-2) for AWS KMS
 * Supports AWS KMS [encryption context](#use-an-encryption-context)
 * Supports different [output modes](#available-options) for decrypted values
@@ -25,6 +25,8 @@ Installation
 Given you have a [Spring Boot](http://projects.spring.io/spring-boot/) application.
 
 **Choose the correct library version!**
+
+According to the Spring Cloud [release trains](https://spring.io/projects/spring-cloud#release-trains):
 
 Version | Use with
 ------- | ---------------------------------------
@@ -44,7 +46,7 @@ Add our dependency to your pom.xml (or Gradle build file).
     ...
 
 ### Optional: Step 2
-Apply configuration to the application's [Bootstrap Context](http://cloud.spring.io/spring-cloud-static/Edgware.RELEASE/single/spring-cloud.html#_the_bootstrap_application_context)
+Apply configuration to the application's [Bootstrap Context](http://cloud.spring.io/spring-cloud-static/Greenwich.RELEASE/single/spring-cloud.html#_the_bootstrap_application_context)
 
 E.g. `bootstrap.yml`:
 
