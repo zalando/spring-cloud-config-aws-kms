@@ -34,8 +34,20 @@
 
     <developers>
         <developer>
-            <name>André Hartmann</name>
-            <email>andre.hartmann@zalando.de</email>
+            <name>André Menneken</name>
+            <email>andre@zalando.de</email>
+            <organization>Zalando SE</organization>
+            <organizationUrl>http://tech.zalando.com</organizationUrl>
+        </developer>
+        <developer>
+            <name>Felix Roske</name>
+            <email>felix@zalando.de</email>
+            <organization>Zalando SE</organization>
+            <organizationUrl>http://tech.zalando.com</organizationUrl>
+        </developer>
+        <developer>
+            <name>Michele Randi</name>
+            <email>michele@zalando.de</email>
             <organization>Zalando SE</organization>
             <organizationUrl>http://tech.zalando.com</organizationUrl>
         </developer>
