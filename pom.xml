@@ -5,17 +5,9 @@
     <parent>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-parent</artifactId>
-        <version>Greenwich.M3</version>
+        <version>Greenwich.RELEASE</version>
         <relativePath />
     </parent>
-
-    <repositories>
-        <repository>
-            <id>repository.spring.milestone</id>
-            <name>Spring Milestone Repository</name>
-            <url>http://repo.spring.io/milestone</url>
-        </repository>
-    </repositories>
 
     <groupId>org.zalando</groupId>
     <artifactId>spring-cloud-config-aws-kms</artifactId>
