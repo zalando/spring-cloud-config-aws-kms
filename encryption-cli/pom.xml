@@ -11,7 +11,7 @@
     <parent>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-parent</artifactId>
-        <version>Greenwich.RELEASE</version>
+        <version>1.0.2.RELEASE</version>
         <relativePath />
     </parent>
 
