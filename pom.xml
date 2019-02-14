@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-parent</artifactId>
-        <version>Edgware.SR5</version>
+        <version>1.0.2.RELEASE</version>
         <relativePath />
     </parent>
     <groupId>org.zalando</groupId>
