@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-parent</artifactId>
-        <version>Greenwich.SR1</version>
+        <version>Greenwich.SR2</version>
         <relativePath />
     </parent>
 
