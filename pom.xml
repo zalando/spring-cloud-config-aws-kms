@@ -5,13 +5,13 @@
     <parent>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-parent</artifactId>
-        <version>Greenwich.SR3</version>
+        <version>Hoxton.RELEASE</version>
         <relativePath />
     </parent>
 
     <groupId>org.zalando</groupId>
     <artifactId>spring-cloud-config-aws-kms</artifactId>
-    <version>4.4-SNAPSHOT</version>
+    <version>5.0-SNAPSHOT</version>
 
     <packaging>jar</packaging>
 
@@ -72,7 +72,7 @@
         <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
-        <maven-jar-plugin.version>3.1.2</maven-jar-plugin.version>
+        <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
         <maven-source-plugin.version>3.2.0</maven-source-plugin.version>
         <maven-install-plugin.version>2.5.2</maven-install-plugin.version>
     </properties>
