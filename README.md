@@ -33,6 +33,7 @@ Version | Use with
 **2.x** | Spring Cloud Edgware + Spring Boot 1.5
 **3.x** | Spring Cloud Finchley + Spring Boot 2.0
 **4.x** | Spring Cloud Greenwich + Spring Boot 2.1
+**5.x** | Spring Cloud Hoxton + Spring Boot 2.2
 
 ### Step 1
 Add our dependency to your pom.xml (or Gradle build file).
