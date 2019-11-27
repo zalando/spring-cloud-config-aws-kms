@@ -11,7 +11,7 @@
     <parent>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-parent</artifactId>
-        <version>Greenwich.SR3</version>
+        <version>Hoxton.RELEASE</version>
         <relativePath />
     </parent>
 
@@ -27,7 +27,7 @@
         <dependency>
             <groupId>org.zalando</groupId>
             <artifactId>spring-cloud-config-aws-kms</artifactId>
-            <version>4.3</version>
+            <version>5.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
