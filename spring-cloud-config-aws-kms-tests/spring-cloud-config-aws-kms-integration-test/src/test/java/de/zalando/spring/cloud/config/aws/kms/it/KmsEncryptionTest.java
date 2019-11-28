@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.rules.SpringMethodRule;
 
 import java.nio.ByteBuffer;
 
+import static com.amazonaws.services.kms.model.EncryptionAlgorithmSpec.SYMMETRIC_DEFAULT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
@@ -48,6 +49,7 @@ public class KmsEncryptionTest {
 
         final DecryptRequest decryptRequest = new DecryptRequest();
         decryptRequest.setCiphertextBlob(CIPHER_TEXT_BLOB);
+        decryptRequest.setEncryptionAlgorithm(SYMMETRIC_DEFAULT.toString());
         verify(mockKms, atLeastOnce()).decrypt(decryptRequest);
     }
 }

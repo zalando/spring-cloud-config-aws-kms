@@ -50,7 +50,7 @@ class KmsEncryptionConfiguration {
 
         @Bean
         KmsTextEncryptor kmsTextEncryptor() {
-            return new KmsTextEncryptor(kms, properties.getKeyId());
+            return new KmsTextEncryptor(kms, properties.getKeyId(), properties.getEncryptionAlgorithm());
         }
     }
 
