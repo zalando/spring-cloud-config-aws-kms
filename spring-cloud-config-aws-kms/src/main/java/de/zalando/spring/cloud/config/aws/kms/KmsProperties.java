@@ -1,6 +1,10 @@
 package de.zalando.spring.cloud.config.aws.kms;
 
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.kms.model.EncryptionAlgorithmSpec;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import static com.amazonaws.services.kms.model.EncryptionAlgorithmSpec.SYMMETRIC_DEFAULT;
 
 @ConfigurationProperties("aws.kms")
 public class KmsProperties {
@@ -17,7 +21,7 @@ public class KmsProperties {
 
     /**
      * <strong>Optional</strong> id of the AWS region of the KMS key that was used for encryption/decryption.
-     * Must match the `name` property of one enum entry of {@link com.amazonaws.regions.Regions}. If not set, the
+     * Must match the `name` property of one enum entry of {@link Regions}. If not set, the
      * <a href="http://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/java-dg-region-selection.html#automatically-determine-the-aws-region-from-the-environment">
      * Default Region Provider Chain</a> of the AWS SDK is used.
      */
@@ -29,6 +33,11 @@ public class KmsProperties {
      * In the event that both region and endpoint properties are both supplied, region will be ignored as region is derived from the service endpoint.
      */
     private Endpoint endpoint;
+
+    /**
+     * <strong>Optional</strong> encryption algorithm, that should be used for `encrypt` and `decrypt` operations.
+     */
+    private EncryptionAlgorithmSpec encryptionAlgorithm = SYMMETRIC_DEFAULT;
 
     public static class Endpoint {
 
@@ -86,4 +95,11 @@ public class KmsProperties {
         this.endpoint = endpoint;
     }
 
+    public EncryptionAlgorithmSpec getEncryptionAlgorithm() {
+        return encryptionAlgorithm;
+    }
+
+    public void setEncryptionAlgorithm(EncryptionAlgorithmSpec encryptionAlgorithm) {
+        this.encryptionAlgorithm = encryptionAlgorithm;
+    }
 }

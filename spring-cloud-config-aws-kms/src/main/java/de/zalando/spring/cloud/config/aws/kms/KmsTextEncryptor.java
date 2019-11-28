@@ -3,11 +3,14 @@ package de.zalando.spring.cloud.config.aws.kms;
 import com.amazonaws.services.kms.AWSKMS;
 import com.amazonaws.services.kms.model.DecryptRequest;
 import com.amazonaws.services.kms.model.EncryptRequest;
+import com.amazonaws.services.kms.model.EncryptionAlgorithmSpec;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.util.Assert;
 
 import java.nio.ByteBuffer;
 import java.util.Base64;
+
+import static com.amazonaws.services.kms.model.EncryptionAlgorithmSpec.SYMMETRIC_DEFAULT;
 
 /**
  * This {@link TextEncryptor} uses AWS KMS (Key Management Service) to encrypt / decrypt strings. Encoded cipher strings
@@ -21,17 +24,20 @@ public class KmsTextEncryptor implements TextEncryptor {
 
     private final AWSKMS kms;
     private final String kmsKeyId;
+    private final EncryptionAlgorithmSpec encryptionAlgorithm;
 
     /**
-     * @param kms      The AWS KMS client
-     * @param kmsKeyId The ID or full ARN of the KMS key, e.g.
-     *                 arn:aws:kms:eu-west-1:089972051332:key/9d9fca31-54c5-4de5-ba4f-128dfb9a5031. Must not be blank,
-     *                 if you you want to encrypt text.
+     * @param kms                 The AWS KMS client
+     * @param kmsKeyId            The ID or full ARN of the KMS key, e.g.
+     *                            arn:aws:kms:eu-west-1:089972051332:key/9d9fca31-54c5-4de5-ba4f-128dfb9a5031. Must not be blank,
+     * @param encryptionAlgorithm the encryption algorithm that should be used
      */
-    public KmsTextEncryptor(final AWSKMS kms, final String kmsKeyId) {
+    public KmsTextEncryptor(final AWSKMS kms, final String kmsKeyId, EncryptionAlgorithmSpec encryptionAlgorithm) {
         Assert.notNull(kms, "KMS client must not be null");
+        Assert.notNull(encryptionAlgorithm, "encryptionAlgorithm must not be null");
         this.kms = kms;
         this.kmsKeyId = kmsKeyId;
+        this.encryptionAlgorithm = encryptionAlgorithm;
     }
 
     @Override
@@ -42,6 +48,7 @@ public class KmsTextEncryptor implements TextEncryptor {
         } else {
             final EncryptRequest encryptRequest =
                     new EncryptRequest().withKeyId(kmsKeyId) //
+                            .withEncryptionAlgorithm(encryptionAlgorithm)
                             .withPlaintext(ByteBuffer.wrap(text.getBytes()));
 
             final ByteBuffer encryptedBytes = kms.encrypt(encryptRequest).getCiphertextBlob();
@@ -60,7 +67,12 @@ public class KmsTextEncryptor implements TextEncryptor {
 
             final DecryptRequest decryptRequest = new DecryptRequest()
                     .withCiphertextBlob(token.getCipherBytes())
-                    .withEncryptionContext(token.getEncryptionContext());
+                    .withEncryptionContext(token.getEncryptionContext())
+                    .withEncryptionAlgorithm(encryptionAlgorithm);
+            if (encryptionAlgorithm != SYMMETRIC_DEFAULT) {
+                Assert.hasText(kmsKeyId, "kmsKeyId must not be blank");
+                decryptRequest.setKeyId(kmsKeyId);
+            }
 
             return extractString(kms.decrypt(decryptRequest).getPlaintext(), token.getOptions());
         }
