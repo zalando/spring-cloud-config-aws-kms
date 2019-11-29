@@ -1,10 +1,7 @@
 package de.zalando.spring.cloud.config.aws.kms;
 
 import com.amazonaws.regions.Regions;
-import com.amazonaws.services.kms.model.EncryptionAlgorithmSpec;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-
-import static com.amazonaws.services.kms.model.EncryptionAlgorithmSpec.SYMMETRIC_DEFAULT;
 
 @ConfigurationProperties("aws.kms")
 public class KmsProperties {
@@ -36,8 +33,9 @@ public class KmsProperties {
 
     /**
      * <strong>Optional</strong> encryption algorithm, that should be used for `encrypt` and `decrypt` operations.
+     * For possible values see {@link com.amazonaws.services.kms.model.EncryptionAlgorithmSpec}
      */
-    private EncryptionAlgorithmSpec encryptionAlgorithm = SYMMETRIC_DEFAULT;
+    private String encryptionAlgorithm = "SYMMETRIC_DEFAULT";
 
     public static class Endpoint {
 
@@ -95,11 +93,11 @@ public class KmsProperties {
         this.endpoint = endpoint;
     }
 
-    public EncryptionAlgorithmSpec getEncryptionAlgorithm() {
+    public String getEncryptionAlgorithm() {
         return encryptionAlgorithm;
     }
 
-    public void setEncryptionAlgorithm(EncryptionAlgorithmSpec encryptionAlgorithm) {
+    public void setEncryptionAlgorithm(String encryptionAlgorithm) {
         this.encryptionAlgorithm = encryptionAlgorithm;
     }
 }

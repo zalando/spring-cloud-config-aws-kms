@@ -40,7 +40,7 @@ public class KmsTextEncryptorTest {
     @Before
     public void setUp() {
         mockKms = mock(AWSKMS.class);
-        textEncryptor = new KmsTextEncryptor(mockKms, KMS_KEY_ID, SYMMETRIC_DEFAULT);
+        textEncryptor = new KmsTextEncryptor(mockKms, KMS_KEY_ID, SYMMETRIC_DEFAULT.toString());
 
         expectedEncryptRequest = new EncryptRequest();
         expectedEncryptRequest.setKeyId(KMS_KEY_ID);
