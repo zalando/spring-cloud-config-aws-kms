@@ -17,8 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(Parameterized.class)
 public class EncryptedTokenTest {
 
-    private static final KmsTextEncryptorOptions BASE64_OPTIONS = new KmsTextEncryptorOptions(BASE64);
-    private static final KmsTextEncryptorOptions PLAIN_OPTIONS = new KmsTextEncryptorOptions(PLAIN);
+    private static final KmsTextEncryptorOptions BASE64_OPTIONS = new KmsTextEncryptorOptions(BASE64, null, null);
+    private static final KmsTextEncryptorOptions PLAIN_OPTIONS = new KmsTextEncryptorOptions(PLAIN, null, null);
     private static final Map<String, String> EMPTY_MAP = emptyMap();
     private static final Map<String, String> CONTEXT_MAP;
 

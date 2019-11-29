@@ -71,8 +71,10 @@ class EncryptedToken {
                 Optional.ofNullable(optionsMap.get("output"))
                         .map(String::toUpperCase)
                         .orElse(OutputMode.PLAIN.name()));
+        final String kmsKeyId = optionsMap.get("keyId");
+        final String encryptionAlgorithm = optionsMap.get("algorithm");
 
-        return new KmsTextEncryptorOptions(output);
+        return new KmsTextEncryptorOptions(output, kmsKeyId, encryptionAlgorithm);
     }
 
     private static Map<String, String> parseContext(String contextString) {
