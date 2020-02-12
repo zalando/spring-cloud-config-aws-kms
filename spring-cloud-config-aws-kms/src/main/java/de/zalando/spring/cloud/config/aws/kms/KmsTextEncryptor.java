@@ -12,6 +12,8 @@ import java.nio.ByteBuffer;
 import java.util.Base64;
 import java.util.Optional;
 
+import static de.zalando.spring.cloud.config.aws.kms.OutputMode.BASE64;
+
 /**
  * This {@link TextEncryptor} uses AWS KMS (Key Management Service) to encrypt / decrypt strings. Encoded cipher strings
  * are represented in Base64 format, to have a nicer string representation (only alpha-numeric chars), that can be
@@ -72,7 +74,7 @@ public class KmsTextEncryptor implements TextEncryptor {
 
             final ByteBuffer encryptedBytes = kms.encrypt(encryptRequest).getCiphertextBlob();
 
-            return extractString(encryptedBytes, new KmsTextEncryptorOptions(OutputMode.BASE64, kmsKeyId, encryptionAlgorithm));
+            return extractString(encryptedBytes, BASE64);
         }
     }
 
@@ -101,19 +103,18 @@ public class KmsTextEncryptor implements TextEncryptor {
                 }
             }
 
-            return extractString(kms.decrypt(decryptRequest).getPlaintext(), options);
+            return extractString(kms.decrypt(decryptRequest).getPlaintext(), options.getOutputMode());
         }
     }
 
-    private static String extractString(final ByteBuffer bb, final KmsTextEncryptorOptions options) {
+    private static String extractString(final ByteBuffer bb, final OutputMode outputMode) {
         if (bb.hasRemaining()) {
             final byte[] bytes = new byte[bb.remaining()];
             bb.get(bytes, bb.arrayOffset(), bb.remaining());
-            switch (options.getOutputMode()) {
-                case BASE64:
-                    return BASE64_ENCODER.encodeToString(bytes);
-                default:
-                    return new String(bytes);
+            if (outputMode == BASE64) {
+                return BASE64_ENCODER.encodeToString(bytes);
+            } else {
+                return new String(bytes);
             }
         } else {
             return EMPTY_STRING;
