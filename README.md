@@ -155,7 +155,7 @@ You can also use [AWS CLI](http://docs.aws.amazon.com/cli/latest/reference/kms/e
 Development
 -----------
 
-### Run Rest Suite
+### Run Test Suite
 
     mvn clean test
     
