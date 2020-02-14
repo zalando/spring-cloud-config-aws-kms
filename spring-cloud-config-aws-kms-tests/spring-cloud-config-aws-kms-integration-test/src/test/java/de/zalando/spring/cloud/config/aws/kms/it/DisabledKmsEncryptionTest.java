@@ -1,4 +1,4 @@
-package de.zalando.spring.cloud.config.aws.kms;
+package de.zalando.spring.cloud.config.aws.kms.it;
 
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @SpringBootTest({"aws.kms.enabled=false", "encrypt.failOnError=false"})
 @ActiveProfiles("encryption")
-public class DisabledKmsEncryptionIntegrationConfigurationTest {
+public class DisabledKmsEncryptionTest {
 
     @ClassRule
     public static final SpringClassRule SPRING_CLASS_RULE = new SpringClassRule();
@@ -33,10 +33,5 @@ public class DisabledKmsEncryptionIntegrationConfigurationTest {
     @Test
     public void testPropertyHasNotBeenDecrypted() throws Exception {
         assertThat(decryptedSecret).isEmpty();
-    }
-
-    @Configuration
-    @EnableAutoConfiguration
-    static class TestConfig {
     }
 }
