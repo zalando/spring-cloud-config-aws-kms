@@ -152,6 +152,16 @@ See [reference](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.h
 You can also use [AWS CLI](http://docs.aws.amazon.com/cli/latest/reference/kms/encrypt.html#examples) or our small
 [CLI tool](https://github.com/zalando/spring-cloud-config-aws-kms/tree/master/encryption-cli) to encrypt and decrypt values.
 
+Development
+-----------
+
+### Run Rest Suite
+
+    mvn clean test
+    
+### Coverage Report
+
+    open spring-cloud-config-aws-kms-coverage/target/site/jacoco/index.html
 
 Releases
 --------
