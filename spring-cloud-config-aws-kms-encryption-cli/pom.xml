@@ -4,19 +4,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>de.zalando</groupId>
-    <artifactId>encryption-cli</artifactId>
-    <version>1.0-SNAPSHOT</version>
-
     <parent>
-        <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-starter-parent</artifactId>
-        <version>Hoxton.RELEASE</version>
-        <relativePath />
+        <groupId>org.zalando</groupId>
+        <artifactId>spring-cloud-config-aws-kms-parent</artifactId>
+        <version>5.1-SNAPSHOT</version>
     </parent>
 
+    <artifactId>spring-cloud-config-aws-kms-encryption-cli</artifactId>
+    <name>Spring Cloud Config AWS KMS Encryption CLI</name>
+
     <properties>
-        <java.version>1.8</java.version>
+        <maven.install.skip>true</maven.install.skip>
+        <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
 
     <dependencies>
@@ -27,7 +26,7 @@
         <dependency>
             <groupId>org.zalando</groupId>
             <artifactId>spring-cloud-config-aws-kms</artifactId>
-            <version>5.0</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -37,6 +36,7 @@
     </dependencies>
 
     <build>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
