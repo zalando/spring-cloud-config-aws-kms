@@ -1,4 +1,4 @@
-package de.zalando.spring.cloud.config.aws.kms;
+package de.zalando.spring.cloud.config.aws.kms.it;
 
 import com.amazonaws.services.kms.AWSKMS;
 import com.amazonaws.services.kms.AWSKMSClient;
@@ -17,10 +17,11 @@ import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
 import java.net.URI;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -29,8 +30,8 @@ import static org.junit.Assert.assertTrue;
  * See src/test/resources/*-noEncryption.yml files.
  */
 @SpringBootTest
-@ActiveProfiles("noEncryption")
-public class NoKmsEncryptionIntegrationConfigurationTest {
+@ActiveProfiles("noEncryptionEndpoint")
+public class KmsEndpointConfigurationTest {
 
     @ClassRule
     public static final SpringClassRule SPRING_CLASS_RULE = new SpringClassRule();
@@ -53,25 +54,24 @@ public class NoKmsEncryptionIntegrationConfigurationTest {
         assertNotNull(kms);
         assertTrue(kms instanceof AWSKMSClient);
 
-        // endpoing configured based on aws.kms.region property
         AWSKMSClient client = (AWSKMSClient) kms;
-        Field field = ReflectionUtils.findField(AWSKMSClient.class, "endpoint");
-        ReflectionUtils.makeAccessible(field);
-        Object endpointObject = ReflectionUtils.getField(field, client);
+
+        // prove aws.kms.endpoint.service-endpoint was used to configure the kms client
+        Field endpointField = ReflectionUtils.findField(AWSKMSClient.class, "endpoint");
+        ReflectionUtils.makeAccessible(Objects.requireNonNull(endpointField));
+        Object endpointObject = ReflectionUtils.getField(endpointField, client);
         assertNotNull(endpointObject);
         assertTrue(endpointObject instanceof URI);
         URI endpoint = (URI) endpointObject;
-        assertTrue(endpoint.toString().contains("eu-central-1"));
+        assertTrue(endpoint.toString().contains("us-east-1"));
 
-        // no override should occur in this configuration
+        // prove override was issued via the aws.kms.endpoint.signing-region property
         Field signerRegionField = ReflectionUtils.findField(AWSKMSClient.class, "signerRegionOverride");
-        ReflectionUtils.makeAccessible(signerRegionField);
+        ReflectionUtils.makeAccessible(Objects.requireNonNull(signerRegionField));
         Object signerRegionObject = ReflectionUtils.getField(signerRegionField, client);
-        assertNull(signerRegionObject);
-    }
-
-    @Configuration
-    @EnableAutoConfiguration
-    static class TestConfig {
+        assertNotNull(signerRegionObject);
+        assertTrue(signerRegionObject instanceof String);
+        String signerRegion = (String) signerRegionObject;
+        assertEquals("us-east-2", signerRegion);
     }
 }

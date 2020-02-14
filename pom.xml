@@ -19,6 +19,8 @@
 
     <modules>
         <module>spring-cloud-config-aws-kms</module>
+        <module>spring-cloud-config-aws-kms-tests</module>
+        <module>spring-cloud-config-aws-kms-coverage</module>
         <module>spring-cloud-config-aws-kms-encryption-cli</module>
     </modules>
 
@@ -96,13 +98,6 @@
                     </configuration>
                 </plugin>
                 <plugin>
-                    <artifactId>maven-failsafe-plugin</artifactId>
-                    <configuration>
-                        <!-- See jacoco plugin / prepare-agent-integration -->
-                        <argLine>${failsafeArgLine}</argLine>
-                    </configuration>
-                </plugin>
-                <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
                     <version>${jacoco-maven-plugin.version}</version>
@@ -117,15 +112,12 @@
                                 <propertyName>surefireArgLine</propertyName>
                             </configuration>
                         </execution>
-                        <!-- set arg line property for failsafe -->
                         <execution>
-                            <id>prepare-agent-integration</id>
+                            <id>report</id>
+                            <phase>test</phase>
                             <goals>
-                                <goal>prepare-agent-integration</goal>
+                                <goal>report</goal>
                             </goals>
-                            <configuration>
-                                <propertyName>failsafeArgLine</propertyName>
-                            </configuration>
                         </execution>
                     </executions>
                 </plugin>

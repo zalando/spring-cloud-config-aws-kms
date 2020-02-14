@@ -18,13 +18,15 @@ import static org.mockito.Mockito.when;
 @Configuration
 @ConditionalOnProperty(prefix = "aws.kms", name = "useMock", havingValue = "true")
 @AutoConfigureBefore(KmsEncryptionConfiguration.class)
-class MockAwsKmsConfig {
+public class MockAwsKmsConfig {
+
+    public static final String PLAINTEXT = "Hello World";
 
     @Bean
     AWSKMS kms() {
         final AWSKMS mock = mock(AWSKMS.class);
         when(mock.decrypt(any(DecryptRequest.class))).thenAnswer((Answer<DecryptResult>) invocation ->
-                new DecryptResult().withPlaintext(ByteBuffer.wrap(KmsEncryptionIntegrationConfigurationTest.PLAINTEXT.getBytes())));
+                new DecryptResult().withPlaintext(ByteBuffer.wrap(PLAINTEXT.getBytes())));
         return mock;
     }
 

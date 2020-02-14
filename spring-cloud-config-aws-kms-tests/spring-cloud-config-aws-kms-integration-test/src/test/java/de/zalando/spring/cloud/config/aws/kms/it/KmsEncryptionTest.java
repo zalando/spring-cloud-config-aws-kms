@@ -1,15 +1,14 @@
-package de.zalando.spring.cloud.config.aws.kms;
+package de.zalando.spring.cloud.config.aws.kms.it;
 
 import com.amazonaws.services.kms.AWSKMS;
 import com.amazonaws.services.kms.model.DecryptRequest;
+import de.zalando.spring.cloud.config.aws.kms.MockAwsKmsConfig;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.rules.SpringClassRule;
 import org.springframework.test.context.junit4.rules.SpringMethodRule;
@@ -27,14 +26,13 @@ import static org.mockito.Mockito.verify;
  */
 @SpringBootTest
 @ActiveProfiles("encryption")
-public class KmsEncryptionIntegrationConfigurationTest {
+public class KmsEncryptionTest {
 
     @ClassRule
     public static final SpringClassRule SPRING_CLASS_RULE = new SpringClassRule();
     @Rule
     public final SpringMethodRule springMethodRule = new SpringMethodRule();
 
-    static final String PLAINTEXT = "Hello World";
     private static final ByteBuffer CIPHER_TEXT_BLOB = ByteBuffer.wrap("secret".getBytes());
 
     @Autowired
@@ -44,17 +42,12 @@ public class KmsEncryptionIntegrationConfigurationTest {
     private String decryptedSecret;
 
     @Test
-    public void testPropertyHasBeenDecrypted() throws Exception {
+    public void testPropertyHasBeenDecrypted() {
 
-        assertThat(decryptedSecret).isEqualTo(PLAINTEXT);
+        assertThat(decryptedSecret).isEqualTo(MockAwsKmsConfig.PLAINTEXT);
 
         final DecryptRequest decryptRequest = new DecryptRequest();
         decryptRequest.setCiphertextBlob(CIPHER_TEXT_BLOB);
         verify(mockKms, atLeastOnce()).decrypt(decryptRequest);
-    }
-
-    @Configuration
-    @EnableAutoConfiguration
-    static class TestConfig {
     }
 }
