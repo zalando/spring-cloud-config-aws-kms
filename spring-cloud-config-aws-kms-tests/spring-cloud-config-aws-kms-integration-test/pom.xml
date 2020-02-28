@@ -13,6 +13,33 @@
     <artifactId>spring-cloud-config-aws-kms-integration-test</artifactId>
     <name>Spring Cloud Config AWS KMS Integration Tests</name>
 
+    <properties>
+        <!-- Pin the AWS Java SDK to version 1.11.415, which is the default version used by Spring Cloud (Hoxton.SR1).
+             It does note contain the EncryptionAlgorithm feature. -->
+        <aws-java-sdk.version>1.11.415</aws-java-sdk.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.amazonaws</groupId>
+                <artifactId>aws-java-sdk-kms</artifactId>
+                <version>${aws-java-sdk.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.amazonaws</groupId>
+                <artifactId>aws-java-sdk-core</artifactId>
+                <version>${aws-java-sdk.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.amazonaws</groupId>
+                <artifactId>jmespath-java</artifactId>
+                <version>${aws-java-sdk.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
     <dependencies>
         <dependency>
             <groupId>org.zalando</groupId>
@@ -25,5 +52,5 @@
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
     </dependencies>
-    
+
 </project>
