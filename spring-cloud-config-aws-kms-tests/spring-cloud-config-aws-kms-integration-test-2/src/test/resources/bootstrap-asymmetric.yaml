@@ -1,0 +1,4 @@
+aws:
+  kms:
+    encryptionAlgorithm: "RSAES_OAEP_SHA_1"
+    keyId: "asymmetric-sha1-sample-key"

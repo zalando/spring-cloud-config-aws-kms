@@ -1,0 +1,3 @@
+secret1: "{cipher}SSdtIHNvbWUgYXN5bW1ldHJpY2FsbHkgZW5jcnlwdGVkIHNlY3JldA=="
+secret2: "{cipher}[algorithm=SYMMETRIC_DEFAULT]U3ltbWV0cmljIGFuZCBhc3ltbWV0cmljIHNlY3JldHMgY2FuIGJlIG1peGVk"
+secret3: "{cipher}[algorithm=RSAES_OAEP_SHA_256,keyId=different-key]SSBoYXZlIGEgY3VzdG9tIGtleSBhbmQgYWxnb3JpdGht"
