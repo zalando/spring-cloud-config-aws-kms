@@ -16,8 +16,15 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>spring-cloud-config-aws-kms-integration-test</module>
+        <module>spring-cloud-config-aws-kms-test-support</module>
+        <module>spring-cloud-config-aws-kms-integration-test-1</module>
+        <module>spring-cloud-config-aws-kms-integration-test-2</module>
     </modules>
+
+    <properties>
+        <maven.install.skip>true</maven.install.skip>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
 
     <build>
         <plugins>
