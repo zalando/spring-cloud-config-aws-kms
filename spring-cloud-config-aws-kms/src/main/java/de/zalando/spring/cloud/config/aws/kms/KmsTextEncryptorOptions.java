@@ -44,4 +44,36 @@ class KmsTextEncryptorOptions {
     public int hashCode() {
         return Objects.hash(outputMode, keyId, encryptionAlgorithm);
     }
+
+    static Builder builder() {
+        return new Builder();
+    }
+
+    static final class Builder {
+        private OutputMode outputMode;
+        private String keyId;
+        private String encryptionAlgorithm;
+
+        private Builder() {
+        }
+
+        public Builder withOutputMode(OutputMode outputMode) {
+            this.outputMode = outputMode;
+            return this;
+        }
+
+        public Builder withKeyId(String keyId) {
+            this.keyId = keyId;
+            return this;
+        }
+
+        public Builder withEncryptionAlgorithm(String encryptionAlgorithm) {
+            this.encryptionAlgorithm = encryptionAlgorithm;
+            return this;
+        }
+
+        public KmsTextEncryptorOptions build() {
+            return new KmsTextEncryptorOptions(outputMode, keyId, encryptionAlgorithm);
+        }
+    }
 }

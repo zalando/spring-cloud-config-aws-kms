@@ -31,7 +31,7 @@ public class AsymmetricEncryptionNotAvailableTest {
 
     private static final String PLAINTEXT = "Hello";
     private static final String CIPHERTEXT = "b29wcw==";
-    private static final String VERSION_HINT = "Non-symmetric encryption 'RSAES_OAEP_SHA_1' has been configured," +
+    private static final String VERSION_HINT = "Asymmetric encryption 'RSAES_OAEP_SHA_1' has been configured," +
             "but the version of aws-java-sdk you are using is outdated and does not support it. " +
             "Please upgrade to a more recent version.";
 

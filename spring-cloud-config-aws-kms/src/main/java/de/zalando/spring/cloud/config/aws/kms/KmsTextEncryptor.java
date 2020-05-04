@@ -125,7 +125,7 @@ public class KmsTextEncryptor implements TextEncryptor {
 
     private void checkAlgorithm(String algorithm) {
         if (isAsymmetricEncryption(algorithm) && !IS_ALGORITHM_AVAILABLE) {
-            log.warn("Non-symmetric encryption '{}' has been configured," +
+            log.warn("Asymmetric encryption '{}' has been configured," +
                     "but the version of aws-java-sdk you are using is outdated and does not support it. " +
                     "Please upgrade to a more recent version.", algorithm);
         }

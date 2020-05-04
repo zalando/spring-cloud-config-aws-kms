@@ -74,7 +74,11 @@ class EncryptedToken {
         final String kmsKeyId = optionsMap.get("keyId");
         final String encryptionAlgorithm = optionsMap.get("algorithm");
 
-        return new KmsTextEncryptorOptions(output, kmsKeyId, encryptionAlgorithm);
+        return KmsTextEncryptorOptions.builder()
+                .withOutputMode(output)
+                .withEncryptionAlgorithm(encryptionAlgorithm)
+                .withKeyId(kmsKeyId)
+                .build();
     }
 
     private static Map<String, String> parseContext(String contextString) {
