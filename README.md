@@ -16,6 +16,7 @@ Features
 * Supports [custom endpoints](#optional-step-2) for AWS KMS
 * Supports AWS KMS [encryption context](#use-an-encryption-context)
 * Supports different [output modes](#available-options) for decrypted values
+* Supports [asymmetric keys](#asymmetric-keys)
 * Minimal dependencies 
 
 Installation
@@ -45,6 +46,36 @@ Add our dependency to your pom.xml (or Gradle build file).
         <version>${spring-cloud-aws-kms.version}</version>
     </dependency>
     ...
+    
+#### Optional: Step 1-1
+Use a more recent version of the AWS SDK. To enable all features of this library
+(especially [asymmetric keys](#asymmetric-keys)), one needs to upgrade the AWS Java SDK
+manually.
+
+    <properties>
+        <aws-java-sdk.version>1.11.774</aws-java-sdk.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.amazonaws</groupId>
+                <artifactId>aws-java-sdk-kms</artifactId>
+                <version>${aws-java-sdk.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.amazonaws</groupId>
+                <artifactId>aws-java-sdk-core</artifactId>
+                <version>${aws-java-sdk.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.amazonaws</groupId>
+                <artifactId>jmespath-java</artifactId>
+                <version>${aws-java-sdk.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
 
 ### Optional: Step 2
 Apply configuration to the application's [Bootstrap Context](http://cloud.spring.io/spring-cloud-static/Greenwich.RELEASE/single/spring-cloud.html#_the_bootstrap_application_context)
@@ -53,7 +84,9 @@ E.g. `bootstrap.yml`:
 
     aws:
         kms:
-            # Optional: only used for encryption
+            # Optional for decrypting values with SYMMETRIC_DEFAULT algorithm.
+            # Required for encrypting values.
+            # Required for decrypting values with some asymmetric algorithm. 
             keyId: 9d9fca31-54c5-4df5-ba4f-127dfb9a5031
             
             # Optional: if not set, the AWS Default Region Provider Chain is used
@@ -61,6 +94,10 @@ E.g. `bootstrap.yml`:
             
             # Optional: Turn off the KMS feature completely (e.g. for local development) 
             enabled: false
+            
+            # Optional: Switch to asymmetric algorithm.
+            # See com.amazonaws.services.kms.model.EncryptionAlgorithmSpec for available values.
+            encryptionAlgorithm: "RSAES_OAEP_SHA_256"
             
             # Optional: Enable endpoint usage, if provided, aws.kms.region should be excluded as it will be ignored
             endpoint:
@@ -72,16 +109,21 @@ E.g. `bootstrap.yml`:
                 
                 
 
-The *aws.kms.keyId* property is required only if you intend to encrypt values in your application. The following contains the properties used by this library.
+The `aws.kms.keyId` property must be set if
+  - values need to be decrypted with an asymmetric key
+  - values need to be encrypted (with any algorithm)
+  
+Those are the properties used by this library:
 
-- aws.kms.keyId
+- `aws.kms.keyId`
     - either the keyId or the full ARN of the KMS key
-- aws.kms.enabled (defaults to true)
-- aws.kms.endpoint
+- `aws.kms.enabled` (defaults to true)
+- `aws.kms.encryptionAlgorithm`
+- `aws.kms.endpoint`
     - if used, this will cause aws.kms.region to be ignored
-- aws.kms.endpoint.service-endpoint
+- `aws.kms.endpoint.service-endpoint`
     - endpoint address with or without https:// prefix
-- aws.kms.endpoint.signing-region 
+- `aws.kms.endpoint.signing-region` 
     - in most cases can be omitted
     - if provided, it will usually differ from region that hosts the service-endpoint
  
@@ -121,6 +163,36 @@ Key-value pairs must be comma separated, and it is fine to use spaces to separat
 values in the context is not important. And one last note, is that the values used in the encryption
 context are logged in CloudTrail, so they must not be sensitive.
 
+### Asymmetric keys
+
+AWS KMS supports [symmetric and asymmetric keys](https://docs.aws.amazon.com/kms/latest/developerguide/symmetric-asymmetric.html)
+to encrypt/decrypt data. By default, this library assumes a symmetric key. There are configuration options available to
+enable asymmetric keys. **Important: Please make sure to [upgrade the AWS SDK](#optional-step-1-1) in your project**
+
+#### Encryption
+
+Add `keyId` and `encryptionAlgorithm` to the `bootstrap.yaml`:
+
+    aws:
+      kms:
+        encryptionAlgorithm: "RSAES_OAEP_SHA_256"  # or "RSAES_OAEP_SHA_1"
+        keyId: "9d9fca31-54c5-4df5-ba4f-127dfb9a5031"
+
+
+#### Decryption
+
+If all cipher values of your application have been encrypted with the
+same KMS key and algorithm, you can configure the `keyId` and `encryptionAlgorithm`
+globally in the `bootstrap.yaml` as shown above. In case you have to decrypt
+ciphers from different keys or different algorithms, you can specify those
+separately for each key using the ["extra options"](#use-extra-options) approach:
+
+e.g. `application.yml`
+
+    secret1: "{cipher}SSdtIHNvbWUgYXN5bW1ldHJpY2FsbHkgZW5jcnlwdGVkIHNlY3JldA=="
+    secret2: "{cipher}[algorithm=SYMMETRIC_DEFAULT]U3ltbWV0cmljIGFuZCBhc3ltbWV0cmljIHNlY3JldHMgY2FuIGJlIG1peGVk"
+    secret3: "{cipher}[algorithm=RSAES_OAEP_SHA_256,keyId=9d9fca31-54c5-4df5-ba4f-127dfb9a5031]SSBoYXZlIGEgY3VzdG9tIGtleSBhbmQgYWxnb3JpdGht"
+
 ### Use extra options
 
 While decrypting config values, extra arguments can be supplied to control the output behavior.
@@ -139,6 +211,8 @@ Encryption context and extra options can be combined in any order.
 | Option | Values | Default | Description |
 | ------ | ------ | ------- | ----------- |
 | output | `plain`, `base64` | `plain` | `plain` returns the decrypted secret as simple String. `base64` returns the decrypted secret in Base64 encoding. This is useful in cases where the plaintext secret contains non-printable characters (e.g. random AES keys) |
+| algorithm | as defined in `com.amazonaws.services.kms.model.EncryptionAlgorithmSpec` | `null` | Use the algorithm to decrypt the cipher text. |
+| keyId | ID or full ARN of a KMS key | `null` | Use the given key to decrypt the cipher text |
 
 
 Hints

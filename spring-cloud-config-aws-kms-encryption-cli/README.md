@@ -1,7 +1,8 @@
 Installation
 ------------
 
-    mvn clean package
+    # in the project root
+    mvn clean package -DskipTests -pl spring-cloud-config-aws-kms-encryption-cli -am
 
 Preparation
 -----------
@@ -14,8 +15,8 @@ Usage
 
 ### Encrypt
 
-    $ ./run.sh --encrypt.plaintext='Hello World!' --aws.kms.keyId='9d9fca31-54c5-4df5-ba4f-127dfb9a5031'
+    ./run.sh --encrypt.plaintext='Hello World!' --aws.kms.keyId='9d9fca31-54c5-4df5-ba4f-127dfb9a5031'
 
 ### Decrypt
 
-    $ ./run.sh --decrypt.ciphertext='CiA47hYvQqWFFGq3TLtzQO5ArcwDkjq69Q=='
+    ./run.sh --decrypt.ciphertext='CiA47hYvQqWFFGq3TLtzQO5ArcwDkjq69Q=='
