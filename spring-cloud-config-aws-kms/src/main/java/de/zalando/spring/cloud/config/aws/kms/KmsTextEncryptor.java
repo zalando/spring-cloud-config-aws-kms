@@ -131,7 +131,7 @@ public class KmsTextEncryptor implements TextEncryptor {
         }
     }
 
-    private boolean isAsymmetricEncryption(String algorithm) {
+    private static boolean isAsymmetricEncryption(String algorithm) {
         return !algorithm.equals("SYMMETRIC_DEFAULT");
     }
 }
