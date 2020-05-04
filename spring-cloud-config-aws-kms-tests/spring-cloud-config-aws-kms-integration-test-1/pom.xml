@@ -6,17 +6,22 @@
 
     <parent>
         <groupId>org.zalando</groupId>
-        <artifactId>spring-cloud-config-aws-kms-parent</artifactId>
+        <artifactId>spring-cloud-config-aws-kms-tests</artifactId>
         <version>5.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>spring-cloud-config-aws-kms-encryption-cli</artifactId>
-    <name>Spring Cloud Config AWS KMS Encryption CLI</name>
+    <artifactId>spring-cloud-config-aws-kms-integration-test-1</artifactId>
+    <name>Spring Cloud Config AWS KMS Integration Tests 1</name>
+
+    <description>Run Integration Tests with old version of AWS SDK</description>
 
     <properties>
+        <!-- Pin the AWS Java SDK to version 1.11.415, which is the default version used by Spring Cloud (Hoxton.SR1).
+             It does note contain the EncryptionAlgorithm feature. -->
+        <aws-java-sdk.version>1.11.415</aws-java-sdk.version>
+
         <maven.install.skip>true</maven.install.skip>
         <maven.deploy.skip>true</maven.deploy.skip>
-        <aws-java-sdk.version>[1.11.774,)</aws-java-sdk.version>
     </properties>
 
     <dependencyManagement>
@@ -39,31 +44,13 @@
         </dependencies>
     </dependencyManagement>
 
-
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.zalando</groupId>
-            <artifactId>spring-cloud-config-aws-kms</artifactId>
+            <artifactId>spring-cloud-config-aws-kms-test-support</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <build>
-        <finalName>${project.artifactId}</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>
