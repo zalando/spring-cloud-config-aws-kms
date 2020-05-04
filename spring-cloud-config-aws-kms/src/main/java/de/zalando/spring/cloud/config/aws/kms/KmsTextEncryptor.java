@@ -68,6 +68,8 @@ public class KmsTextEncryptor implements TextEncryptor {
                     .withKeyId(kmsKeyId)
                     .withPlaintext(ByteBuffer.wrap(text.getBytes()));
 
+            checkAlgorithm(encryptionAlgorithm);
+
             if (IS_ALGORITHM_AVAILABLE) {
                 encryptRequest.setEncryptionAlgorithm(encryptionAlgorithm);
             }
