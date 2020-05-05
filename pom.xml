@@ -16,10 +16,10 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>spring-cloud-config-aws-kms</module>
-        <module>spring-cloud-config-aws-kms-tests</module>
-        <module>spring-cloud-config-aws-kms-coverage</module>
-        <module>spring-cloud-config-aws-kms-encryption-cli</module>
+        <module>library</module>
+        <module>tests</module>
+        <module>coverage</module>
+        <module>encryption-cli</module>
     </modules>
 
     <name>Spring Cloud Config AWS KMS Parent</name>

@@ -14,9 +14,10 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>spring-cloud-config-aws-kms-test-support</module>
-        <module>spring-cloud-config-aws-kms-integration-test-1</module>
-        <module>spring-cloud-config-aws-kms-integration-test-2</module>
+        <module>test-support</module>
+        <module>integration-test-1</module>
+        <module>integration-test-2</module>
+        <module>integration-test-3</module>
     </modules>
 
     <properties>
