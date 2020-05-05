@@ -2,7 +2,7 @@ Installation
 ------------
 
     # in the project root
-    mvn clean package -DskipTests -pl spring-cloud-config-aws-kms-encryption-cli -am
+    mvn clean package -DskipTests -pl encryption-cli -am
 
 Preparation
 -----------

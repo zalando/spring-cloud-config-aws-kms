@@ -245,7 +245,7 @@ The Spring Cloud Config Server library provides an endpoint to encrypt plain tex
 See [reference](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_encryption_and_decryption) for details.
 
 You can also use [AWS CLI](http://docs.aws.amazon.com/cli/latest/reference/kms/encrypt.html#examples) or our small
-[CLI tool](https://github.com/zalando/spring-cloud-config-aws-kms/tree/master/spring-cloud-config-aws-kms-encryption-cli) to encrypt and decrypt values.
+[CLI tool](https://github.com/zalando/spring-cloud-config-aws-kms/tree/master/encryption-cli) to encrypt and decrypt values.
 
 Development
 -----------
@@ -256,7 +256,7 @@ Development
     
 ### Coverage Report
 
-    open spring-cloud-config-aws-kms-coverage/target/site/jacoco/index.html
+    open coverage/target/site/jacoco/index.html
 
 Releases
 --------
