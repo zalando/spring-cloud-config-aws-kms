@@ -236,8 +236,9 @@ When using this library together with `spring-cloud-config-server` some users sa
         ...
         
 The solution is to make sure, that `spring-cloud-config-aws-kms` appears above `spring-cloud-config-server`
-in the list of dependencies of your maven `pom.xml` file. Please take a look at the ConfigServerTest in the
-module integration-test-3 for usage with Spring Cloud Config Server. 
+in the list of dependencies of your maven `pom.xml` file. Please take a look at the
+[ConfigServerTest](https://github.com/zalando/spring-cloud-config-aws-kms/blob/master/tests/integration-test-3/src/test/java/de/zalando/spring/cloud/config/aws/kms/it/ConfigServerTest.java)
+in the module integration-test-3 for usage with Spring Cloud Config Server. 
 
 ### How to get the cipher text?
 
