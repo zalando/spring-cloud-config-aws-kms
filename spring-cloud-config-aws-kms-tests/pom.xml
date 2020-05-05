@@ -17,6 +17,7 @@
         <module>spring-cloud-config-aws-kms-test-support</module>
         <module>spring-cloud-config-aws-kms-integration-test-1</module>
         <module>spring-cloud-config-aws-kms-integration-test-2</module>
+        <module>spring-cloud-config-aws-kms-integration-test-3</module>
     </modules>
 
     <properties>

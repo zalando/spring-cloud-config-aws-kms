@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.zalando</groupId>
+        <artifactId>spring-cloud-config-aws-kms-tests</artifactId>
+        <version>5.2-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>spring-cloud-config-aws-kms-integration-test-3</artifactId>
+    <name>Spring Cloud Config AWS KMS Integration Tests 3</name>
+
+    <description>Run Integration Tests with Spring Cloud Config Server</description>
+
+    <properties>
+        <maven.install.skip>true</maven.install.skip>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.zalando</groupId>
+            <artifactId>spring-cloud-config-aws-kms-test-support</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-config-server</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
