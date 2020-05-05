@@ -1,0 +1,20 @@
+aws:
+  kms:
+    keyId: my-key-123
+    useMock: true
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        native:
+          searchLocations:
+            - classpath:/config-repo
+  profiles:
+    active: native
+logging:
+  level:
+    ROOT: info
+    org.springframework.cloud: DEBUG
+    de.zalando: DEBUG

@@ -215,8 +215,29 @@ Encryption context and extra options can be combined in any order.
 | keyId | ID or full ARN of a KMS key | `null` | Use the given key to decrypt the cipher text |
 
 
-Hints
------
+FAQ
+---
+
+### Error with Spring Cloud Config Server
+
+When using this library together with `spring-cloud-config-server` some users saw this error:
+
+    org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'org.springframework.cloud.config.server.config.EncryptionAutoConfiguration$EncryptorConfiguration': Unsatisfied dependency expressed through field 'encryptor'; nested exception is org.springframework.beans.factory.NoUniqueBeanDefinitionException: No qualifying bean of type 'org.springframework.security.crypto.encrypt.TextEncryptor' available: expected single matching bean but found 2: defaultTextEncryptor,kmsTextEncryptor
+        at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:643) ~[spring-beans-5.2.4.RELEASE.jar:5.2.4.RELEASE]
+        at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:130) ~[spring-beans-5.2.4.RELEASE.jar:5.2.4.RELEASE]
+        at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:399) ~[spring-beans-5.2.4.RELEASE.jar:5.2.4.RELEASE]
+        at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1422) ~[spring-beans-5.2.4.RELEASE.jar:5.2.4.RELEASE]
+        ...
+    Caused by: org.springframework.beans.factory.NoUniqueBeanDefinitionException: No qualifying bean of type 'org.springframework.security.crypto.encrypt.TextEncryptor' available: expected single matching bean but found 2: defaultTextEncryptor,kmsTextEncryptor
+        at org.springframework.beans.factory.config.DependencyDescriptor.resolveNotUnique(DependencyDescriptor.java:220) ~[spring-beans-5.2.4.RELEASE.jar:5.2.4.RELEASE]
+        at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1265) ~[spring-beans-5.2.4.RELEASE.jar:5.2.4.RELEASE]
+        at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1207) ~[spring-beans-5.2.4.RELEASE.jar:5.2.4.RELEASE]
+        at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:640) ~[spring-beans-5.2.4.RELEASE.jar:5.2.4.RELEASE]
+        ...
+        
+The solution is to make sure, that `spring-cloud-config-aws-kms` appears above `spring-cloud-config-server`
+in the list of dependencies of your maven `pom.xml` file. Please take a look at the ConfigServerTest in the
+module integration-test-3 for usage with Spring Cloud Config Server. 
 
 ### How to get the cipher text?
 

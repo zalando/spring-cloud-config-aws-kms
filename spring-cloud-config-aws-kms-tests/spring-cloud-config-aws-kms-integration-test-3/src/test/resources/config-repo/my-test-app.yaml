@@ -1,0 +1,4 @@
+info:
+  foo: "bar"
+top:
+  secret: '{cipher}c2VjcmV0'
