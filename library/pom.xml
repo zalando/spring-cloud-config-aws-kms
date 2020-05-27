@@ -116,26 +116,6 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>${nexus-staging-maven-plugin.version}</version>
-                <configuration>
-                    <serverId>ossrh</serverId>
-                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                    <autoDropAfterRelease>true</autoDropAfterRelease>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>default-deploy</id>
-                        <goals>
-                            <goal>deploy</goal>
-                        </goals>
-                        <phase>deploy</phase>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
             </plugin>
