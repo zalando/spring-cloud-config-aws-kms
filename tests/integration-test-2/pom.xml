@@ -17,8 +17,8 @@
         <!-- Make sure to use a more recent AWS SDK version to enable asymmetric encryption -->
         <aws-java-sdk.version>[1.11.774,)</aws-java-sdk.version>
 
-        <maven.install.skip>true</maven.install.skip>
         <maven.deploy.skip>true</maven.deploy.skip>
+        <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
     </properties>
 
     <dependencyManagement>
