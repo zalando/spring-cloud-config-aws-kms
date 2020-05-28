@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.zalando</groupId>
         <artifactId>spring-cloud-config-aws-kms-parent</artifactId>
-        <version>5.1.2</version>
+        <version>5.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>spring-cloud-config-aws-kms-encryption-cli</artifactId>
