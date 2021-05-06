@@ -5,9 +5,9 @@ import com.amazonaws.services.kms.model.DecryptRequest;
 import com.amazonaws.services.kms.model.DecryptResult;
 import com.amazonaws.services.kms.model.EncryptRequest;
 import com.amazonaws.services.kms.model.EncryptResult;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.nio.ByteBuffer;
 import java.util.Base64;
@@ -37,7 +37,7 @@ public class KmsTextEncryptorTest {
     private DecryptRequest expectedDecryptRequest;
     private DecryptResult decryptResult;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         mockKms = mock(AWSKMS.class);
         textEncryptor = new KmsTextEncryptor(mockKms, KMS_KEY_ID, SYMMETRIC_DEFAULT.toString());
@@ -60,7 +60,7 @@ public class KmsTextEncryptorTest {
         when(mockKms.decrypt(any(DecryptRequest.class))).thenReturn(decryptResult);
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         verifyNoMoreInteractions(mockKms);
     }
