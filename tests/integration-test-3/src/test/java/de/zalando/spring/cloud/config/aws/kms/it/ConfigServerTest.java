@@ -4,6 +4,7 @@ import com.amazonaws.services.kms.AWSKMS;
 import com.amazonaws.services.kms.model.DecryptRequest;
 import com.amazonaws.services.kms.model.EncryptRequest;
 import com.amazonaws.services.kms.model.EncryptResult;
+import com.amazonaws.services.kms.model.EncryptionAlgorithmSpec;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,6 +20,7 @@ import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.Base64;
 
+import static com.amazonaws.services.kms.model.EncryptionAlgorithmSpec.SYMMETRIC_DEFAULT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -56,7 +58,8 @@ public class ConfigServerTest {
                 .containsExactly("Hello World");
 
         final DecryptRequest expectedRequest = new DecryptRequest()
-                .withCiphertextBlob(ByteBuffer.wrap(Base64.getDecoder().decode("c2VjcmV0".getBytes())));
+                .withCiphertextBlob(ByteBuffer.wrap(Base64.getDecoder().decode("c2VjcmV0".getBytes())))
+                .withEncryptionAlgorithm(SYMMETRIC_DEFAULT);
         verify(mockKms, atLeastOnce()).decrypt(eq(expectedRequest));
     }
 
