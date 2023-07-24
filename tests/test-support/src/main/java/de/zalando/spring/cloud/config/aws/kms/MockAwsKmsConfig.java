@@ -1,16 +1,19 @@
 package de.zalando.spring.cloud.config.aws.kms;
 
-import com.amazonaws.services.kms.AWSKMS;
-import com.amazonaws.services.kms.model.DecryptRequest;
-import com.amazonaws.services.kms.model.DecryptResult;
+
 import org.mockito.stubbing.Answer;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import software.amazon.awssdk.awscore.AwsClient;
+import software.amazon.awssdk.core.SdkBytes;
+import software.amazon.awssdk.services.kms.KmsClient;
+import software.amazon.awssdk.services.kms.model.DecryptRequest;
+import software.amazon.awssdk.services.kms.model.DecryptResponse;
 
 import java.lang.reflect.Method;
-import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
 import static org.mockito.Mockito.mock;
 
@@ -22,16 +25,16 @@ public class MockAwsKmsConfig {
     public static final String PLAINTEXT = "Hello World";
 
     private final Answer<?> defaultAnswer = invocation -> {
-        final Method decryptMethod = AWSKMS.class.getMethod("decrypt", DecryptRequest.class);
+        final Method decryptMethod = KmsClient.class.getMethod("decrypt", DecryptRequest.class);
         if (invocation.getMethod().equals(decryptMethod)) {
-            return new DecryptResult().withPlaintext(ByteBuffer.wrap(PLAINTEXT.getBytes()));
+            return DecryptResponse.builder().plaintext(SdkBytes.fromString(PLAINTEXT, StandardCharsets.UTF_8)).build();
         } else {
             throw new IllegalStateException("Unexpected mock invocation: " + invocation);
         }
     };
 
     @Bean
-    AWSKMS kms() {
-        return mock(AWSKMS.class, defaultAnswer);
+    KmsClient kms() {
+        return mock(KmsClient.class, defaultAnswer);
     }
 }

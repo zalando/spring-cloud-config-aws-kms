@@ -1,13 +1,13 @@
 package de.zalando.spring.cloud.config.aws.kms.it;
 
-import com.amazonaws.services.kms.AWSKMS;
-import com.amazonaws.services.kms.model.DecryptRequest;
-import com.amazonaws.services.kms.model.EncryptRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.test.context.ActiveProfiles;
+import software.amazon.awssdk.services.kms.KmsClient;
+import software.amazon.awssdk.services.kms.model.DecryptRequest;
+import software.amazon.awssdk.services.kms.model.EncryptRequest;
 
 import java.util.Base64;
 
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.verify;
 public class AsymmetricEncryptionMissingKeyIdTest {
 
     @Autowired
-    private AWSKMS mockKms;
+    private KmsClient mockKms;
 
     @Autowired
     private TextEncryptor textEncryptor;

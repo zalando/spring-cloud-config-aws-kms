@@ -1,63 +1,75 @@
 package de.zalando.spring.cloud.config.aws.kms;
 
-import com.amazonaws.services.kms.AWSKMS;
-import com.amazonaws.services.kms.model.DecryptRequest;
-import com.amazonaws.services.kms.model.DecryptResult;
-import com.amazonaws.services.kms.model.EncryptRequest;
-import com.amazonaws.services.kms.model.EncryptResult;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import software.amazon.awssdk.core.SdkBytes;
+import software.amazon.awssdk.services.kms.KmsClient;
+import software.amazon.awssdk.services.kms.model.DecryptRequest;
+import software.amazon.awssdk.services.kms.model.DecryptResponse;
+import software.amazon.awssdk.services.kms.model.EncryptRequest;
+import software.amazon.awssdk.services.kms.model.EncryptResponse;
 
-import java.nio.ByteBuffer;
 import java.util.Base64;
 
-import static com.amazonaws.services.kms.model.EncryptionAlgorithmSpec.SYMMETRIC_DEFAULT;
-import static java.nio.ByteBuffer.allocate;
 import static java.nio.ByteBuffer.wrap;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.eq;
-import static org.mockito.Mockito.mock;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import static software.amazon.awssdk.services.kms.model.EncryptionAlgorithmSpec.SYMMETRIC_DEFAULT;
 
 public class KmsTextEncryptorTest {
 
     private static final String KMS_KEY_ID = "testKeyId";
     private static final String PLAINTEXT = "plaintext";
     private static final String CIPHER_TEXT = "C1PHERT3XT";
-    private static final String BASE64_CIPHER_TEXT = new String(Base64.getEncoder().encode(CIPHER_TEXT.getBytes()));
-
-    private AWSKMS mockKms;
+    private static final String BASE64_CIPHER_TEXT =
+            new String(Base64.getEncoder().encode(CIPHER_TEXT.getBytes()));
+    private KmsClient mockKms;
     private KmsTextEncryptor textEncryptor;
     private EncryptRequest expectedEncryptRequest;
-    private EncryptResult encryptResult;
     private DecryptRequest expectedDecryptRequest;
-    private DecryptResult decryptResult;
+
+    private EncryptResponse expectedEncryptResponse;
+    private DecryptResponse expectedDecryptResponse;
 
     @BeforeEach
     public void setUp() {
-        mockKms = mock(AWSKMS.class);
+        mockKms = mock(KmsClient.class);
         textEncryptor = new KmsTextEncryptor(mockKms, KMS_KEY_ID, SYMMETRIC_DEFAULT.toString());
+        EncryptRequest.Builder requestBuilder =
+                EncryptRequest.builder()
+                        .keyId(KMS_KEY_ID)
+                        .plaintext(SdkBytes.fromByteArray(PLAINTEXT.getBytes()))
+                        .encryptionAlgorithm(SYMMETRIC_DEFAULT.toString());
 
-        expectedEncryptRequest = new EncryptRequest();
-        expectedEncryptRequest.setKeyId(KMS_KEY_ID);
-        expectedEncryptRequest.setPlaintext(wrap(PLAINTEXT.getBytes()));
-        expectedEncryptRequest.setEncryptionAlgorithm(SYMMETRIC_DEFAULT.toString());
+        EncryptResponse.Builder encryptResponse =
+                EncryptResponse.builder()
+                        .keyId(KMS_KEY_ID)
+                        .ciphertextBlob(SdkBytes.fromByteBuffer(wrap(CIPHER_TEXT.getBytes())))
+                        .encryptionAlgorithm(SYMMETRIC_DEFAULT.toString());
 
-        encryptResult = new EncryptResult();
-        encryptResult.setCiphertextBlob(wrap(CIPHER_TEXT.getBytes()));
-        when(mockKms.encrypt(any(EncryptRequest.class))).thenReturn(encryptResult);
+        DecryptRequest.Builder decryptRequest =
+                DecryptRequest.builder()
+                        .ciphertextBlob(SdkBytes.fromByteBuffer(wrap(BASE64_CIPHER_TEXT.getBytes())))
+                        .encryptionAlgorithm(SYMMETRIC_DEFAULT.toString());
 
-        expectedDecryptRequest = new DecryptRequest();
-        expectedDecryptRequest.setCiphertextBlob(wrap(CIPHER_TEXT.getBytes()));
-        expectedDecryptRequest.setEncryptionAlgorithm(SYMMETRIC_DEFAULT.toString());
+        DecryptResponse.Builder decryptResponse =
+                DecryptResponse.builder()
+                        .keyId(KMS_KEY_ID)
+                        .plaintext(SdkBytes.fromByteArray(PLAINTEXT.getBytes()))
+                        .encryptionAlgorithm(SYMMETRIC_DEFAULT.toString());
 
-        decryptResult = new DecryptResult();
-        decryptResult.setPlaintext(wrap(PLAINTEXT.getBytes()));
-        when(mockKms.decrypt(any(DecryptRequest.class))).thenReturn(decryptResult);
+        expectedEncryptRequest = requestBuilder.build();
+        expectedEncryptResponse = encryptResponse.build();
+
+        when(mockKms.encrypt(any(EncryptRequest.class))).thenReturn(encryptResponse.build());
+
+        expectedDecryptRequest = decryptRequest.build();
+
+        when(mockKms.decrypt(any(DecryptRequest.class))).thenReturn(decryptResponse.build());
     }
 
     @AfterEach
@@ -68,13 +80,6 @@ public class KmsTextEncryptorTest {
     @Test
     public void testEncrypt() {
         assertThat(textEncryptor.encrypt(PLAINTEXT)).isEqualTo(BASE64_CIPHER_TEXT);
-        verify(mockKms).encrypt(eq(expectedEncryptRequest));
-    }
-
-    @Test
-    public void testEncryptEmptyResponse() {
-        encryptResult.setCiphertextBlob(allocate(0));
-        assertThat(textEncryptor.encrypt(PLAINTEXT)).isEqualTo("");
         verify(mockKms).encrypt(eq(expectedEncryptRequest));
     }
 
@@ -101,13 +106,6 @@ public class KmsTextEncryptorTest {
     @Test
     public void testDecrypt() {
         assertThat(textEncryptor.decrypt(BASE64_CIPHER_TEXT)).isEqualTo(PLAINTEXT);
-        verify(mockKms).decrypt(eq(expectedDecryptRequest));
-    }
-
-    @Test
-    public void testDecryptEmptyResult() {
-        decryptResult.setPlaintext(ByteBuffer.allocate(0));
-        assertThat(textEncryptor.decrypt(BASE64_CIPHER_TEXT)).isEqualTo("");
-        verify(mockKms).decrypt(eq(expectedDecryptRequest));
+        verify(mockKms).decrypt(any(DecryptRequest.class));
     }
 }

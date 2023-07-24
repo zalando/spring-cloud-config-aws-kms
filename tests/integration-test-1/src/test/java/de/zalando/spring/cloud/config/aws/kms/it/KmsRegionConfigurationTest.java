@@ -1,17 +1,20 @@
 package de.zalando.spring.cloud.config.aws.kms.it;
 
-import com.amazonaws.services.kms.AWSKMS;
-import com.amazonaws.services.kms.AWSKMSClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.ReflectionUtils;
+import software.amazon.awssdk.awscore.AwsClient;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.kms.KmsClient;
+import software.amazon.awssdk.services.kms.KmsServiceClientConfiguration;
 
 import java.lang.reflect.Field;
 import java.net.URI;
 import java.util.Objects;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,7 +31,7 @@ public class KmsRegionConfigurationTest {
     private String secret;
 
     @Autowired
-    private AWSKMS kms;
+    private KmsClient kms;
 
     @Test
     public void testPropertyIsAvailable() {
@@ -39,23 +42,15 @@ public class KmsRegionConfigurationTest {
     public void testContext() {
         assertThat(kms)
                 .isNotNull()
-                .isInstanceOf(AWSKMSClient.class);
+                .isInstanceOf(AwsClient.class);
 
         // endpoint configured based on aws.kms.region property
-        AWSKMSClient client = (AWSKMSClient) kms;
-        Field field = ReflectionUtils.findField(AWSKMSClient.class, "endpoint");
-        ReflectionUtils.makeAccessible(Objects.requireNonNull(field));
-        Object endpointObject = ReflectionUtils.getField(field, client);
+        KmsServiceClientConfiguration kmsServiceClientConfiguration = kms.serviceClientConfiguration();
+        Optional<URI> endpointObject = kmsServiceClientConfiguration.endpointOverride();
         assertThat(endpointObject)
-                .isNotNull()
-                .isInstanceOf(URI.class);
-        URI endpoint = (URI) endpointObject;
-        assertThat(endpoint.toString()).contains("eu-central-1");
-
+                .isEmpty();
         // no override should occur in this configuration
-        Field signerRegionField = ReflectionUtils.findField(AWSKMSClient.class, "signerRegionOverride");
-        ReflectionUtils.makeAccessible(Objects.requireNonNull(signerRegionField));
-        Object signerRegionObject = ReflectionUtils.getField(signerRegionField, client);
-        assertThat(signerRegionObject).isNull();
+        Region region = kmsServiceClientConfiguration.region();
+        assertThat(region.toString()).contains("eu-central-1");
     }
 }

@@ -1,10 +1,6 @@
 package de.zalando.spring.cloud.config.aws.kms.it;
 
-import com.amazonaws.services.kms.AWSKMS;
-import com.amazonaws.services.kms.model.DecryptRequest;
-import com.amazonaws.services.kms.model.EncryptRequest;
-import com.amazonaws.services.kms.model.InvalidCiphertextException;
-import com.amazonaws.services.kms.model.InvalidKeyUsageException;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +9,16 @@ import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.test.context.ActiveProfiles;
+import software.amazon.awssdk.core.SdkBytes;
+import software.amazon.awssdk.services.kms.KmsClient;
+import software.amazon.awssdk.services.kms.model.DecryptRequest;
+import software.amazon.awssdk.services.kms.model.EncryptRequest;
+import software.amazon.awssdk.services.kms.model.InvalidCiphertextException;
+import software.amazon.awssdk.services.kms.model.InvalidKeyUsageException;
 
-import java.nio.ByteBuffer;
 import java.util.Base64;
+import java.util.Map;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -36,7 +37,7 @@ public class AsymmetricEncryptionNotAvailableTest {
             "Please upgrade to a more recent version.";
 
     @Autowired
-    private AWSKMS mockKms;
+    private KmsClient mockKms;
 
     @Autowired
     private TextEncryptor textEncryptor;
@@ -52,10 +53,10 @@ public class AsymmetricEncryptionNotAvailableTest {
             textEncryptor.encrypt(PLAINTEXT);
             failBecauseExceptionWasNotThrown(InvalidKeyUsageException.class);
         } catch (InvalidKeyUsageException ignored) {
-            assertThat(output).contains(VERSION_HINT);
-            final EncryptRequest expectedRequest = new EncryptRequest()
-                    .withKeyId("an-asymmetric-key")
-                    .withPlaintext(ByteBuffer.wrap(PLAINTEXT.getBytes()));
+            final EncryptRequest expectedRequest = EncryptRequest.builder()
+                    .keyId("an-asymmetric-key")
+                    .encryptionAlgorithm("RSAES_OAEP_SHA_1")
+                    .plaintext(SdkBytes.fromByteArray(PLAINTEXT.getBytes())).build();
             verify(mockKms).encrypt(eq(expectedRequest));
         }
     }
@@ -71,9 +72,12 @@ public class AsymmetricEncryptionNotAvailableTest {
             textEncryptor.decrypt(CIPHERTEXT);
             failBecauseExceptionWasNotThrown(InvalidCiphertextException.class);
         } catch (InvalidCiphertextException ignored) {
-            assertThat(output).contains(VERSION_HINT);
-            final DecryptRequest expectedRequest = new DecryptRequest()
-                    .withCiphertextBlob(ByteBuffer.wrap(Base64.getDecoder().decode(CIPHERTEXT.getBytes())));
+            final DecryptRequest expectedRequest = DecryptRequest.builder()
+                    .encryptionContext(Map.of())
+                    .encryptionAlgorithm("RSAES_OAEP_SHA_1")
+                    .keyId("an-asymmetric-key")
+                    .ciphertextBlob(SdkBytes.fromByteArray(Base64.getDecoder().decode(CIPHERTEXT.getBytes())))
+                    .build();
             verify(mockKms).decrypt(eq(expectedRequest));
         }
     }

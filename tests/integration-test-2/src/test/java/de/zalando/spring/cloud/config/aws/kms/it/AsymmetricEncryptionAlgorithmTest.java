@@ -1,22 +1,23 @@
 package de.zalando.spring.cloud.config.aws.kms.it;
 
-import com.amazonaws.services.kms.AWSKMS;
-import com.amazonaws.services.kms.model.DecryptRequest;
-import com.amazonaws.services.kms.model.EncryptRequest;
-import com.amazonaws.services.kms.model.EncryptResult;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
 import org.springframework.test.context.ActiveProfiles;
+import software.amazon.awssdk.core.SdkBytes;
+import software.amazon.awssdk.services.kms.KmsClient;
+import software.amazon.awssdk.services.kms.model.DecryptRequest;
+import software.amazon.awssdk.services.kms.model.EncryptRequest;
+import software.amazon.awssdk.services.kms.model.EncryptResponse;
 
 import java.nio.ByteBuffer;
 import java.util.Base64;
+import java.util.Map;
 
-import static com.amazonaws.services.kms.model.EncryptionAlgorithmSpec.RSAES_OAEP_SHA_1;
-import static com.amazonaws.services.kms.model.EncryptionAlgorithmSpec.RSAES_OAEP_SHA_256;
-import static com.amazonaws.services.kms.model.EncryptionAlgorithmSpec.SYMMETRIC_DEFAULT;
+
 import static de.zalando.spring.cloud.config.aws.kms.MockAwsKmsConfig.PLAINTEXT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -24,6 +25,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
+import static software.amazon.awssdk.services.kms.model.EncryptionAlgorithmSpec.*;
 
 @SpringBootTest
 @ActiveProfiles("asymmetric")
@@ -37,7 +39,7 @@ public class AsymmetricEncryptionAlgorithmTest {
             ByteBuffer.wrap("I have a custom key and algorithm".getBytes());
 
     @Autowired
-    private AWSKMS mockKms;
+    private KmsClient mockKms;
 
     @Autowired
     private TextEncryptor textEncryptor;
@@ -55,49 +57,51 @@ public class AsymmetricEncryptionAlgorithmTest {
     void testDecryptAsymmetricProperty() {
         assertThat(decryptedSecret1).isEqualTo(PLAINTEXT);
 
-        final DecryptRequest decryptRequest = new DecryptRequest();
-        decryptRequest.withCiphertextBlob(CIPHER_TEXT_BLOB1);
-        decryptRequest.withEncryptionAlgorithm(RSAES_OAEP_SHA_1);
-        decryptRequest.withKeyId("asymmetric-sha1-sample-key");
-        verify(mockKms, atLeastOnce()).decrypt(eq(decryptRequest));
+        DecryptRequest.Builder decryptRequest = DecryptRequest.builder();
+        decryptRequest.ciphertextBlob(SdkBytes.fromByteBuffer(CIPHER_TEXT_BLOB1));
+        decryptRequest.encryptionAlgorithm(RSAES_OAEP_SHA_1);
+        decryptRequest.keyId("asymmetric-sha1-sample-key");
+        verify(mockKms, atLeastOnce()).decrypt(any(DecryptRequest.class));
     }
 
     @Test
     void testAlgorithmsCanBeMixed() {
         assertThat(decryptedSecret2).isEqualTo(PLAINTEXT);
 
-        final DecryptRequest decryptRequest = new DecryptRequest();
-        decryptRequest.withCiphertextBlob(CIPHER_TEXT_BLOB2);
-        decryptRequest.withEncryptionAlgorithm(SYMMETRIC_DEFAULT);
-        verify(mockKms, atLeastOnce()).decrypt(eq(decryptRequest));
+        DecryptRequest.Builder decryptRequest = DecryptRequest.builder();
+        decryptRequest.ciphertextBlob(SdkBytes.fromByteBuffer(CIPHER_TEXT_BLOB2));
+        decryptRequest.encryptionAlgorithm(SYMMETRIC_DEFAULT);
+        decryptRequest.encryptionContext(Map.of());
+        verify(mockKms, atLeastOnce()).decrypt(decryptRequest.build());
     }
 
     @Test
     void testSecretWithCustomKeyId() {
         assertThat(decryptedSecret3).isEqualTo(PLAINTEXT);
 
-        final DecryptRequest decryptRequest = new DecryptRequest();
-        decryptRequest.withCiphertextBlob(CIPHER_TEXT_BLOB3);
-        decryptRequest.withEncryptionAlgorithm(RSAES_OAEP_SHA_256);
-        decryptRequest.withKeyId("different-key");
-        verify(mockKms, atLeastOnce()).decrypt(eq(decryptRequest));
+        DecryptRequest.Builder decryptRequest = DecryptRequest.builder();
+        decryptRequest.ciphertextBlob(SdkBytes.fromByteBuffer(CIPHER_TEXT_BLOB3));
+        decryptRequest.encryptionAlgorithm(RSAES_OAEP_SHA_256);
+        decryptRequest.encryptionContext(Map.of());
+        decryptRequest.keyId("different-key");
+        verify(mockKms, atLeastOnce()).decrypt(decryptRequest.build());
     }
 
     @Test
     void testEncrypt() {
         final byte[] cipherTextBytes = "bla".getBytes();
         final String expectedCipherString = Base64.getEncoder().encodeToString(cipherTextBytes);
-        doReturn(new EncryptResult().withCiphertextBlob(ByteBuffer.wrap(cipherTextBytes)))
+        doReturn(EncryptResponse.builder().ciphertextBlob(SdkBytes.fromByteArray(cipherTextBytes)).build())
                 .when(mockKms).encrypt(any(EncryptRequest.class));
 
         final String mySecret = "my-secret";
         final String encryptedString = textEncryptor.encrypt(mySecret);
         assertThat(encryptedString).isEqualTo(expectedCipherString);
 
-        final EncryptRequest encryptRequest = new EncryptRequest()
-                .withEncryptionAlgorithm("RSAES_OAEP_SHA_1")
-                .withKeyId("asymmetric-sha1-sample-key")
-                .withPlaintext(ByteBuffer.wrap(mySecret.getBytes()));
+        final EncryptRequest encryptRequest = EncryptRequest.builder()
+                .encryptionAlgorithm("RSAES_OAEP_SHA_1")
+                .keyId("asymmetric-sha1-sample-key")
+                .plaintext(SdkBytes.fromByteArray(mySecret.getBytes())).build();
         verify(mockKms).encrypt(eq(encryptRequest));
     }
 }

@@ -7,19 +7,12 @@ updates:
     time: "04:00"
   open-pull-requests-limit: 10
   ignore:
-  - dependency-name: com.amazonaws:aws-java-sdk-core
+  - dependency-name: software.amazon.awssdk:sdk-core
     versions:
-    - "> 1.11.415"
-  - dependency-name: com.amazonaws:aws-java-sdk-kms
-    versions:
-    - "> 1.11.415"
-  - dependency-name: com.amazonaws:jmespath-java
+    - "> 2.20.92"
+  - dependency-name: software.amazon.awssdk:kms
     versions:
     - "> 1.11.415"
   - dependency-name: org.springframework.cloud:spring-cloud-starter-parent
     versions:
-    - "< 2, >= 1.a"
-  - dependency-name: org.springframework.cloud:spring-cloud-starter-parent
-    versions:
-    - Hoxton.SR10
-    - Hoxton.SR9
+    - "= 2020.0.3"

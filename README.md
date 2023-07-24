@@ -35,6 +35,7 @@ Version | Use with
 **3.x** | Spring Cloud Finchley + Spring Boot 2.0
 **4.x** | Spring Cloud Greenwich + Spring Boot 2.1
 **5.x** | Spring Cloud Hoxton + Spring Boot 2.2
+**6.x** | Spring Cloud 2022.0.3 + Spring Boot 3.x
 
 ### Step 1
 Add our dependency to your pom.xml (or Gradle build file).
@@ -53,29 +54,23 @@ Use a more recent version of the AWS SDK. To enable all features of this library
 manually.
 
     <properties>
-        <aws-java-sdk.version>1.11.774</aws-java-sdk.version>
+           <aws-java-sdk.version>[2.20.92,)</aws-java-sdk.version>
     </properties>
 
-    <dependencyManagement>
+     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.amazonaws</groupId>
-                <artifactId>aws-java-sdk-kms</artifactId>
+                <groupId>software.amazon.awssdk</groupId>
+                <artifactId>kms</artifactId>
                 <version>${aws-java-sdk.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.amazonaws</groupId>
-                <artifactId>aws-java-sdk-core</artifactId>
-                <version>${aws-java-sdk.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.amazonaws</groupId>
-                <artifactId>jmespath-java</artifactId>
+                <groupId>software.amazon.awssdk</groupId>
+                <artifactId>sdk-core</artifactId>
                 <version>${aws-java-sdk.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
-
 
 ### Optional: Step 2
 Apply configuration to the application's [Bootstrap Context](http://cloud.spring.io/spring-cloud-static/Greenwich.RELEASE/single/spring-cloud.html#_the_bootstrap_application_context)
@@ -100,13 +95,9 @@ E.g. `bootstrap.yml`:
             encryptionAlgorithm: "RSAES_OAEP_SHA_256"
             
             # Optional: Enable endpoint usage, if provided, aws.kms.region should be excluded as it will be ignored
-            endpoint:
-                # Required: service endpoint (vpc endpoint or standard regional endpoint); https://kms.eu-central-1.amazonaws.com is also valid
-                service-endpoint: kms.eu-central-1.amazonaws.com
-                
-                # Optional: signing region for SigV4 signing of requests - if used, should be different from the already regional service-endpoint
-                signing-region: us-east-1
-                
+            # Required: service endpoint (vpc endpoint or standard regional endpoint); https://kms.eu-central-1.amazonaws.com is also valid
+            endpointOverride: https://kms.eu-central-1.amazonaws.com
+
                 
 
 The `aws.kms.keyId` property must be set if
@@ -119,14 +110,9 @@ Those are the properties used by this library:
     - either the keyId or the full ARN of the KMS key
 - `aws.kms.enabled` (defaults to true)
 - `aws.kms.encryptionAlgorithm`
-- `aws.kms.endpoint`
-    - if used, this will cause aws.kms.region to be ignored
-- `aws.kms.endpoint.service-endpoint`
-    - endpoint address with or without https:// prefix
-- `aws.kms.endpoint.signing-region` 
-    - in most cases can be omitted
-    - if provided, it will usually differ from region that hosts the service-endpoint
- 
+- `aws.kms.endpointOverride`
+  - Configure the endpoint with which the SDK should communicate.
+    It is important to know that EndpointProviders and the endpoint override on the client are not mutually exclusive. In all existing cases, the endpoint override is passed as a parameter to the provider and the provider *may* modify it. For example, the S3 provider may add the bucket name as a prefix to the endpoint override for virtual bucket addressing.
 
 **AWS region** and **credentials** are taken from the environment through the
 [Default Credential Provider Chain](http://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html#credentials-default)
@@ -208,11 +194,11 @@ Encryption context and extra options can be combined in any order.
 `"{cipher}[output=base64](Code=MzUx)..."` is equivalent to `"{cipher}(Code=MzUx)[output=base64]..."`.
 
 #### Available Options
-| Option | Values | Default | Description |
-| ------ | ------ | ------- | ----------- |
-| output | `plain`, `base64` | `plain` | `plain` returns the decrypted secret as simple String. `base64` returns the decrypted secret in Base64 encoding. This is useful in cases where the plaintext secret contains non-printable characters (e.g. random AES keys) |
-| algorithm | as defined in `com.amazonaws.services.kms.model.EncryptionAlgorithmSpec` | `null` | Use the algorithm to decrypt the cipher text. |
-| keyId | ID or full ARN of a KMS key | `null` | Use the given key to decrypt the cipher text |
+| Option | Values                                                                        | Default | Description |
+| ------ |-------------------------------------------------------------------------------| ------- | ----------- |
+| output | `plain`, `base64`                                                             | `plain` | `plain` returns the decrypted secret as simple String. `base64` returns the decrypted secret in Base64 encoding. This is useful in cases where the plaintext secret contains non-printable characters (e.g. random AES keys) |
+| algorithm | as defined in `software.amazon.awssdk.services.kms.model.EncryptionAlgorithmSpec` | `null` | Use the algorithm to decrypt the cipher text. |
+| keyId | ID or full ARN of a KMS key                                                   | `null` | Use the given key to decrypt the cipher text |
 
 
 FAQ
