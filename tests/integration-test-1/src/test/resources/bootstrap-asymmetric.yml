@@ -1,8 +1,0 @@
-aws:
-  kms:
-    useMock: true
-    encryptionAlgorithm: "RSAES_OAEP_SHA_1"
-    keyId: "an-asymmetric-key"
-spring:
-  main:
-    banner-mode: "off"

@@ -1,3 +1,0 @@
-aws:
-  kms:
-    encryptionAlgorithm: "RSAES_OAEP_SHA_1"

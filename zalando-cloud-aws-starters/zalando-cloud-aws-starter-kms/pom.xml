@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<parent>
+		<artifactId>zalando-cloud-aws</artifactId>
+		<groupId>com.zalando.awspring.cloud</groupId>
+		<version>3.1.1-SNAPSHOT</version>
+		<relativePath>../../pom.xml</relativePath>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>zalando-cloud-aws-starter-kms</artifactId>
+	<name>Zalando Cloud AWS KMS Starter</name>
+	<description>Zalando Cloud AWS Key Management Service Starter</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>io.awspring.cloud</groupId>
+			<artifactId>spring-cloud-aws-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.zalando.awspring.cloud</groupId>
+			<artifactId>zalando-cloud-aws-kms</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+</project>
