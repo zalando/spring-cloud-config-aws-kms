@@ -12,8 +12,6 @@
     <name>Spring Cloud Config AWS KMS Encryption CLI</name>
 
     <properties>
-        <maven.install.skip>true</maven.install.skip>
-        <maven.deploy.skip>true</maven.deploy.skip>
         <aws-java-sdk.version>[1.11.774,)</aws-java-sdk.version>
     </properties>
 

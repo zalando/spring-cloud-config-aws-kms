@@ -14,8 +14,8 @@
     <description>Run Integration Tests with Spring Cloud Config Server</description>
 
     <properties>
-        <maven.install.skip>true</maven.install.skip>
         <maven.deploy.skip>true</maven.deploy.skip>
+        <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
     </properties>
 
     <dependencies>
