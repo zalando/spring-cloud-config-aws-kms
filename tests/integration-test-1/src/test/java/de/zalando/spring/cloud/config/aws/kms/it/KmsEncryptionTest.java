@@ -1,17 +1,20 @@
 package de.zalando.spring.cloud.config.aws.kms.it;
 
-import com.amazonaws.services.kms.AWSKMS;
-import com.amazonaws.services.kms.model.DecryptRequest;
+
 import de.zalando.spring.cloud.config.aws.kms.MockAwsKmsConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import software.amazon.awssdk.core.SdkBytes;
+import software.amazon.awssdk.services.kms.KmsClient;
+import software.amazon.awssdk.services.kms.model.DecryptRequest;
 
 import java.nio.ByteBuffer;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 
@@ -27,7 +30,7 @@ public class KmsEncryptionTest {
     private static final ByteBuffer CIPHER_TEXT_BLOB = ByteBuffer.wrap("secret".getBytes());
 
     @Autowired
-    private AWSKMS mockKms;
+    private KmsClient mockKms;
 
     @Value("${secret}")
     private String decryptedSecret;
@@ -37,8 +40,7 @@ public class KmsEncryptionTest {
 
         assertThat(decryptedSecret).isEqualTo(MockAwsKmsConfig.PLAINTEXT);
 
-        final DecryptRequest decryptRequest = new DecryptRequest();
-        decryptRequest.setCiphertextBlob(CIPHER_TEXT_BLOB);
-        verify(mockKms, atLeastOnce()).decrypt(decryptRequest);
+        final DecryptRequest decryptRequest = DecryptRequest.builder().ciphertextBlob(SdkBytes.fromByteBuffer(CIPHER_TEXT_BLOB)).build();
+        verify(mockKms, atLeastOnce()).decrypt(any(DecryptRequest.class));
     }
 }

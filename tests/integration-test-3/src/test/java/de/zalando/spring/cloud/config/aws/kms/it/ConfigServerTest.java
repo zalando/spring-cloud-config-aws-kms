@@ -1,10 +1,5 @@
 package de.zalando.spring.cloud.config.aws.kms.it;
 
-import com.amazonaws.services.kms.AWSKMS;
-import com.amazonaws.services.kms.model.DecryptRequest;
-import com.amazonaws.services.kms.model.EncryptRequest;
-import com.amazonaws.services.kms.model.EncryptResult;
-import com.amazonaws.services.kms.model.EncryptionAlgorithmSpec;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,21 +10,24 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.cloud.config.server.EnableConfigServer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import software.amazon.awssdk.core.SdkBytes;
+import software.amazon.awssdk.services.kms.KmsClient;
+import software.amazon.awssdk.services.kms.model.DecryptRequest;
+import software.amazon.awssdk.services.kms.model.EncryptRequest;
+import software.amazon.awssdk.services.kms.model.EncryptResponse;
 
 import java.net.URI;
-import java.nio.ByteBuffer;
 import java.util.Base64;
+import java.util.Map;
 
-import static com.amazonaws.services.kms.model.EncryptionAlgorithmSpec.SYMMETRIC_DEFAULT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.verify;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 import static org.springframework.http.RequestEntity.post;
+import static software.amazon.awssdk.services.kms.model.EncryptionAlgorithmSpec.SYMMETRIC_DEFAULT;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT, classes = ConfigServerTest.TestApp.class)
 public class ConfigServerTest {
@@ -38,7 +36,7 @@ public class ConfigServerTest {
     private TestRestTemplate rest;
 
     @Autowired
-    private AWSKMS mockKms;
+    private KmsClient mockKms;
 
     private final BasicJsonTester json = new BasicJsonTester(getClass());
 
@@ -57,10 +55,11 @@ public class ConfigServerTest {
         assertThat(jsonBody).extractingJsonPathArrayValue("$.propertySources..source['top.secret']")
                 .containsExactly("Hello World");
 
-        final DecryptRequest expectedRequest = new DecryptRequest()
-                .withCiphertextBlob(ByteBuffer.wrap(Base64.getDecoder().decode("c2VjcmV0".getBytes())))
-                .withEncryptionAlgorithm(SYMMETRIC_DEFAULT);
-        verify(mockKms, atLeastOnce()).decrypt(eq(expectedRequest));
+        final DecryptRequest expectedRequest = DecryptRequest.builder()
+                .ciphertextBlob(SdkBytes.fromByteArray(Base64.getDecoder().decode("c2VjcmV0".getBytes())))
+                .encryptionContext(Map.of())
+                .encryptionAlgorithm(SYMMETRIC_DEFAULT).build();
+        verify(mockKms).decrypt(expectedRequest);
     }
 
     @Test
@@ -68,7 +67,7 @@ public class ConfigServerTest {
         final String plainText = "some-plaintext";
         final String cipherText = "cIpHeR";
 
-        doAnswer(invocation -> new EncryptResult().withCiphertextBlob(ByteBuffer.wrap(cipherText.getBytes())))
+        doAnswer(invocation -> EncryptResponse.builder().ciphertextBlob(SdkBytes.fromByteArray(cipherText.getBytes())).build())
                 .when(mockKms).encrypt(any(EncryptRequest.class));
 
         final ResponseEntity<String> response = rest.exchange(
@@ -85,7 +84,7 @@ public class ConfigServerTest {
         final String cipherText = Base64.getEncoder().encodeToString("cIpHeR".getBytes());
 
         // Config Server does a "test" encrypt with the given key
-        doAnswer(invocation -> new EncryptResult().withCiphertextBlob(ByteBuffer.wrap(cipherText.getBytes())))
+        doAnswer(invocation -> EncryptResponse.builder().ciphertextBlob(SdkBytes.fromByteArray(cipherText.getBytes())).build())
                 .when(mockKms).encrypt(any(EncryptRequest.class));
 
         final ResponseEntity<String> response = rest.exchange(

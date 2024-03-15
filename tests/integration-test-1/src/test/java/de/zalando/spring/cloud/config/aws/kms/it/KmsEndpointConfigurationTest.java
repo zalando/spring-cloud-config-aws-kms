@@ -1,17 +1,21 @@
 package de.zalando.spring.cloud.config.aws.kms.it;
 
-import com.amazonaws.services.kms.AWSKMS;
-import com.amazonaws.services.kms.AWSKMSClient;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.ReflectionUtils;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.kms.KmsClient;
+import software.amazon.awssdk.services.kms.KmsClientBuilder;
+import software.amazon.awssdk.services.kms.KmsServiceClientConfiguration;
 
 import java.lang.reflect.Field;
 import java.net.URI;
 import java.util.Objects;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,7 +33,7 @@ public class KmsEndpointConfigurationTest {
     private String secret;
 
     @Autowired
-    private AWSKMS kms;
+    private KmsClient kms;
 
     @Test
     public void testPropertyHasBeenDecrypted() {
@@ -40,28 +44,20 @@ public class KmsEndpointConfigurationTest {
     public void testContext() {
         assertThat(kms)
                 .isNotNull()
-                .isInstanceOf(AWSKMSClient.class);
-
-        AWSKMSClient client = (AWSKMSClient) kms;
+                .isInstanceOf(KmsClient.class);
 
         // prove aws.kms.endpoint.service-endpoint was used to configure the kms client
-        Field endpointField = ReflectionUtils.findField(AWSKMSClient.class, "endpoint");
-        ReflectionUtils.makeAccessible(Objects.requireNonNull(endpointField));
-        Object endpointObject = ReflectionUtils.getField(endpointField, client);
+
+        KmsServiceClientConfiguration kmsServiceClientConfiguration = kms.serviceClientConfiguration();
+        Optional<URI> endpointObject = kmsServiceClientConfiguration.endpointOverride();
         assertThat(endpointObject)
                 .isNotNull()
-                .isInstanceOf(URI.class);
-        URI endpoint = (URI) endpointObject;
+                .isInstanceOf(Optional.class);
+        URI endpoint = endpointObject.get();
         assertThat(endpoint.toString()).contains("us-east-1");
 
         // prove override was issued via the aws.kms.endpoint.signing-region property
-        Field signerRegionField = ReflectionUtils.findField(AWSKMSClient.class, "signerRegionOverride");
-        ReflectionUtils.makeAccessible(Objects.requireNonNull(signerRegionField));
-        Object signerRegionObject = ReflectionUtils.getField(signerRegionField, client);
-        assertThat(signerRegionObject)
-                .isNotNull()
-                .isInstanceOf(String.class);
-        String signerRegion = (String) signerRegionObject;
-        assertThat(signerRegion).isEqualTo("us-east-2");
+        Region signerRegion = kmsServiceClientConfiguration.region();
+        assertThat(signerRegion.id()).isEqualTo("us-west-1");
     }
 }
