@@ -1,142 +1,116 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xmlns="http://maven.apache.org/POM/4.0.0"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <parent>
-        <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-starter-parent</artifactId>
-        <version>2020.0.3</version>
-        <relativePath />
-    </parent>
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>org.springframework.cloud</groupId>
+		<artifactId>spring-cloud-build</artifactId>
+		<version>4.1.0</version>
+		<relativePath/><!-- lookup parent from repository -->
+	</parent>
+	
+	<groupId>com.zalando.awspring.cloud</groupId>
+	<artifactId>zalando-cloud-aws</artifactId>
+	<version>3.1.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	
+	<name>Zalando Cloud AWS</name>
+	<description>Zalando Cloud AWS</description>
+	<url>https://github.com/zalando/zalando-cloud-aws</url>
+	
+	<organization>
+		<name>Zalando SE</name>
+		<url>http://tech.zalando.com</url>
+	</organization>
+	
+	<properties>
+		<spring-cloud-aws.version>3.1.0</spring-cloud-aws.version>
+		<testcontainers.version>1.19.3</testcontainers.version>
+	</properties>
+	
+	<modules>
+		<module>zalando-cloud-aws-kms</module>
+		<module>zalando-cloud-aws-autoconfigure</module>
+		<module>zalando-cloud-aws-starters/zalando-cloud-aws-starter-kms</module>
+		<module>zalando-cloud-aws-samples/zalando-cloud-aws-kms-sample</module>
+	</modules>
 
-    <groupId>org.zalando</groupId>
-    <artifactId>spring-cloud-config-aws-kms-parent</artifactId>
-    <version>5.2-SNAPSHOT</version>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>io.awspring.cloud</groupId>
+				<artifactId>spring-cloud-aws-dependencies</artifactId>
+				<version>${spring-cloud-aws.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.testcontainers</groupId>
+				<artifactId>testcontainers-bom</artifactId>
+				<version>${testcontainers.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
-    <packaging>pom</packaging>
+    <distributionManagement>
+		<downloadUrl>https://github.com/zalando/spring-cloud-config-aws-kms</downloadUrl>
+		<repository>
+            <id>github</id>
+			<name> GitHub Packages</name>
+			<url>https://maven.pkg.github.com/zalando/spring-cloud-config-aws-kms</url>
+		</repository>
+		<!--
+        <repository>
+            <id>ossrh</id>
+            <name>Nexus Release Repository</name>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+		-->
+		<site>
+			<id>zalando-cloud-aws-docs</id>
+			<url>https://github.com/zalando/spring-cloud-config-aws-kms</url>
+		</site>
+    </distributionManagement>
 
-    <modules>
-        <module>library</module>
-        <module>tests</module>
-        <module>coverage</module>
-        <module>encryption-cli</module>
-    </modules>
-
-    <name>Spring Cloud Config AWS KMS Parent</name>
-    <description>Spring Cloud Config add-on that provides encryption via AWS KMS</description>
-    <url>http://github.com/zalando/spring-cloud-config-aws-kms</url>
-    <inceptionYear>2015</inceptionYear>
-
-    <organization>
-        <name>Zalando SE</name>
-        <url>http://tech.zalando.com</url>
-    </organization>
-
-    <licenses>
-        <license>
-            <name>The Apache License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-        </license>
-    </licenses>
+	<scm>
+    	<connection>scm:git:git://github.com/zalando/spring-cloud-config-aws-kms.git</connection>
+    	<developerConnection>scm:git:ssh://git@github.com/zalando/spring-cloud-config-aws-kms.git</developerConnection>
+    	<url>https://github.com/zalando/spring-cloud-config-aws-kms</url>
+  	</scm>
 
     <developers>
-        <developer>
-            <name>André Menneken</name>
-            <email>andre@zalando.de</email>
-            <organization>Zalando SE</organization>
-            <organizationUrl>http://tech.zalando.com</organizationUrl>
-        </developer>
-        <developer>
-            <name>Felix Roske</name>
-            <email>felix@zalando.de</email>
-            <organization>Zalando SE</organization>
-            <organizationUrl>http://tech.zalando.com</organizationUrl>
-        </developer>
-        <developer>
-            <name>Michele Randi</name>
-            <email>michele@zalando.de</email>
-            <organization>Zalando SE</organization>
-            <organizationUrl>http://tech.zalando.com</organizationUrl>
-        </developer>
-    </developers>
+		<developer>
+			<name>Felix Roske</name>
+			<organization>Zalando SE</organization>
+			<email>elix@zalando.de</email>
+		</developer>
+		<developer>
+			<name>Oussema Toujani</name>
+			<organization>Zalando SE</organization>
+			<email>oussema.toujani@zalando.de</email>
+		</developer>
+		<developer>
+			<name>Daniel Rohe</name>
+			<organization>Zalando SE</organization>
+			<email>daniel.rohe@zalando.de</email>
+		</developer>
+	</developers>
 
-    <scm>
-        <connection>scm:git:https://github.com/zalando/spring-cloud-config-aws-kms.git</connection>
-        <developerConnection>scm:git:git@github.com:zalando/spring-cloud-config-aws-kms.git</developerConnection>
-        <url>https://github.com/zalando/spring-cloud-config-aws-kms</url>
-        <tag>HEAD</tag>
-    </scm>
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>https://www.apache.org/licenses/LICENSE-2.0</url>
+		</license>
+	</licenses>
 
-    <properties>
-        <java.version>1.8</java.version>
-        <maven.site.skip>true</maven.site.skip>
-
-        <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
-        <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
-        <maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
-        <maven-javadoc-plugin.version>3.3.1</maven-javadoc-plugin.version>
-        <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
-        <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
-        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-        <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
-        <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
-        <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-        <maven-install-plugin.version>2.5.2</maven-install-plugin.version>
-        <jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
-    </properties>
-
-    <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <configuration>
-                        <!-- See jacoco plugin / prepare-agent -->
-                        <argLine>${surefireArgLine}</argLine>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.jacoco</groupId>
-                    <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>${jacoco-maven-plugin.version}</version>
-                    <executions>
-                        <!-- set arg line property for surefire -->
-                        <execution>
-                            <id>prepare-agent</id>
-                            <goals>
-                                <goal>prepare-agent</goal>
-                            </goals>
-                            <configuration>
-                                <propertyName>surefireArgLine</propertyName>
-                            </configuration>
-                        </execution>
-                        <execution>
-                            <id>report</id>
-                            <phase>test</phase>
-                            <goals>
-                                <goal>report</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <version>${maven-release-plugin.version}</version>
-                    <configuration>
-                        <tagNameFormat>@{project.version}</tagNameFormat>
-                        <arguments>-Pwith-gpg</arguments>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-        <plugins>
-            <plugin>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>${maven-deploy-plugin.version}</version>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 </project>

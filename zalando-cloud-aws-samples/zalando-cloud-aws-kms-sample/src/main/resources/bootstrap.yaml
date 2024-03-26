@@ -1,0 +1,8 @@
+spring.cloud:
+  decrypt-environment-post-processor.enabled: false
+
+spring.cloud.aws:
+  region:
+    static: eu-central-1
+  kms:
+    endpoint: http://localhost:4566

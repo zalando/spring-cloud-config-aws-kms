@@ -1,6 +1,0 @@
-aws:
-  kms:
-    useMock: true
-logging:
-  level:
-    "de.zalando.spring.cloud.config.aws.kms": DEBUG

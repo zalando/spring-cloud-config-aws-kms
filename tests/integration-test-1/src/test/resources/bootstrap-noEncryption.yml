@@ -1,8 +1,0 @@
-aws:
-  kms:
-    useMock: false
-    keyId: 'sample-key'
-    region: eu-central-1
-spring:
-  main:
-    banner-mode: "off"

@@ -1,7 +1,0 @@
-aws:
-  kms:
-    useMock: true
-    keyId: 'sample-key'
-spring:
-  main:
-    banner-mode: "off"
