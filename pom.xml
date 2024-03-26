@@ -58,7 +58,13 @@
 	</dependencyManagement>
 
     <distributionManagement>
-		<downloadUrl>https://github.com/zalando/zalando-cloud-aws</downloadUrl>
+		<downloadUrl>https://github.com/zalando/spring-cloud-config-aws-kms</downloadUrl>
+		<repository>
+            <id>github</id>
+			<name> GitHub Packages</name>
+			<url>https://maven.pkg.github.com/zalando/spring-cloud-config-aws-kms</url>
+		</repository>
+		<!--
         <repository>
             <id>ossrh</id>
             <name>Nexus Release Repository</name>
@@ -69,16 +75,17 @@
             <name>Sonatype Nexus Snapshots</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
+		-->
 		<site>
 			<id>zalando-cloud-aws-docs</id>
-			<url>https://github.com/zalando/zalando-cloud-aws</url>
+			<url>https://github.com/zalando/spring-cloud-config-aws-kms</url>
 		</site>
     </distributionManagement>
 
 	<scm>
-    	<connection>scm:git:git://github.com/zalando/zalando-cloud-aws.git</connection>
-    	<developerConnection>scm:git:ssh://git@github.com/zalando/zalando-cloud-aws.git</developerConnection>
-    	<url>https://github.com/zalando/zalando-cloud-aws</url>
+    	<connection>scm:git:git://github.com/zalando/spring-cloud-config-aws-kms.git</connection>
+    	<developerConnection>scm:git:ssh://git@github.com/zalando/spring-cloud-config-aws-kms.git</developerConnection>
+    	<url>https://github.com/zalando/spring-cloud-config-aws-kms</url>
   	</scm>
 
     <developers>
@@ -105,18 +112,5 @@
 			<url>https://www.apache.org/licenses/LICENSE-2.0</url>
 		</license>
 	</licenses>
-
-    <build>
-        <plugins>
-            <plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <configuration>
-                    <tagNameFormat>@{project.version}</tagNameFormat>
-                    <arguments>-Pwith-gpg</arguments>
-                </configuration>
-            </plugin>
-	    </plugins>
-    </build>
 
 </project>
