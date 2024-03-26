@@ -106,4 +106,17 @@
 		</license>
 	</licenses>
 
+    <build>
+        <plugins>
+            <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <tagNameFormat>@{project.version}</tagNameFormat>
+                    <arguments>-Pwith-gpg</arguments>
+                </configuration>
+            </plugin>
+	    </plugins>
+    </build>
+
 </project>
