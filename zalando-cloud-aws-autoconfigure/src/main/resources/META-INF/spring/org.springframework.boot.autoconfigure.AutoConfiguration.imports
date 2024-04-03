@@ -1,1 +1,1 @@
-com.zalando.awsspring.cloud.autoconfigure.kms.KmsAutoConfiguration
+org.zalando.awsspring.cloud.autoconfigure.kms.KmsAutoConfiguration

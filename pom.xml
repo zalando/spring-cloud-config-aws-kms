@@ -12,7 +12,7 @@
 		<relativePath/><!-- lookup parent from repository -->
 	</parent>
 	
-	<groupId>com.zalando.awspring.cloud</groupId>
+	<groupId>org.zalando.awspring.cloud</groupId>
 	<artifactId>zalando-cloud-aws</artifactId>
 	<version>3.1.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
