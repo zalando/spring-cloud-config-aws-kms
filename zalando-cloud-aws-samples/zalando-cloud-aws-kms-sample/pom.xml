@@ -12,7 +12,7 @@
 	
 	<groupId>com.zalando.awspring.cloud</groupId>
 	<artifactId>zalando-cloud-aws-kms-sample</artifactId>
-	<version>3.1.1</version>
+	<version>3.1.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Zalando Cloud AWS KMS Sample</name>
 	
@@ -108,9 +108,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-
-  <scm>
-    <tag>zalando-cloud-aws-3.1.1</tag>
-  </scm>
 </project>
