@@ -59,12 +59,14 @@
 
     <distributionManagement>
 		<downloadUrl>https://github.com/zalando/spring-cloud-config-aws-kms</downloadUrl>
+		<!--
 		<repository>
             <id>github</id>
 			<name> GitHub Packages</name>
 			<url>https://maven.pkg.github.com/zalando/spring-cloud-config-aws-kms</url>
 		</repository>
-		<!--
+		-->
+
         <repository>
             <id>ossrh</id>
             <name>Nexus Release Repository</name>
@@ -75,7 +77,7 @@
             <name>Sonatype Nexus Snapshots</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
-		-->
+
 		<site>
 			<id>zalando-cloud-aws-docs</id>
 			<url>https://github.com/zalando/spring-cloud-config-aws-kms</url>
