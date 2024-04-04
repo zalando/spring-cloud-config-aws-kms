@@ -12,9 +12,9 @@
 		<relativePath/><!-- lookup parent from repository -->
 	</parent>
 	
-	<groupId>com.zalando.awspring.cloud</groupId>
+	<groupId>org.zalando.awspring.cloud</groupId>
 	<artifactId>zalando-cloud-aws</artifactId>
-	<version>3.1.1-SNAPSHOT</version>
+	<version>3.1.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>Zalando Cloud AWS</name>
@@ -59,12 +59,13 @@
 
     <distributionManagement>
 		<downloadUrl>https://github.com/zalando/spring-cloud-config-aws-kms</downloadUrl>
+		<!--
 		<repository>
             <id>github</id>
 			<name> GitHub Packages</name>
 			<url>https://maven.pkg.github.com/zalando/spring-cloud-config-aws-kms</url>
 		</repository>
-		<!--
+		 -->
         <repository>
             <id>ossrh</id>
             <name>Nexus Release Repository</name>
@@ -75,7 +76,6 @@
             <name>Sonatype Nexus Snapshots</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
-		-->
 		<site>
 			<id>zalando-cloud-aws-docs</id>
 			<url>https://github.com/zalando/spring-cloud-config-aws-kms</url>
@@ -112,5 +112,41 @@
 			<url>https://www.apache.org/licenses/LICENSE-2.0</url>
 		</license>
 	</licenses>
+
+    <profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+      					<groupId>org.apache.maven.plugins</groupId>
+      					<artifactId>maven-gpg-plugin</artifactId>
+      					<version>3.2.2</version>
+      					<executions>
+        					<execution>
+          						<id>sign-artifacts</id>
+          						<phase>verify</phase>
+          						<goals>
+            						<goal>sign</goal>
+          						</goals>
+        					</execution>
+      					</executions>
+    				</plugin>
+
+					<plugin>
+  						<groupId>org.sonatype.plugins</groupId>
+  						<artifactId>nexus-staging-maven-plugin</artifactId>
+  						<version>1.6.13</version>
+  						<extensions>true</extensions>
+  						<configuration>
+     						<serverId>ossrh</serverId>
+     						<nexusUrl>https://oss.sonatype.org</nexusUrl>
+     						<autoReleaseAfterClose>false</autoReleaseAfterClose>
+  						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>

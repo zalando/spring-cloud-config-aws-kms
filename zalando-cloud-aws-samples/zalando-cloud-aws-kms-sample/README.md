@@ -44,7 +44,7 @@ The application will print out confirmation that the secret was decrypted to the
 ```
 2024-03-14T10:09:23.638+01:00[0;39m [32m INFO[0;39m [35m1174881[0;39m [2m---[0;39m [2m[           main][0;39m [2m[0;39m[36mc.z.a.c.b.encrypt.KmsTextEncryptor      [0;39m [2m:[0;39m decrypting NGJlZDYyNzEtNjRhOS00OTRhLWJhMGItZjk2MmIyMmIyYWM1rHhX2gJ7okYuE5VvxT0mN0ZkatF+b3AdmNGYdj21/hfd5oFm3DBaTvHHPJppbXTX as part of stack.
 [java.base/java.lang.Thread.getStackTrace(Thread.java:1610), 
-  com.zalando.awsspring.cloud.bootstrap.encrypt.KmsTextEncryptor.decrypt(KmsTextEncryptor.java:70), 
+  org.zalando.awsspring.cloud.bootstrap.encrypt.KmsTextEncryptor.decrypt(KmsTextEncryptor.java:70), 
   org.springframework.cloud.bootstrap.encrypt.AbstractEnvironmentDecrypt.decrypt(AbstractEnvironmentDecrypt.java:143), 
   org.springframework.cloud.bootstrap.encrypt.AbstractEnvironmentDecrypt.lambda$decrypt$0(AbstractEnvironmentDecrypt.java:136),
   java.base/java.util.LinkedHashMap.replaceAll(LinkedHashMap.java:731),
@@ -57,10 +57,10 @@ The application will print out confirmation that the secret was decrypted to the
   org.springframework.boot.SpringApplication.run(SpringApplication.java:333),
   org.springframework.boot.SpringApplication.run(SpringApplication.java:1354),
   org.springframework.boot.SpringApplication.run(SpringApplication.java:1343),
-  com.zalando.awsspring.samples.bootstrap.BootstrapApplication.main(BootstrapApplication.java:10)]
+  org.zalando.awsspring.samples.bootstrap.BootstrapApplication.main(BootstrapApplication.java:10)]
 [2m2024-03-14T10:09:23.801+01:00[0;39m [32m INFO[0;39m [35m1174881[0;39m [2m---[0;39m [2m[           main][0;39m [2m[0;39m[36mc.z.a.c.b.encrypt.KmsTextEncryptor      [0;39m [2m:[0;39m decrypting NGJlZDYyNzEtNjRhOS00OTRhLWJhMGItZjk2MmIyMmIyYWM1rHhX2gJ7okYuE5VvxT0mN0ZkatF+b3AdmNGYdj21/hfd5oFm3DBaTvHHPJppbXTX as part of stack.
 [java.base/java.lang.Thread.getStackTrace(Thread.java:1610),
-  com.zalando.awsspring.cloud.bootstrap.encrypt.KmsTextEncryptor.decrypt(KmsTextEncryptor.java:70),
+  org.zalando.awsspring.cloud.bootstrap.encrypt.KmsTextEncryptor.decrypt(KmsTextEncryptor.java:70),
   org.springframework.cloud.bootstrap.encrypt.AbstractEnvironmentDecrypt.decrypt(AbstractEnvironmentDecrypt.java:143),
   org.springframework.cloud.bootstrap.encrypt.AbstractEnvironmentDecrypt.lambda$decrypt$0(AbstractEnvironmentDecrypt.java:136),
   java.base/java.util.LinkedHashMap.replaceAll(LinkedHashMap.java:731),
@@ -72,6 +72,6 @@ The application will print out confirmation that the secret was decrypted to the
   org.springframework.boot.SpringApplication.run(SpringApplication.java:333),
   org.springframework.boot.SpringApplication.run(SpringApplication.java:1354),
   org.springframework.boot.SpringApplication.run(SpringApplication.java:1343),
-  com.zalando.awsspring.samples.bootstrap.BootstrapApplication.main(BootstrapApplication.java:10)]
+  org.zalando.awsspring.samples.bootstrap.BootstrapApplication.main(BootstrapApplication.java:10)]
 ```
 

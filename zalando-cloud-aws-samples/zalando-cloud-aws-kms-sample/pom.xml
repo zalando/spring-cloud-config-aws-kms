@@ -12,9 +12,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	
-	<groupId>com.zalando.awspring.cloud</groupId>
+	<groupId>org.zalando.awspring.cloud</groupId>
 	<artifactId>zalando-cloud-aws-kms-sample</artifactId>
-	<version>3.1.1-SNAPSHOT</version>
+	<version>3.1.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Zalando Cloud AWS KMS Sample</name>
 	
@@ -53,12 +53,12 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>com.zalando.awspring.cloud</groupId>
+			<groupId>org.zalando.awspring.cloud</groupId>
 			<artifactId>zalando-cloud-aws-kms</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.zalando.awspring.cloud</groupId>
+			<groupId>org.zalando.awspring.cloud</groupId>
 			<artifactId>zalando-cloud-aws-autoconfigure</artifactId>
 			<version>${project.version}</version>
 		</dependency>
@@ -107,6 +107,14 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			
+			<plugin>
+  				<groupId>org.apache.maven.plugins</groupId>
+  				<artifactId>maven-deploy-plugin</artifactId>
+  				<configuration>
+    				<skip>true</skip>
+  				</configuration>
 			</plugin>
 		</plugins>
 	</build>
