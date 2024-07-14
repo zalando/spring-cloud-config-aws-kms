@@ -27,8 +27,8 @@
 	</organization>
 	
 	<properties>
-		<spring-cloud-aws.version>3.1.0</spring-cloud-aws.version>
-		<testcontainers.version>1.19.3</testcontainers.version>
+		<spring-cloud-aws.version>3.1.1</spring-cloud-aws.version>
+		<testcontainers.version>1.19.8</testcontainers.version>
 	</properties>
 	
 	<modules>
@@ -92,7 +92,7 @@
 		<developer>
 			<name>Felix Roske</name>
 			<organization>Zalando SE</organization>
-			<email>elix@zalando.de</email>
+			<email>felix@zalando.de</email>
 		</developer>
 		<developer>
 			<name>Oussema Toujani</name>
@@ -136,7 +136,7 @@
 					<plugin>
   						<groupId>org.sonatype.plugins</groupId>
   						<artifactId>nexus-staging-maven-plugin</artifactId>
-  						<version>1.6.13</version>
+  						<version>1.7.0</version>
   						<extensions>true</extensions>
   						<configuration>
      						<serverId>ossrh</serverId>
