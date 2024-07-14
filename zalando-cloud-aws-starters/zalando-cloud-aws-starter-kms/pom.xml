@@ -13,7 +13,6 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.zalando.awspring.cloud</groupId>
 	<artifactId>zalando-cloud-aws-starter-kms</artifactId>
 	<name>Zalando Cloud AWS KMS Starter</name>
 	<description>Zalando Cloud AWS Key Management Service Starter</description>
@@ -22,6 +21,11 @@
 		<dependency>
 			<groupId>io.awspring.cloud</groupId>
 			<artifactId>spring-cloud-aws-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.zalando.awspring.cloud</groupId>
+			<artifactId>zalando-cloud-aws-autoconfigure</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.zalando.awspring.cloud</groupId>

@@ -6,7 +6,7 @@ Startup localstack with KMS
 docker run -d --name localstack -p 4566:4566 -p 4510-4559:4510-4559 localstack/localstack
 ```
 
-Create customer-managed key and note down KeyId from the AWS CLI output
+Create customer-managed key and **note down the KeyId** from the AWS CLI output
 
 ```bash
 aws --endpoint-url http://localhost:4566 kms create-key

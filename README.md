@@ -12,14 +12,14 @@ Zalando Cloud AWS is an addition to [Spring Cloud AWS](https://github.com/awspri
 This project has dependency and transitive dependency on Spring Projects. The table below outlines the version of Spring Cloud AWS, Spring Cloud, Spring Boot and Spring Framework versions that are compatible with certain Zalando Cloud AWS versions.
 
 | Zalando Cloud AWS | Spring Cloud AWS | Spring Boot | Spring Framework | AWS Java SDK |
-| ----------------- | ---------------- | ----------- | ---------------- | ------------ |
+|-------------------|------------------|-------------|------------------|--------------|
 | 3.1.x             | 3.1.x            | 3.2.x       | 6.1.x            | 2.x          |
 
 ## Supported AWS integrations
 
 | AWS Service | Zalando Cloud AWS 3.x | 
-| ----------- | --------------------- |
-| KMS         | ✅                    |
+|-------------|-----------------------|
+| KMS         | ✅                     |
 
 Note that Spring Cloud AWS and Spring Cloud provide support for other AWS services in their projects.
 
