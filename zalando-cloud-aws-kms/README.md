@@ -167,12 +167,6 @@ Encryption context and extra options can be combined in any order.
 ```shell
 mvn clean test
 ```
-    
-### Coverage Report
-
-```shell
-open coverage/target/site/jacoco/index.html
-```
 
 ## Releases
 

@@ -30,10 +30,6 @@ Development
 ### Run Test Suite
 
     mvn clean test
-    
-### Coverage Report
-
-    open coverage/target/site/jacoco/index.html
 
 Releases
 --------
