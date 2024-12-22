@@ -8,11 +8,11 @@
 	<parent>
 		<groupId>org.zalando.awspring.cloud</groupId>
 		<artifactId>zalando-cloud-aws</artifactId>
-		<version>3.1.2-SNAPSHOT</version>
+		<version>3.2.1-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>zalando-cloud-aws-kms</artifactId>
-	<version>3.1.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Zalando Cloud AWS KMS Integration</name>
 	

@@ -8,13 +8,13 @@
 	<parent>
 		<groupId>org.springframework.cloud</groupId>
 		<artifactId>spring-cloud-build</artifactId>
-		<version>4.1.0</version>
+		<version>4.1.4</version>
 		<relativePath/><!-- lookup parent from repository -->
 	</parent>
 	
 	<groupId>org.zalando.awspring.cloud</groupId>
 	<artifactId>zalando-cloud-aws</artifactId>
-	<version>3.1.2-SNAPSHOT</version>
+	<version>3.2.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>Zalando Cloud AWS</name>
@@ -27,7 +27,7 @@
 	</organization>
 	
 	<properties>
-		<spring-cloud-aws.version>3.1.1</spring-cloud-aws.version>
+		<spring-cloud-aws.version>3.2.1</spring-cloud-aws.version>
 		<testcontainers.version>1.19.8</testcontainers.version>
 	</properties>
 	

@@ -7,7 +7,7 @@
 	<parent>
 		<artifactId>zalando-cloud-aws</artifactId>
 		<groupId>org.zalando.awspring.cloud</groupId>
-		<version>3.1.2-SNAPSHOT</version>
+		<version>3.2.1-SNAPSHOT</version>
 		<relativePath>../../pom.xml</relativePath>
 	</parent>
 
