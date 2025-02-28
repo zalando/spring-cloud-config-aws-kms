@@ -6,13 +6,13 @@
 	<parent>
 		<groupId>org.zalando.awspring.cloud</groupId>
 		<artifactId>zalando-cloud-aws</artifactId>
-		<version>3.2.3-SNAPSHOT</version>
+		<version>3.3.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>zalando-cloud-aws-autoconfigure</artifactId>
 	<packaging>jar</packaging>
-	<name>Zalando Cloud AWS KMS Autoconfigure</name>
+	<name>Zalando Cloud AWS Autoconfigure</name>
 	
 	<dependencies>
 		<dependency>
