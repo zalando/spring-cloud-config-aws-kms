@@ -12,6 +12,7 @@ This project has dependency and transitive dependency on Spring Projects. The ta
 | ----------------- | ---------------- | ------------ | ------------ | ---------------- | ------------ |
 | 3.1.x             | 3.1.x            | 2023.0.x     | 3.2.x        | 6.1.x            | 2.x          |
 | 3.2.x             | 3.2.x            | 2023.0.x     | 3.2.x, 3.3.x | 6.1.x            | 2.x          |
+| 3.3.x             | 3.3.x            | 2024.0.x     | 3.4.x        | 6.2.x            | 2.x          |
 
 ## Supported AWS integrations
 
@@ -50,7 +51,7 @@ Contributions are highly welcome. For details please refer to the [guidelines](h
 License
 -------
 
-Copyright (C) 2015 Zalando SE (https://tech.zalando.com)
+Copyright (C) 2015-2025 Zalando SE (https://tech.zalando.com)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
