@@ -6,13 +6,13 @@
 	<parent>
 		<groupId>org.springframework.cloud</groupId>
 		<artifactId>spring-cloud-build</artifactId>
-		<version>4.1.4</version>
+		<version>4.2.0</version>
 		<relativePath /><!-- lookup parent from repository -->
 	</parent>
 	
 	<groupId>org.zalando.awspring.cloud</groupId>
 	<artifactId>zalando-cloud-aws</artifactId>
-	<version>3.2.3-SNAPSHOT</version>
+	<version>3.3.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>Zalando Cloud AWS</name>
@@ -25,8 +25,8 @@
 	</organization>
 	
 	<properties>
-		<spring-cloud-aws.version>3.2.1</spring-cloud-aws.version>
-		<testcontainers.version>1.19.8</testcontainers.version>
+		<spring-cloud-aws.version>3.3.0</spring-cloud-aws.version>
+		<testcontainers.version>1.20.5</testcontainers.version>
 	</properties>
 	
 	<modules>
@@ -55,39 +55,39 @@
 		</dependencies>
 	</dependencyManagement>
 
-    <distributionManagement>
+	<distributionManagement>
 		<downloadUrl>https://github.com/zalando/spring-cloud-config-aws-kms</downloadUrl>
 		<!--
 		<repository>
-            <id>github</id>
+			<id>github</id>
 			<name> GitHub Packages</name>
 			<url>https://maven.pkg.github.com/zalando/spring-cloud-config-aws-kms</url>
 		</repository>
 		 -->
-        <repository>
-            <id>ossrh</id>
-            <name>Nexus Release Repository</name>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-        </repository>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <name>Sonatype Nexus Snapshots</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<name>Nexus Release Repository</name>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+		</repository>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
 		<site>
 			<id>zalando-cloud-aws-docs</id>
 			<url>https://github.com/zalando/spring-cloud-config-aws-kms</url>
 		</site>
-    </distributionManagement>
+	</distributionManagement>
 
 	<scm>
-    	<connection>scm:git:git://github.com/zalando/spring-cloud-config-aws-kms.git</connection>
-    	<developerConnection>scm:git:ssh://git@github.com/zalando/spring-cloud-config-aws-kms.git</developerConnection>
-    	<url>https://github.com/zalando/spring-cloud-config-aws-kms</url>
-  	  <tag>HEAD</tag>
-  </scm>
+		<connection>scm:git:git://github.com/zalando/spring-cloud-config-aws-kms.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/zalando/spring-cloud-config-aws-kms.git</developerConnection>
+		<url>https://github.com/zalando/spring-cloud-config-aws-kms</url>
+		<tag>HEAD</tag>
+	</scm>
 
-    <developers>
+	<developers>
 		<developer>
 			<name>Felix Roske</name>
 			<organization>Zalando SE</organization>
@@ -112,36 +112,36 @@
 		</license>
 	</licenses>
 
-    <profiles>
+	<profiles>
 		<profile>
 			<id>release</id>
 			<build>
 				<plugins>
 					<plugin>
-      					<groupId>org.apache.maven.plugins</groupId>
-      					<artifactId>maven-gpg-plugin</artifactId>
-      					<version>3.2.2</version>
-      					<executions>
-        					<execution>
-          						<id>sign-artifacts</id>
-          						<phase>verify</phase>
-          						<goals>
-            						<goal>sign</goal>
-          						</goals>
-        					</execution>
-      					</executions>
-    				</plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>${maven-gpg-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
 
 					<plugin>
-  						<groupId>org.sonatype.plugins</groupId>
-  						<artifactId>nexus-staging-maven-plugin</artifactId>
-  						<version>1.7.0</version>
-  						<extensions>true</extensions>
-  						<configuration>
-     						<serverId>ossrh</serverId>
-     						<nexusUrl>https://oss.sonatype.org</nexusUrl>
-     						<autoReleaseAfterClose>false</autoReleaseAfterClose>
-  						</configuration>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<version>1.7.0</version>
+						<extensions>true</extensions>
+						<configuration>
+							<serverId>ossrh</serverId>
+							<nexusUrl>https://oss.sonatype.org</nexusUrl>
+							<autoReleaseAfterClose>false</autoReleaseAfterClose>
+						</configuration>
 					</plugin>
 				</plugins>
 			</build>

@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>zalando-cloud-aws</artifactId>
 		<groupId>org.zalando.awspring.cloud</groupId>
-		<version>3.2.3-SNAPSHOT</version>
+		<version>3.3.1-SNAPSHOT</version>
 		<relativePath>../../pom.xml</relativePath>
 	</parent>
 
@@ -13,7 +13,7 @@
 
 	<artifactId>zalando-cloud-aws-starter-kms</artifactId>
 	<name>Zalando Cloud AWS KMS Starter</name>
-	<description>Zalando Cloud AWS Key Management Service Starter</description>
+	<description>Zalando Cloud AWS KMS Starter</description>
 
 	<dependencies>
 		<dependency>
