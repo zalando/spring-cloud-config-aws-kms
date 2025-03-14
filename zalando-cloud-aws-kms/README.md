@@ -1,44 +1,44 @@
 # Zalando Cloud AWS KMS
 
-This is a Spring Cloud AWS add-on that provides a KMS client and encryption via AWS (Amazon Web Services) KMS (Key management service).
+## KMS Integration
 
-## Features
+KMS is a key management service that allows clients to encrypt and decrypt sensitive information. A Spring Boot starter is provided to auto-configure KMS integration beans.
 
-* Compatible with Spring Cloud and Spring Cloud AWS
-* Spring Boot 3 - ready
-* Supports AWS KMS [encryption context](#use-an-encryption-context)
-* Supports different [output modes](#available-options) for decrypted values
-* Supports [asymmetric keys](#asymmetric-keys)
-* Minimal dependencies 
-
-## Installation
-
-### Prerequisites
-
-Given you have a [Spring Boot](http://projects.spring.io/spring-boot/) application.
-
-### Step 1
-
-#### Add a property to `<properties>`.
-
-```xml
-<properties>
-...
-<zalando-cloud-aws.version>3.1.1</zalando-cloud-aws.version>
-</properties>
 ```
-
-#### Add the starter as dependency to your Maven `pom.xml` or Gradle build file.
-
-```xml
 <dependency>
-	<groupId>org.zalando.awspring.cloud</groupId>
-	<artifactId>zalando-cloud-aws-kms</artifactId>
-	<version>${zalando-cloud-aws.version}</version>
+  <groupId>org.zalando.awspring.cloud</groupId>
+  <artifactId>zalando-cloud-aws-starter-kms</artifactId>
+  <version>RELEASE</version>
 </dependency>
 ```
 
-### Step 2 (optional)
+## Using KMS Client
+
+To have access to all lower level KMS operations, we recommend using `KmsClient` from AWS SDK. KMSClient bean is autoconfigured by KmsAutoConfiguration.
+
+```
+class EncryptionService {
+  private final kmsClient;
+
+  public EncryptionService(KmsClient kmsClient) {
+    this.kmsClient = kmsClient;
+  }
+
+  public String encrypt(String secret) {
+    return kmsClient.encrypt(
+        request -> request.keyId("kms-key-id").plainText(SdkBytes.fromUtf8String(secret)))
+      .ciphertextBlob().asUtf8String();
+  }
+
+  public String decrypt(String cipher) {
+    kmsClient.decrypt(
+        request -> request.keyId("kms-key-id").ciphertextBlob(SdkBytes.fromUtf8String(cipher)))
+      .plaintext().asUtf8String();
+  }
+}
+```
+
+## Using Context Encryption
 
 Apply configuration to the application's [Bootstrap Context](https://docs.spring.io/spring-cloud-commons/reference/spring-cloud-commons/application-context-services.html#the-bootstrap-application-context), e.g., `bootstrap.yml`:
 
@@ -82,7 +82,7 @@ Those are the properties used by this library:
 - `encrypt.kms.encryption-algorithm`: the encryption algorithm to use
  
 
-## Usage
+### Usage
 
 Now you can add encrypted values to you property files. An encrypted value must always start with `{cipher}`.
 Those properties are automatically decrypted on application startup, e.g., `application.yml`

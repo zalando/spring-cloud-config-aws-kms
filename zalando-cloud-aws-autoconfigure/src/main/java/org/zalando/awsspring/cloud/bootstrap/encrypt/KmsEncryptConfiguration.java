@@ -6,7 +6,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.encrypt.TextEncryptor;
-import org.zalando.awsspring.cloud.bootstrap.encrypt.KmsTextEncryptor;
 
 import software.amazon.awssdk.services.kms.KmsClient;
 
