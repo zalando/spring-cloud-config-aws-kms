@@ -86,7 +86,6 @@ public class KmsTextEncryptorTest {
         String password = "secret";
 
         EncryptResponse response = kmsClient.encrypt(EncryptRequest.builder().keyId(rsaKeyId)
-            .encryptionAlgorithm(EncryptionAlgorithmSpec.RSAES_OAEP_SHA_256)
             .plaintext(SdkBytes.fromString(password, StandardCharsets.ISO_8859_1)).build());
         String encrypted = Base64.getEncoder().encodeToString(response.ciphertextBlob().asByteArray());
 
