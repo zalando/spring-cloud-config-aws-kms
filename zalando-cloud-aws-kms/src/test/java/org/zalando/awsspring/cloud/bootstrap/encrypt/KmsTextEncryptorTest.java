@@ -18,9 +18,11 @@ import software.amazon.awssdk.services.kms.model.*;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 @Testcontainers
 public class KmsTextEncryptorTest {
@@ -97,29 +99,31 @@ public class KmsTextEncryptorTest {
 
     @Test
     public void decryptRsaByExtraOptions() throws Exception {
+        KmsClient spyKmsClient = spy(kmsClient);
         String password = "secret";
 		EncryptionAlgorithmSpec encryptionAlgorithm = EncryptionAlgorithmSpec.RSAES_OAEP_SHA_256;
+        Map<String, String> context = Map.of("Code", "Context");
 
-        EncryptResponse response = kmsClient.encrypt(EncryptRequest.builder().keyId(rsaKeyId)
+        EncryptResponse response = spyKmsClient.encrypt(EncryptRequest.builder().keyId(rsaKeyId)
             .encryptionAlgorithm(encryptionAlgorithm)
+            .encryptionContext(context)
             .plaintext(SdkBytes.fromString(password, StandardCharsets.ISO_8859_1)).build());
         String encrypted = Base64.getEncoder().encodeToString(response.ciphertextBlob().asByteArray());
 
-        String encryptedOptions = String.format("[encryptionAlgorithm=%s,keyId=%s]%s", encryptionAlgorithm, rsaKeyId, encrypted);
-		KmsClient spyKmsClient = spy(kmsClient);
-        AtomicReference<DecryptResponse> responseCaptor = new AtomicReference<>();
+        String contextStr = context.entrySet().stream()
+            .map(e -> e.getKey() + "=" + Base64.getEncoder().encodeToString(e.getValue().getBytes()))
+            .collect(Collectors.joining(","));
+        String encryptedOptions = String.format("(%s)[encryptionAlgorithm=%s,keyId=%s]%s", contextStr, encryptionAlgorithm, rsaKeyId, encrypted);
 
-        doAnswer(invocation -> {
-            DecryptResponse decryptResponse = (DecryptResponse) invocation.callRealMethod();
-            responseCaptor.set(decryptResponse);
-            return decryptResponse;
-        }).when(spyKmsClient).decrypt(any(DecryptRequest.class));
+        KmsTextEncryptor encryptor = new KmsTextEncryptor(spyKmsClient, null, null);
+        String plaintext = encryptor.decrypt(encryptedOptions);
 
-		KmsTextEncryptor encryptor = new KmsTextEncryptor(spyKmsClient, null, null);
-		String plaintext = encryptor.decrypt(encryptedOptions);
+        ArgumentCaptor<DecryptRequest> captor = ArgumentCaptor.forClass(DecryptRequest.class);
+        verify(spyKmsClient).decrypt(captor.capture());
 
-		Assertions.assertThat(responseCaptor.get().keyId()).endsWith(rsaKeyId);
-		Assertions.assertThat(responseCaptor.get().encryptionAlgorithm()).isEqualTo(encryptionAlgorithm);
+		Assertions.assertThat(captor.getValue().keyId()).isEqualTo(rsaKeyId);
+		Assertions.assertThat(captor.getValue().encryptionAlgorithm()).isEqualTo(encryptionAlgorithm);
+        Assertions.assertThat(captor.getValue().encryptionContext()).isEqualTo(context);
 		Assertions.assertThat(plaintext).isEqualTo(password);
     }
 }
