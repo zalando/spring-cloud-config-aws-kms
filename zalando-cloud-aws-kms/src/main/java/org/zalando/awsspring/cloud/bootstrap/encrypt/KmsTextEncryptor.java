@@ -87,14 +87,11 @@ public class KmsTextEncryptor implements TextEncryptor {
 			.map(EncryptedTokenOptions::getEncryptionAlgorithm)
 			.orElse(kmsEncryptionAlgorithm);
 
-		DecryptRequest.Builder requestBuilder = DecryptRequest.builder();
-
-		requestBuilder = requestBuilder
+		return DecryptRequest.builder()
 			.ciphertextBlob(SdkBytes.fromByteArray(encryptedToken.getCipher()))
 			.keyId(keyId)
-			.encryptionAlgorithm(algorithm);
-
-		return requestBuilder.build();
-
+			.encryptionAlgorithm(algorithm)
+			.encryptionContext(encryptedToken.getContext())
+			.build();
 	}
 }
