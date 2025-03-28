@@ -9,7 +9,7 @@ This is a Spring Cloud AWS add-on that provides a KMS client and encryption via 
 * Supports AWS KMS [encryption context](#use-an-encryption-context)
 * Supports different [output modes](#available-options) for decrypted values
 * Supports [asymmetric keys](#asymmetric-keys)
-* Minimal dependencies 
+* Minimal dependencies
 
 ## Installation
 
@@ -23,8 +23,8 @@ Given you have a [Spring Boot](http://projects.spring.io/spring-boot/) applicati
 
 ```xml
 <properties>
-...
-<zalando-cloud-aws.version>3.1.1</zalando-cloud-aws.version>
+    ...
+    <zalando-cloud-aws.version>3.1.1</zalando-cloud-aws.version>
 </properties>
 ```
 
@@ -32,9 +32,9 @@ Given you have a [Spring Boot](http://projects.spring.io/spring-boot/) applicati
 
 ```xml
 <dependency>
-	<groupId>org.zalando.awspring.cloud</groupId>
-	<artifactId>zalando-cloud-aws-kms</artifactId>
-	<version>${zalando-cloud-aws.version}</version>
+    <groupId>org.zalando.awspring.cloud</groupId>
+    <artifactId>zalando-cloud-aws-kms</artifactId>
+    <version>${zalando-cloud-aws.version}</version>
 </dependency>
 ```
 
@@ -47,7 +47,7 @@ spring:
   cloud:
     decrypt-environment-post-processor:
       enabled: false # disable environment post processor for rsa keys
----  
+---
 spring:
   cloud:
     aws:
@@ -65,22 +65,22 @@ encrypt:
     # Required for encrypting values.
     # Required for decrypting values with some asymmetric algorithm. 
     key-id: 9d9fca31-54c5-4df5-ba4f-127dfb9a5031
-            
+
     # Optional: Switch to asymmetric algorithm.
     # See com.amazonaws.services.kms.model.EncryptionAlgorithmSpec for available values.
     encryption-algorithm: "RSAES_OAEP_SHA_256"
 ```
 
 The `spring.cloud.aws.kms.key-id` property must be set if
-  - values need to be decrypted with an asymmetric key
-  - values need to be encrypted (with any algorithm)
-  
+- values need to be decrypted with an asymmetric key
+- values need to be encrypted (with any algorithm)
+
 Those are the properties used by this library:
 
 - `encrypt.kms.enabled`: (defaults to true)
 - `encrypt.kms.key-id`: either the keyId or the full ARN of the KMS key
 - `encrypt.kms.encryption-algorithm`: the encryption algorithm to use
- 
+
 
 ## Usage
 
@@ -127,15 +127,15 @@ encrypt:
 
 #### Decryption
 
-If all cipher values of your application have been encrypted with the same KMS key and algorithm, you can configure 
+If all cipher values of your application have been encrypted with the same KMS key and algorithm, you can configure
 the `keyId` and `encryptionAlgorithm` globally in the `bootstrap.yml` as shown above. In case you have to decrypt
-ciphers from different keys or different algorithms, you can specify those separately for each key using the 
+ciphers from different keys or different algorithms, you can specify those separately for each key using the
 ["extra options"](#use-extra-options) approach, e.g., `application.yml`
 
 ```yaml
     secret1: "{cipher}SSdtIHNvbWUgYXN5bW1ldHJpY2FsbHkgZW5jcnlwdGVkIHNlY3JldA=="
-    secret2: "{cipher}[algorithm=SYMMETRIC_DEFAULT]U3ltbWV0cmljIGFuZCBhc3ltbWV0cmljIHNlY3JldHMgY2FuIGJlIG1peGVk"
-    secret3: "{cipher}[algorithm=RSAES_OAEP_SHA_256,keyId=9d9fca31-54c5-4df5-ba4f-127dfb9a5031]SSBoYXZlIGEgY3VzdG9tIGtleSBhbmQgYWxnb3JpdGht"
+    secret2: "{cipher}[encryptionAlgorithm=SYMMETRIC_DEFAULT]U3ltbWV0cmljIGFuZCBhc3ltbWV0cmljIHNlY3JldHMgY2FuIGJlIG1peGVk"
+    secret3: "{cipher}[encryptionAlgorithm=RSAES_OAEP_SHA_256,keyId=9d9fca31-54c5-4df5-ba4f-127dfb9a5031]SSBoYXZlIGEgY3VzdG9tIGtleSBhbmQgYWxnb3JpdGht"
 ```
 ### Use extra options
 
@@ -156,7 +156,7 @@ Encryption context and extra options can be combined in any order.
 | Option | Values | Default | Description |
 | ------ | ------ | ------- | ----------- |
 | output | `plain`, `base64` | `plain` | `plain` returns the decrypted secret as simple String. `base64` returns the decrypted secret in Base64 encoding. This is useful in cases where the plaintext secret contains non-printable characters (e.g. random AES keys) |
-| algorithm | as defined in `com.amazonaws.services.kms.model.EncryptionAlgorithmSpec` | `null` | Use the algorithm to decrypt the cipher text. |
+| encryptionAlgorithm | as defined in `software.amazon.awssdk.services.kms.model.EncryptionAlgorithmSpec` | `null` | Use the algorithm to decrypt the cipher text. |
 | keyId | ID or full ARN of a KMS key | `null` | Use the given key to decrypt the cipher text |
 
 
