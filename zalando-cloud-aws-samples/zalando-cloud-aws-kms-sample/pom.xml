@@ -18,7 +18,7 @@
 	
 	<properties>
 		<java.version>17</java.version>
-		<spring-cloud.version>2024.0.0</spring-cloud.version>
+		<spring-cloud.version>2024.0.1</spring-cloud.version>
 		<awsspring.version>3.3.0</awsspring.version>
 	</properties>
 	
