@@ -33,7 +33,7 @@ Given you have a [Spring Boot](http://projects.spring.io/spring-boot/) applicati
 ```xml
 <dependency>
     <groupId>org.zalando.awspring.cloud</groupId>
-    <artifactId>zalando-cloud-aws-kms</artifactId>
+    <artifactId>zalando-cloud-aws-starter-kms</artifactId>
     <version>${zalando-cloud-aws.version}</version>
 </dependency>
 ```
