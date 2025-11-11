@@ -25,7 +25,7 @@
 	</organization>
 	
 	<properties>
-		<spring-cloud-aws.version>3.3.0</spring-cloud-aws.version>
+		<spring-cloud-aws.version>3.4.1</spring-cloud-aws.version>
 		<testcontainers.version>1.20.5</testcontainers.version>
 	</properties>
 	
