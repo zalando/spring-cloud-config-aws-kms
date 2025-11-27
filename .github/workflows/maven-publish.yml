@@ -1,4 +1,4 @@
-name: Publish packages to GitHub Packages
+name: Publish packages to Sonatype Central
 on:
   release:
     types: [created]
