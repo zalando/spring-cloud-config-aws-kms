@@ -1,5 +1,6 @@
 name: Publish packages to Sonatype Central
 on:
+  workflow_dispatch:
   release:
     types: [created]
 
