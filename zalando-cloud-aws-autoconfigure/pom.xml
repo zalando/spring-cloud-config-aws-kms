@@ -19,9 +19,15 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-autoconfigure</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>io.awspring.cloud</groupId>
 			<artifactId>spring-cloud-aws-autoconfigure</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.awspring.cloud</groupId>
+			<artifactId>spring-cloud-aws-core</artifactId>
+			<optional>true</optional>
 		</dependency>
 		
 		<!-- optional dependencies -->
@@ -48,6 +54,12 @@
 			<artifactId>zalando-cloud-aws-kms</artifactId>
 			<version>${project.version}</version>
 			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 

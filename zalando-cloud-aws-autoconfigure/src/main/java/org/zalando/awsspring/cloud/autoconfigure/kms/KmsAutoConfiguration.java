@@ -22,8 +22,8 @@ import software.amazon.awssdk.services.kms.KmsClient;
 import software.amazon.awssdk.services.kms.KmsClientBuilder;
 
 @AutoConfiguration
-@EnableConfigurationProperties({ KmsProperties.class })
 @ConditionalOnClass({ KmsClient.class, KmsAsyncClient.class })
+@EnableConfigurationProperties({ KmsProperties.class })
 @AutoConfigureAfter({CredentialsProviderAutoConfiguration.class, RegionProviderAutoConfiguration.class})
 @ConditionalOnProperty(name = "spring.cloud.aws.kms.enabled", havingValue = "true", matchIfMissing = true)
 public class KmsAutoConfiguration {
@@ -34,32 +34,32 @@ public class KmsAutoConfiguration {
 		this.properties = properties;
 	}
 
-	@Bean
 	@ConditionalOnMissingBean
+	@Bean
 	public KmsClient kmsClient(AwsClientBuilderConfigurer awsClientBuilderConfigurer,
 			ObjectProvider<AwsClientCustomizer<KmsClientBuilder>> configurer,
 			ObjectProvider<AwsConnectionDetails> connectionDetails,
-			ObjectProvider<KmsClientCustomizer> kmsClientCustomizer,
+			ObjectProvider<KmsClientCustomizer> kmsClientCustomizers,
 			ObjectProvider<AwsSyncClientCustomizer> awsSyncClientCustomizers) {
 		return awsClientBuilderConfigurer.configureSyncClient(KmsClient.builder(), this.properties,
 				connectionDetails.getIfAvailable(),
 				configurer.getIfAvailable(),
-				kmsClientCustomizer.orderedStream(),
+				kmsClientCustomizers.orderedStream(),
 				awsSyncClientCustomizers.orderedStream())
 			.build();
 	}
 
-	@Bean
 	@ConditionalOnMissingBean
-	public KmsAsyncClient kmsAsyncClient(AwsClientBuilderConfigurer awsClientBuilderConfigurer,
+	@Bean
+		public KmsAsyncClient kmsAsyncClient(AwsClientBuilderConfigurer awsClientBuilderConfigurer,
 			ObjectProvider<AwsClientCustomizer<KmsAsyncClientBuilder>> configurer,
 			ObjectProvider<AwsConnectionDetails> connectionDetails,
-			ObjectProvider<KmsAsyncClientCustomizer> kmsAsyncClientCustomizer,
+			ObjectProvider<KmsAsyncClientCustomizer> kmsAsyncClientCustomizers,
 			ObjectProvider<AwsAsyncClientCustomizer> awsAsyncClientCustomizers) {
 		return awsClientBuilderConfigurer.configureAsyncClient(KmsAsyncClient.builder(), this.properties,
 				connectionDetails.getIfAvailable(),
 				configurer.getIfAvailable(),
-				kmsAsyncClientCustomizer.orderedStream(),
+				kmsAsyncClientCustomizers.orderedStream(),
 				awsAsyncClientCustomizers.orderedStream()).build();
 	}
 }
