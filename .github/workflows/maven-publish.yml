@@ -1,5 +1,6 @@
-name: Publish packages to GitHub Packages
+name: Publish packages to Sonatype Central
 on:
+  workflow_dispatch:
   release:
     types: [created]
 
@@ -7,16 +8,22 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-      - name: Setup Java
-        uses: actions/setup-java@v3
+      - uses: actions/checkout@v5
+
+      - name: Setup JDK
+        uses: actions/setup-java@v5
         with:
+          java-version: 17
           distribution: 'temurin'
-          java-version: '21'
-          server-id: 'github'
-          cache: 'maven'
-      - name: Publish packages
-        run: ./mvnw -U -B release:prepare release:perform
+          server-id: central
+          server-username: SONATYPE_USERNAME # env variable for username in deploy
+          server-password: SONATYPE_PASSWORD # env variable for token in deploy
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }} # value of GPG private key
+          gpg-passphrase: SONATYPE_GPG_PASSPHRASE # env variable for GPG private key passphrase
+
+      - name: Publish to Sonatype Central
+        run: ./mvnw -e -B -Psonatype deploy
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+          SONATYPE_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
