@@ -30,7 +30,7 @@ Given you have a [Spring Boot](http://projects.spring.io/spring-boot/) applicati
 
 #### Add the starter as dependency to your Maven `pom.xml` or Gradle build file.
 
-```xml
+```
 <dependency>
     <groupId>org.zalando.awspring.cloud</groupId>
     <artifactId>zalando-cloud-aws-starter-kms</artifactId>
@@ -38,7 +38,33 @@ Given you have a [Spring Boot](http://projects.spring.io/spring-boot/) applicati
 </dependency>
 ```
 
-### Step 2 (optional)
+## Using KMS Client
+
+To have access to all lower level KMS operations, we recommend using `KmsClient` from AWS SDK. KMSClient bean is autoconfigured by KmsAutoConfiguration.
+
+```
+class EncryptionService {
+  private final kmsClient;
+
+  public EncryptionService(KmsClient kmsClient) {
+    this.kmsClient = kmsClient;
+  }
+
+  public String encrypt(String secret) {
+    return kmsClient.encrypt(
+        request -> request.keyId("kms-key-id").plainText(SdkBytes.fromUtf8String(secret)))
+      .ciphertextBlob().asUtf8String();
+  }
+
+  public String decrypt(String cipher) {
+    kmsClient.decrypt(
+        request -> request.keyId("kms-key-id").ciphertextBlob(SdkBytes.fromUtf8String(cipher)))
+      .plaintext().asUtf8String();
+  }
+}
+```
+
+## Using Context Encryption
 
 Apply configuration to the application's [Bootstrap Context](https://docs.spring.io/spring-cloud-commons/reference/spring-cloud-commons/application-context-services.html#the-bootstrap-application-context), e.g., `bootstrap.yml`:
 
@@ -82,7 +108,7 @@ Those are the properties used by this library:
 - `encrypt.kms.encryption-algorithm`: the encryption algorithm to use
 
 
-## Usage
+### Usage
 
 Now you can add encrypted values to you property files. An encrypted value must always start with `{cipher}`.
 Those properties are automatically decrypted on application startup, e.g., `application.yml`
