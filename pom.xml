@@ -33,7 +33,6 @@
 		<module>zalando-cloud-aws-kms</module>
 		<module>zalando-cloud-aws-autoconfigure</module>
 		<module>zalando-cloud-aws-starters/zalando-cloud-aws-starter-kms</module>
-		<module>zalando-cloud-aws-samples/zalando-cloud-aws-kms-sample</module>
 	</modules>
 
 	<dependencyManagement>
@@ -146,6 +145,15 @@
 								</goals>
 							</execution>
 						</executions>
+						<configuration>
+						    <!-- Prevents GPG from using interactive PIN entry programs -->
+							<gpgArguments>
+								<arg>--pinentry-mode</arg>
+								<arg>loopback</arg>
+							</gpgArguments>
+							<!-- Passphrase comes from GPG_PASSPHRASE env variable via GitHub secrets -->
+							<passphraseServerId>${env.GPG_PASSPHRASE}</passphraseServerId>
+						</configuration>
 					</plugin>
 
 					<plugin>
