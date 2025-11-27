@@ -12,7 +12,7 @@
 	
 	<groupId>org.zalando.awspring.cloud</groupId>
 	<artifactId>zalando-cloud-aws</artifactId>
-	<version>3.3.2-SNAPSHOT</version>
+	<version>3.3.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>Zalando Cloud AWS</name>
@@ -56,13 +56,18 @@
 
 	<distributionManagement>
 		<downloadUrl>https://github.com/zalando/spring-cloud-config-aws-kms</downloadUrl>
-		<!--
+		
 		<repository>
-			<id>github</id>
-			<name> GitHub Packages</name>
-			<url>https://maven.pkg.github.com/zalando/spring-cloud-config-aws-kms</url>
+			<id>central</id>
+			<name>Sonatype Central</name>
+			<url>https://central.sonatype.com</url>
 		</repository>
-		 -->
+		<snapshotRepository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>https://central.sonatype.com/repository/maven-snapshots/</url>
+		</snapshotRepository>
+		
 		<site>
 			<id>zalando-cloud-aws-docs</id>
 			<url>https://github.com/zalando/spring-cloud-config-aws-kms</url>
@@ -103,35 +108,9 @@
 
 	<profiles>
 		<profile>
-			<id>release</id>
+			<id>sonatype</id>
 			<build>
 				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-source-plugin</artifactId>
-						<version>3.2.1</version>
-						<executions>
-							<execution>
-								<id>attach-sources</id>
-								<goals>
-									<goal>jar-no-fork</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>3.5.0</version>
-						<executions>
-							<execution>
-								<id>attach-javadocs</id>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
@@ -145,15 +124,6 @@
 								</goals>
 							</execution>
 						</executions>
-						<configuration>
-						    <!-- Prevents GPG from using interactive PIN entry programs -->
-							<gpgArguments>
-								<arg>--pinentry-mode</arg>
-								<arg>loopback</arg>
-							</gpgArguments>
-							<!-- Passphrase comes from GPG_PASSPHRASE env variable via GitHub secrets -->
-							<passphraseServerId>${env.GPG_PASSPHRASE}</passphraseServerId>
-						</configuration>
 					</plugin>
 
 					<plugin>
