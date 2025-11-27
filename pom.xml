@@ -145,15 +145,6 @@
 								</goals>
 							</execution>
 						</executions>
-						<configuration>
-						    <!-- Prevents GPG from using interactive PIN entry programs -->
-							<gpgArguments>
-								<arg>--pinentry-mode</arg>
-								<arg>loopback</arg>
-							</gpgArguments>
-							<!-- Passphrase comes from GPG_PASSPHRASE env variable via GitHub secrets -->
-							<passphraseServerId>${env.GPG_PASSPHRASE}</passphraseServerId>
-						</configuration>
 					</plugin>
 
 					<plugin>
