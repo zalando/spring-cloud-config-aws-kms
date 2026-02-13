@@ -12,7 +12,7 @@
 	
 	<groupId>org.zalando.awspring.cloud</groupId>
 	<artifactId>zalando-cloud-aws</artifactId>
-	<version>3.3.3-SNAPSHOT</version>
+	<version>3.3.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>Zalando Cloud AWS</name>
@@ -26,7 +26,7 @@
 	
 	<properties>
 		<spring-cloud-aws.version>3.3.0</spring-cloud-aws.version>
-		<testcontainers.version>1.20.5</testcontainers.version>
+		<testcontainers.version>2.0.2</testcontainers.version>
 	</properties>
 	
 	<modules>
