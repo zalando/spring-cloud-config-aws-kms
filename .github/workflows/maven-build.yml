@@ -41,5 +41,4 @@ jobs:
       - name: Build with Maven
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DOCKER_API_VERSION: "1.44"
         run: ./mvnw -B verify --file pom.xml
