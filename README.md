@@ -38,13 +38,15 @@ Development
 Releases
 --------
 
-### Release to Maven Central
+### Release to Sonatype Central
 
-* Create a release branch
+* Create a release branch.
 * Adjust versions using versions-plugin. Make sure to also adjust the sample version. Commit and push this change.
-* Adjust this file's compatibility matrix
-* Tag the current commit with the supposed release version
-* On GitHub create a release from this version.
+* Adjust the compatibilty matrix in this file if its a major version upgrade.
+* Tag the current commit with the supposed release version and push the tag.
+* Adjust version using versions-plugin to new develeopment version.
+* Merge PR (do not use Sqash & Merge).
+* On GitHub create a release from this version. This triggers the GitHub action that builds and releases a new version of this library to Sonatype Central.
 
 Contributing
 ------------
