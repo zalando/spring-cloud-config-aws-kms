@@ -6,13 +6,13 @@
 	<parent>
 		<groupId>org.springframework.cloud</groupId>
 		<artifactId>spring-cloud-build</artifactId>
-		<version>4.2.0</version>
+		<version>5.0.0</version>
 		<relativePath /><!-- lookup parent from repository -->
 	</parent>
 	
 	<groupId>org.zalando.awspring.cloud</groupId>
 	<artifactId>zalando-cloud-aws</artifactId>
-	<version>3.3.4-SNAPSHOT</version>
+	<version>4.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<name>Zalando Cloud AWS</name>
@@ -25,8 +25,7 @@
 	</organization>
 	
 	<properties>
-		<spring-cloud-aws.version>3.3.0</spring-cloud-aws.version>
-		<testcontainers.version>2.0.2</testcontainers.version>
+		<spring-cloud-aws.version>4.0.0</spring-cloud-aws.version>
 	</properties>
 	
 	<modules>
@@ -41,13 +40,6 @@
 				<groupId>io.awspring.cloud</groupId>
 				<artifactId>spring-cloud-aws-dependencies</artifactId>
 				<version>${spring-cloud-aws.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.testcontainers</groupId>
-				<artifactId>testcontainers-bom</artifactId>
-				<version>${testcontainers.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
