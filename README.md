@@ -13,10 +13,11 @@ This project has dependency and transitive dependency on Spring Projects. The ta
 | 3.1.x             | 3.1.x            | 2023.0.x     | 3.2.x        | 6.1.x            | 2.x          |
 | 3.2.x             | 3.2.x            | 2023.0.x     | 3.2.x, 3.3.x | 6.1.x            | 2.x          |
 | 3.3.x             | 3.3.x            | 2024.0.x     | 3.4.x        | 6.2.x            | 2.x          |
+| 4.0.x             | 4.0.x            | 2025.1.x     | 4.0.x        | 7.0.x            | 2.x          |
 
 ## Supported AWS integrations
 
-| AWS Service | Zalando Cloud AWS 3.x | Badges |
+| AWS Service | Zalando Cloud AWS 4.x | Badges |
 | ----------- | --------------------- | ------ |
 | KMS         | ✅                    | [![Build Status](https://github.com/zalando/spring-cloud-config-aws-kms/actions/workflows/maven-build.yml/badge.svg?branch=master)](https://github.com/zalando/spring-cloud-config-aws-kms/actions/workflows/maven-build.yml) [![Javadocs](http://javadoc.io/badge/org.zalando.awspring.cloud/zalando-cloud-aws-kms.svg?color=blue)](http://javadoc.io/doc/org.zalando.awspring.cloud/zalando-cloud-aws-kms) [![Maven Central](https://img.shields.io/maven-central/v/org.zalando.awspring.cloud/zalando-cloud-aws-kms.svg)](https://maven-badges.herokuapp.com/maven-central/org.zalando.awspring.cloud/zalando-cloud-aws-kms) |
 
@@ -39,9 +40,11 @@ Releases
 
 ### Release to Maven Central
 
-    mvn clean release:prepare -Dresume=false
-
-    mvn release:perform
+* Create a release branch
+* Adjust versions using versions-plugin. Make sure to also adjust the sample version. Commit and push this change.
+* Adjust this file's compatibility matrix
+* Tag the current commit with the supposed release version
+* On GitHub create a release from this version.
 
 Contributing
 ------------
@@ -51,7 +54,7 @@ Contributions are highly welcome. For details please refer to the [guidelines](h
 License
 -------
 
-Copyright (C) 2015-2025 Zalando SE (https://tech.zalando.com)
+Copyright (C) 2015-2026 Zalando SE (https://tech.zalando.com)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
