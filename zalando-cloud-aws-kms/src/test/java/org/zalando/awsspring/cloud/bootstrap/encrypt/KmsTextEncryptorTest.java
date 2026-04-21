@@ -29,7 +29,7 @@ public class KmsTextEncryptorTest {
 
     @Container
     private static final LocalStackContainer localstack = new LocalStackContainer(
-        DockerImageName.parse("localstack/localstack:latest")).withServices(Service.KMS);
+        DockerImageName.parse("localstack/localstack:4.4.0")).withServices(Service.KMS);
 
     private static KmsClient kmsClient;
 
