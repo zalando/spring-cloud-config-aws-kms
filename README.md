@@ -41,7 +41,7 @@ Releases
 ### Release to Sonatype Central
 
 * Create a release branch.
-* Adjust versions using versions-plugin. Make sure to also adjust the sample version. Commit and push this change.
+* Adjust versions using versions-plugin `mvn versions:set -DnewVersion=2.0.0 -DprocessAllModules=true`. Commit and push this change.
 * Adjust the compatibilty matrix in this file if its a major version upgrade.
 * Tag the current commit with the supposed release version and push the tag.
 * Adjust version using versions-plugin to new develeopment version.
