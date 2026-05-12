@@ -128,6 +128,9 @@
 							<publishingServerId>central</publishingServerId>
 							<deploymentName>${project.name}:${project.version}</deploymentName>
 							<autoPublish>false</autoPublish>
+							<excludeArtifacts>
+								<artifactId>zalando-cloud-aws-kms-sample</artifactId>
+							</excludeArtifacts>
 						</configuration>
 					</plugin>
 				</plugins>
