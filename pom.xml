@@ -32,6 +32,7 @@
 		<module>zalando-cloud-aws-kms</module>
 		<module>zalando-cloud-aws-autoconfigure</module>
 		<module>zalando-cloud-aws-starters/zalando-cloud-aws-starter-kms</module>
+		<module>zalando-cloud-aws-samples/zalando-cloud-aws-kms-sample</module>
 	</modules>
 
 	<dependencyManagement>

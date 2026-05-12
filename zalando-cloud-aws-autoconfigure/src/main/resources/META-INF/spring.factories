@@ -1,0 +1,6 @@
+org.springframework.cloud.bootstrap.BootstrapConfiguration=\
+  io.awspring.cloud.autoconfigure.core.CredentialsProviderAutoConfiguration,\
+  io.awspring.cloud.autoconfigure.core.RegionProviderAutoConfiguration,\
+  io.awspring.cloud.autoconfigure.core.AwsAutoConfiguration,\
+  org.zalando.awsspring.cloud.autoconfigure.kms.KmsAutoConfiguration,\
+  org.zalando.awsspring.cloud.bootstrap.encrypt.KmsEncryptConfiguration
